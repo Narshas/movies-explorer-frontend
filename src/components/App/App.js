@@ -1,11 +1,17 @@
 import React from "react";
 import './App.css';
+import { Main } from "../Main/Main";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export function App() {
-    return (
-      <div className="app">
-        <h1>movie-explorer</h1>
-      </div>
-    );
-  }
+  return (
+    <BrowserRouter>
+        <div className="app">
+          <Routes>
+            <Route path="/" element={<Main/>} />
+          </Routes>
+        </div>
+    </BrowserRouter>    
+  );
+}
   
