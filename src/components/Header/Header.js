@@ -11,7 +11,8 @@ export function Header() {
                 <Link className="header__logo">
                     <img src={logo} className="header__logo-image" alt="logo"/>
                 </Link>
-                <Navigation/>
+                <Navigation/> 
+                {/* блок с кнопка */}
             </div>
         </header>
     );

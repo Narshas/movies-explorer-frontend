@@ -1,8 +1,8 @@
 import React from "react";
 import "./Promo.css";
-import NavTab from "../NavTab/NavTab";
+import { NavTab } from "../NavTab/NavTab";
 
-function Promo() {
+export function Promo() {
     return (
         <section className="promo">
             <div className="promo__container">
