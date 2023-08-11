@@ -1,0 +1,49 @@
+import React from "react";
+import "./Login.css";
+import logo from "../../images/logo.svg";
+import { Link } from "react-router-dom";
+
+export function Login() {
+    return (
+        <section className="login">
+            <div className="login__container">
+                <div className="login__logo-wraper">
+                    <Link>
+                        <img className="login__logo" src={logo} alt="Лого"/>
+                    </Link>
+                </div>
+
+                <h2 className="login__title">Рады видеть!</h2>
+
+                <form className="login__form">
+                    <fieldset className="login__fieldset">
+                        
+                        <div className="login__input-container">
+                            <label className="login__email">
+                                E-mail
+                                <input className="login__input"/>
+                                <div className="login__error"></div>
+                            </label>
+                        </div>
+
+                        <div className="login__input-container">
+                            <label className="login__password">
+                                Пароль
+                                <input className="login__input"/>
+                                <div className="login__error"></div>
+                            </label>
+                        </div>
+
+                    </fieldset>
+                    <div className="login__submit-container">
+                        <button className="login__submit">Войти</button>
+                        <Link className="login__link">
+                            Ещё не зарегистрированы?
+                            <span className="login__to-register">Регистрация</span>
+                        </Link>            
+                    </div>
+                </form>
+            </div>
+        </section>
+    );
+}
