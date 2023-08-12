@@ -1,7 +1,7 @@
 import React from "react";
 import "./AboutMe.css";
 import { Portfolio } from "../Portfolio/Portfolio";
-import { profilePhoto } from "../../../images/";
+import profilePhoto from "../../../images/profile-photo.png";
 
 
 export function AboutMe() {

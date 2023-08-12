@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css";
 import { Link } from "react-router-dom"; 
-import { logo } from "../../images/logo.svg";
+import logo from "../../images/logo.svg";
 import { Navigation } from "../Navigation/Navigation";
 
 export function Header() {
@@ -12,7 +12,7 @@ export function Header() {
                     <img src={logo} className="header__logo-image" alt="logo"/>
                 </Link>
                 <Navigation/> 
-                {/* блок с кнопка */}
+                {/* блок с кнопками */}
             </div>
         </header>
     );

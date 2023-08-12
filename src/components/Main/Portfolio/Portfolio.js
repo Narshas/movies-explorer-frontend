@@ -8,17 +8,17 @@ export function Portfolio() {
             <ul className="portfolio__list">
                 <li className="portfolio__item">
                     <a className="portfolio__link">Статичный сайт
-                        <div className="porfolio__icon"></div>
+                            <div className="porfolio__icon"></div>
                     </a>
                 </li>
                 <li className="portfolio__item">
                     <a className="portfolio__link">Адаптивный сайт
-                        <div className="porfolio__icon"></div>
+                            <div className="porfolio__icon"></div>
                     </a>
                 </li>
                 <li className="portfolio__item">
                     <a className="portfolio__link">Одностраничное приложение
-                        <div className="porfolio__icon"></div>
+                            <div className="porfolio__icon"></div>
                     </a>
                 </li>
             </ul>
