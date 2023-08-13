@@ -1,0 +1,131 @@
+.profile {
+    background-color: #fff;
+}
+
+.profile__container {
+    margin: 0 auto 0;
+    max-width: 410px;
+    padding: 74px 0 70px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__title {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.profile__form {
+    display: flex;
+    flex-direction: column;
+    padding: 123px 0 0;
+}
+
+.profile__fieldset {
+    border: none;
+}
+
+.profile__label {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile__label:last-of-type {
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.profile__caption {
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.profile__name {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.profile__email {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.profile__buttons {
+    margin: 0;
+    padding: 220px 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    text-align: center;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.profile__edit {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 400;
+
+}
+
+.profile__edit:hover {
+    opacity: 0.8;
+}
+
+.profile__signout {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 400;
+    color: #FF3055;
+}
+
+.profile__signout:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 1000px) {
+    .profile__container {
+        padding: 236px 0 269px;
+    }
+    .profile__form {
+        padding-top: 96px;
+    }
+
+    .profile__buttons {
+        padding-top: 210px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .profile__container {
+        padding: 70px 0 40px;
+    }
+    .profile__form {
+        padding-top: 80px;
+    }
+
+    .profile__buttons {
+        padding-top: 379px;
+    }
+}

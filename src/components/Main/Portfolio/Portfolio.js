@@ -1,5 +1,6 @@
 import React from "react";
 import "./Portfolio.css";
+import arrow from "../../../images/arrow-icon.svg"
 
 export function Portfolio() {
     return (
@@ -8,17 +9,17 @@ export function Portfolio() {
             <ul className="portfolio__list">
                 <li className="portfolio__item">
                     <a className="portfolio__link">Статичный сайт
-                            <div className="porfolio__icon"></div>
+                            <img src={arrow} className="porfolio__icon" />
                     </a>
                 </li>
                 <li className="portfolio__item">
                     <a className="portfolio__link">Адаптивный сайт
-                            <div className="porfolio__icon"></div>
+                            <img src={arrow} className="porfolio__icon" />
                     </a>
                 </li>
                 <li className="portfolio__item">
                     <a className="portfolio__link">Одностраничное приложение
-                            <div className="porfolio__icon"></div>
+                            <img src={arrow} className="porfolio__icon" />
                     </a>
                 </li>
             </ul>
