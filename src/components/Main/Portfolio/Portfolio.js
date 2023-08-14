@@ -9,17 +9,17 @@ export function Portfolio() {
             <ul className="portfolio__list">
                 <li className="portfolio__item">
                     <a className="portfolio__link">Статичный сайт
-                            <img src={arrow} className="porfolio__icon" />
+                        <img src={arrow} className="portfolio__icon" alt="иконка со стрелочкой"/>
                     </a>
                 </li>
                 <li className="portfolio__item">
                     <a className="portfolio__link">Адаптивный сайт
-                            <img src={arrow} className="porfolio__icon" />
+                        <img src={arrow} className="portfolio__icon" alt="иконка со стрелочкой" />
                     </a>
                 </li>
                 <li className="portfolio__item">
                     <a className="portfolio__link">Одностраничное приложение
-                            <img src={arrow} className="porfolio__icon" />
+                        <img src={arrow} className="portfolio__icon" alt="иконка со стрелочкой"/>
                     </a>
                 </li>
             </ul>
