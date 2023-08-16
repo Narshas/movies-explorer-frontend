@@ -47,7 +47,7 @@
     }
 
     .promo__title {
-        max-width: 680px;
+        width: calc(100% - 88px);
         padding-top: 417px;
         font-family: Inter;
         font-size: 40px;
@@ -73,7 +73,7 @@
     }
 
     .promo__title {
-        max-width: 300px;
+        width: calc(100% - 20px);
         padding-top: 320px;
         padding-left: 0;
         margin: auto;

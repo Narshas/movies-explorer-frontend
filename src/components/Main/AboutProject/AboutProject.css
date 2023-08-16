@@ -144,18 +144,20 @@
     }
 
     .infographic__back-visual {
-        width: 140px;
+        /* width: 140px; */
     }
 
     .infographic__front-visual {
-        width: 528px;
+        /* width: 528px; */
+        width: 100%;
     }
 }
 
 @media screen and (max-width: 500px) {
     .about-project {
-        max-width: 284px;
+        /* max-width: 284px; */
         padding: 70px 18px 70px;
+        margin: 0;
     }
 
     .about-project__title {
@@ -198,10 +200,12 @@
     }
 
     .infographic__back-visual {
-        width: 100px;
+        /* width: 100px; */
+        width: 100%;
     }
 
     .infographic__front-visual {
-        width: 184px;
+        /* width: 184px; */
+        width: 100%;
     }
 }

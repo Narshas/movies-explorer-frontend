@@ -48,6 +48,7 @@
     font-weight: 400;
     line-height: 1.57;
     max-width: 600px;
+    width: 80%;
 }
 
 .about-me__link {
@@ -107,21 +108,23 @@
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 700px) {
     .about-me {
         padding: 0 14px 0;
+        margin: 0;
     }
 
     .about-me__container {
         padding: 60px 0 70px;
         display: flex;
         flex-direction: column-reverse;
-        margin: auto;
+        margin: 0;
     }
 
     .about-me__name {
         font-size: 30px;
         letter-spacing: -1.2px;
+        padding-top: 40px;
 
     }
 
@@ -133,12 +136,13 @@
     .about-me__about {
         font-size: 11px;
         line-height: 1.5;  
+        width: 100%;
     }
 
     .about-me__photo {
         width: 292px;
         height: 352px;
-        padding-bottom: 40px;
+        /* padding-bottom: 40px; */
     }
 
     .about-me__link {
