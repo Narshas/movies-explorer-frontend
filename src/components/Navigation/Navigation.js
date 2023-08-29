@@ -4,20 +4,20 @@ import { Link } from "react-router-dom";
 import { Burger } from "../Burger/Burger";
 import accIcon from "../../images/account-icon.svg";
 
-export function Navigation() {
+export function Navigation(props) {
     
-const logedIn = true;
+
 
     return (
         <>
-            {!logedIn && (
+            { !props.loggedIn && (
                 <div className="navigation__notauth">
                     <Link className="navigation__button-signup">Регистрация</Link>
                     <Link className="navigation__button-signin">Войти</Link>
                 </div>
             )}
 
-            {logedIn && (
+            { props.loggedIn && (
                 <div className="navigation__auth">
                     <div className="navigation__container-auth">
                         <div className="navigation__films">
@@ -27,7 +27,7 @@ const logedIn = true;
 
                         <Link className="navigation__account-button">
                             <p className="navigation__account-text">Аккаунт</p>
-                            <div className="navigation__account-icon" alt="иконка аккаунта"></div>
+                            <div className="navigation__account-icon" alt="иконка аккаунта" src={accIcon}></div>
                         </Link>
                     </div>
                     <Burger />

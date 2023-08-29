@@ -1,7 +1,28 @@
 .movies {
-
+    display: flex;
+    flex-direction: column;
 }
 
 .movies__button {
-    
+    width: 320px;
+    height: 36px;
+    border-radius: 6px;
+    background-color: #F9F9F9;
+    border: none;
+    align-self: center;
+    padding: 0;
+    margin: 50px 0 80px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.movies__button:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 500px) {
+    .movies__button {
+        width: 240px;
+    }
 }

@@ -4,17 +4,16 @@ import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { Preloader } from "./Preloader/Preloader";
 import { MoviesCardList } from "./MoviesCardList/MoviesCardList";
-import { SearchForm } from "./SearchForm";
+import { SearchForm } from "./SearchForm/SearchForm";
 
 export function Movies() {
     return (
         <>
             <Header/>
             <main className="movies">
-                <SearchForm>
-                    <Preloader/>
-                    <MoviesCardList/>
-                </SearchForm>
+                <SearchForm/>
+                {/* <Preloader/> */}
+                <MoviesCardList/>
                 <button className="movies__button">Eщё</button>
             </main>
             <Footer/>
