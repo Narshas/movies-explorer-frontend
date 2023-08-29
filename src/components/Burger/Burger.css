@@ -1,5 +1,5 @@
 .burger {
-
+    display: none;
 }
 
 .burger__off {
@@ -7,7 +7,13 @@
 }
 
 .burger__button {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+}
 
+.burger__button:hover {
+    opacity: 0.8;
 }
 
 .burger__logo {
@@ -47,5 +53,15 @@
 }
 
 .burger__account-text {
+    
+}
+
+@media screen and (max-width: 1000px) {
+    .burger {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 500px) {
     
 }

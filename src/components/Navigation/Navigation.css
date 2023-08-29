@@ -2,14 +2,131 @@
 
 }
 
-.navigation__button-wraper {
+.navigation__notauth {
+    display: flex;
+    align-items: center;
 
 }
 
 .navigation__button-signup {
+    color: #FFF;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.33;
+    margin-right: 30px;
+    text-decoration: none;
+    cursor: pointer;
+}
 
+.navigation__button-signup:hover {
+    opacity: 0.7;
 }
 
 .navigation__button-signin {
+    width: 76px;
+    height: 32px;
+    border-radius: 3px;
+    background: #2BE080;
+
+    color: #000;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.33;
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.navigation__button-signin:hover {
+    opacity: 0.8;
+}
+
+.navigation__auth {
     
+}
+
+.navigation__container-auth {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 52.8vw;
+}
+
+.navigation__all-films {
+    margin-right: 16px;
+    color: #000;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.38;
+    text-decoration: none;
+}
+
+.navigation__my-films {
+    color: #000;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.38;
+    text-decoration: none;
+}
+
+.navigation__account-button {
+    width: 100px;
+    height: 32px;
+    border-radius: 40px;
+    background: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 0.92;
+    color: #000;
+    box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.08);
+}
+
+.navigation__account-text {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 0.92;
+    margin-left: 11px;
+}
+
+.navigation__account-icon {
+    border-radius: 50px;
+    background-color: #F9F9F9;
+    width: 26px;
+    height: 26px;
+    background-image: url(../../images/account-icon.svg);
+    background-size: 10.4px 10.7px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 3px;
+}
+
+
+
+@media screen and (max-width: 1000px) {
+    .navigation__container-auth {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .navigation__button-signup {
+        font-size: 10px;
+        line-height: 1.6;
+        margin-right: 14px;
+    }
+
+    .navigation__button-signin {
+        font-size: 10px;
+        line-height: 1.6;
+        width: 54px;
+        height: 26px;
+    }
 }
