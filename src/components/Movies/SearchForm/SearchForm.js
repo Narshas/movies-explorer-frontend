@@ -5,7 +5,7 @@ import { useState } from "react";
 export function SearchForm() {
     const [isActive, setIsActive] = useState(false);
 
-    const handleToggleClick = () => {
+    const handleToggle = () => {
         setIsActive(!isActive);
     }
 
@@ -18,10 +18,11 @@ export function SearchForm() {
                 />
                 <button className="searchform__button">Найти</button>
             </div>
-            <label className="searchform__toggle">
-                <div className="searchform__toggle-styles"></div>
+            <div className={`searchform__toggle ${isActive ? "searchform__toggle-on" : "searchform__toggle-off" }`} onClick={handleToggle}>
+                <div className="searchform__toggle-switcher"></div>
                 <p className="searchform__toggle-text">Короткометражки</p>
-            </label>
+            </div>
+            
         </form>
     );
 }

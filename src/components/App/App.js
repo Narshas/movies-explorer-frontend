@@ -10,11 +10,11 @@ export function App() {
         <div className="app">
           <Routes>
             <Route path="/" element={<Main/>} />
-            {/* <Route path="/signup"/>
+            <Route path="/signup"/>
             <Route path="/signin"/>
-            <Route path="/profile"/> */}
+            <Route path="/profile"/>
             <Route path="/movies" element={<Movies/>} />
-            {/* <Route path="/saved-movies"/>             */}
+            <Route path="/saved-movies"/>
           </Routes>
         </div>
     </BrowserRouter>    
