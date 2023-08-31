@@ -4,8 +4,12 @@ import { MoviesCard } from "../MoviesCard/MoviesCard";
 
 export function MoviesCardList() {
     return (
-        <section className="movie-cardlist">
-            <div className="movie-cardlist__container">
+        <section className="movies-cardlist">
+            <div className="movies-cardlist__container">
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
                 <MoviesCard/>
             </div>
         </section>

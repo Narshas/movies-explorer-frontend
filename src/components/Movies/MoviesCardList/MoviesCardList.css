@@ -1,7 +1,29 @@
-.movie-cardlist {
-
+.movies-cardlist {
+    display: flex;
+    flex-direction: column;
 }
 
-.movie-cardlist__container {
+.movies-cardlist__container {
+    padding: 70px 70px 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 270px);
+    row-gap: 38px;
+    column-gap: 20px;
+}
 
+@media screen and (max-width: 1000px) {
+    .movies-cardlist__container {
+        padding: 70px 30px 10px;
+        grid-template-columns: repeat(auto-fill, 339px);
+        row-gap: 30px;
+        column-gap: 30px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .movies-cardlist__container {
+        padding: 40px 10px 10px;
+        grid-template-columns: repeat(auto-fill, 300px);
+        row-gap: 34px;
+    }
 }

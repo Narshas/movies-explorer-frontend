@@ -1,22 +1,25 @@
 import React from "react";
 import "./MoviesCard.css";
+import testCover from "../../../images/test-cover.png";
+import { useState } from "react";
 
 export function MoviesCard() {
+    const [isSaved, setIsSaved] = useState(false);
+
+    const handleLike = () => {
+        setIsSaved(!isSaved);
+    }
+
     return (
         <div className="movies-card">
-            <a className="movies-card__link">
-                <img className="movies-card__cover"/>    
+            <a className="movies-card__link" href="#">
+                <img className="movies-card__cover" src={testCover} alt="Обложка фильма"/>    
             </a>
             <div className="movies-card__about">
-                <h2 className="movies-card__name"></h2>
-                <button className="movies-card__delete-button">
-                    <img className="movies-card__delete-icon"/>
-                </button>
-                <button className="movies-card__save-button">
-                    <img className="movies-card__save-icon"/>
-                </button>
-                <p className="movies-card__duration"></p>
+                <h2 className="movies-card__name">Gimme Danger: История Игги и The Stooges</h2>
+                <button className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLike}></button>
             </div>
+            <p className="movies-card__duration">1ч42м</p>
         </div>
 
     );

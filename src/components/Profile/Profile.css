@@ -26,17 +26,20 @@
 
 .profile__fieldset {
     border: none;
+    margin: 0;
+    padding: 0;
 }
 
 .profile__label {
     margin: 0;
-    padding: 0;
+    padding: 0 0 16px;
     display: flex;
     justify-content: space-between;
 }
 
 .profile__label:last-of-type {
-    border-bottom: 1px solid #E8E8E8;
+    border-top: 1px solid #E8E8E8;
+    padding: 17px 0 0;
 }
 
 .profile__caption {
@@ -48,10 +51,10 @@
 
 .profile__name {
     margin: 0;
-    padding: 0;
     text-align: right;
     font-size: 11px;
     font-weight: 400;
+    border: none;
 }
 
 .profile__email {
@@ -60,6 +63,7 @@
     text-align: right;
     font-size: 11px;
     font-weight: 400;
+    border: none;
 }
 
 .profile__buttons {
@@ -75,6 +79,7 @@
 }
 
 .profile__edit {
+    padding: 0 0 16px;
     cursor: pointer;
     border: none;
     background-color: transparent;
@@ -90,13 +95,14 @@
 }
 
 .profile__signout {
+    padding: 0;
     cursor: pointer;
     border: none;
     background-color: transparent;
     border: none;
     text-align: center;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     color: #FF3055;
 }
 
@@ -115,11 +121,14 @@
     .profile__buttons {
         padding-top: 210px;
     }
+
+    
 }
 
 @media screen and (max-width: 500px) {
     .profile__container {
         padding: 70px 0 40px;
+        width: 80%;
     }
     .profile__form {
         padding-top: 80px;
@@ -127,5 +136,13 @@
 
     .profile__buttons {
         padding-top: 379px;
+    }
+
+    .profile__edit {
+        font-size: 12px;
+    }
+
+    .profile__signout {
+        font-size: 12px;
     }
 }
