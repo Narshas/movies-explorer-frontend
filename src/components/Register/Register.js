@@ -21,7 +21,7 @@ export function Register() {
                             <label className="register__name">
                                 Имя
                                 <input className="register__input"/>
-                                <div className="register__error"></div>
+                                <div className="register__error">Тестовая ошибка</div>
                             </label>
                         </div>
                         
@@ -29,7 +29,7 @@ export function Register() {
                             <label className="register__email">
                                 E-mail
                                 <input className="register__input"/>
-                                <div className="register__error"></div>
+                                <div className="register__error">Тестовая ошибка</div>
                             </label>
                         </div>
 
@@ -37,16 +37,16 @@ export function Register() {
                             <label className="register__password">
                                 Пароль
                                 <input className="register__input"/>
-                                <div className="register__error"></div>
+                                <div className="register__error">Тестовая ошибка</div>
                             </label>
                         </div>
                     </fieldset>
                     <div className="register__submit-container">
                         <button className="register__submit">Зарегистрироваться</button>
-                        <Link className="register__link">
+                        <div className="register__link">
                             Уже зарегистрированы?
-                            <span className="register__to-login">Войти</span>
-                        </Link>            
+                            <Link className="register__to-login">Войти</Link>
+                        </div>            
                     </div>
                 </form>
             </div>

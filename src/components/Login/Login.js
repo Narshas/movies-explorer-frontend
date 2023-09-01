@@ -22,7 +22,7 @@ export function Login() {
                             <label className="login__email">
                                 E-mail
                                 <input className="login__input"/>
-                                <div className="login__error"></div>
+                                <div className="login__error">Тестовая ошибка</div>
                             </label>
                         </div>
 
@@ -30,17 +30,17 @@ export function Login() {
                             <label className="login__password">
                                 Пароль
                                 <input className="login__input"/>
-                                <div className="login__error"></div>
+                                <div className="login__error">Тестовая ошибка</div>
                             </label>
                         </div>
 
                     </fieldset>
                     <div className="login__submit-container">
                         <button className="login__submit">Войти</button>
-                        <Link className="login__link">
+                        <div className="login__link">
                             Ещё не зарегистрированы?
-                            <span className="login__to-register">Регистрация</span>
-                        </Link>            
+                            <Link className="login__to-register">Регистрация</Link>
+                        </div>            
                     </div>
                 </form>
             </div>
