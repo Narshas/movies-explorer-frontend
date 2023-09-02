@@ -12,7 +12,7 @@ export function MoviesCard() {
 
     return (
         <div className="movies-card">
-            <a className="movies-card__link" href="#">
+            <a className="movies-card__link" href="https://media.giphy.com/media/l0MYw1yaEBNH2UhoI/giphy.gif">
                 <img className="movies-card__cover" src={testCover} alt="Обложка фильма"/>    
             </a>
             <div className="movies-card__about">

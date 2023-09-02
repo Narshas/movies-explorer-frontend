@@ -1,8 +1,15 @@
 import React from "react";
 import { Header } from "../Header/Header";
 import "./Profile.css";
+import { useNavigate } from "react-router-dom";
 
 export function Profile() {
+    const navigate = useNavigate();
+
+    function handleLogout() {
+        navigate("/signin");
+    }
+
     return (
         <>
         <Header/>
@@ -23,7 +30,7 @@ export function Profile() {
                     </fieldset>
                     <div className="profile__buttons">
                         <button className="profile__edit">Редактировать</button>
-                        <button className="profile__signout">Выйти из аккаунта</button>
+                        <button className="profile__signout" onClick={handleLogout}>Выйти из аккаунта</button>
                     </div>
                 </form>
             </div>

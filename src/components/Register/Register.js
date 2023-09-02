@@ -2,13 +2,20 @@ import React from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function Register() {
+    const navigate = useNavigate();
+
+    function handleRegister() {
+        navigate("/movies")
+    }
+
     return (
         <section className="register">
             <div className="register__container">
                 <div className="register__logo-wraper">
-                    <Link>
+                    <Link to="/">
                         <img className="register__logo" src={logo} alt="Лого"/>
                     </Link>
                 </div>
@@ -42,10 +49,10 @@ export function Register() {
                         </div>
                     </fieldset>
                     <div className="register__submit-container">
-                        <button className="register__submit">Зарегистрироваться</button>
+                        <button className="register__submit" onClick={handleRegister}>Зарегистрироваться</button>
                         <div className="register__link">
                             Уже зарегистрированы?
-                            <Link className="register__to-login">Войти</Link>
+                            <Link to="/signin" className="register__to-login">Войти</Link>
                         </div>            
                     </div>
                 </form>

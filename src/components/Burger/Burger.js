@@ -28,24 +28,15 @@ export function Burger() {
                         </button>
 
                         <nav className="burger__links">
-                            <Link className="burger__link">Главная</Link>
-                            <Link className="burger__link">Фильмы</Link>
-                            <Link className="burger__link">Сохранённые фильмы</Link>
+                            <Link to="/" className="burger__link">Главная</Link>
+                            <Link to="/movies" className="burger__link">Фильмы</Link>
+                            <Link to="/saved-movies" className="burger__link">Сохранённые фильмы</Link>
                         </nav>
 
-                        <Link className="burger__account-button">
+                        <Link to="/profile" className="burger__account-button">
                             <p className="burger__account-text">Аккаунт</p>
                             <div className="burger__account-icon" alt="иконка аккаунта"></div>
                         </Link>
-
-                        {/* <nav className="burger__account-container">
-                            <div className="burger__account">
-                                <Link className="burger__account-button">
-                                    <img className="burger__account-icon" alt="иконка аккаунта" src={accIcon}/>
-                                    <p className="burger__account-text">Аккаунт</p>
-                                </Link>
-                            </div>
-                        </nav> */}
                     </div>
                 </div>
             }

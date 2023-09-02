@@ -1,14 +1,21 @@
 import React from "react";
 import "./Login.css";
 import logo from "../../images/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
+    const navigate = useNavigate();
+
+    function handleLogin() {
+        navigate("/movies")
+    }
+
     return (
         <section className="login">
             <div className="login__container">
                 <div className="login__logo-wraper">
-                    <Link>
+                    <Link to="/">
                         <img className="login__logo" src={logo} alt="Лого"/>
                     </Link>
                 </div>
@@ -36,10 +43,10 @@ export function Login() {
 
                     </fieldset>
                     <div className="login__submit-container">
-                        <button className="login__submit">Войти</button>
+                        <button className="login__submit" onClick={handleLogin}>Войти</button>
                         <div className="login__link">
                             Ещё не зарегистрированы?
-                            <Link className="login__to-register">Регистрация</Link>
+                            <Link to="/signup" className="login__to-register">Регистрация</Link>
                         </div>            
                     </div>
                 </form>

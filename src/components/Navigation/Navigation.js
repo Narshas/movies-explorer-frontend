@@ -12,8 +12,8 @@ export function Navigation(props) {
         <>
             { !props.loggedIn && (
                 <div className="navigation__notauth">
-                    <Link className="navigation__button-signup">Регистрация</Link>
-                    <Link className="navigation__button-signin">Войти</Link>
+                    <Link to="/signup" className="navigation__button-signup">Регистрация</Link>
+                    <Link to="/signin" className="navigation__button-signin">Войти</Link>
                 </div>
             )}
 
@@ -21,11 +21,11 @@ export function Navigation(props) {
                 <div className="navigation__auth">
                     <div className="navigation__container-auth">
                         <div className="navigation__films">
-                            <Link className="navigation__all-films">Фильмы</Link>
-                            <Link className="navigation__my-films">Сохранённые фильмы</Link>
+                            <Link to="/movies" className="navigation__all-films">Фильмы</Link>
+                            <Link to="/saved-movies" className="navigation__my-films">Сохранённые фильмы</Link>
                         </div>
 
-                        <Link className="navigation__account-button">
+                        <Link to="/profile" className="navigation__account-button">
                             <p className="navigation__account-text">Аккаунт</p>
                             <div className="navigation__account-icon" alt="иконка аккаунта" src={accIcon}></div>
                         </Link>

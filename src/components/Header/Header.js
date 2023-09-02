@@ -7,16 +7,15 @@ import { useState } from "react";
 
 export function Header() {
 
-    const [loggedIn, setLoggedIn] = useState(true);
+    const [loggedIn, setLoggedIn] = useState(false);
 
     return (
         <header className={loggedIn ? "header__loggedIn" : "header__loggedOut"}>
             <div className="header__container">
-                <Link className="header__logo">
+                <Link to="/" className="header__logo">
                     <img src={logo} className="header__logo-image" alt="logo"/>
                 </Link>
-                <Navigation loggedIn={loggedIn} setLoggedIn={setLoggedIn} /> 
-                {/* блок с кнопками */}
+                <Navigation loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
             </div>
         </header>
     );
