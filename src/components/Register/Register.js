@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../App/App";
 
 export function Register() {
+    const {loggedIn, setLoggedIn} = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
     function handleRegister() {
+        setLoggedIn(true);
         navigate("/movies")
     }
 

@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext }  from "react";
 import { Header } from "../Header/Header";
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../App/App";
 
 export function Profile() {
+    const {loggedIn, setLoggedIn} = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
     function handleLogout() {
+        setLoggedIn(false);
         navigate("/signin");
     }
 

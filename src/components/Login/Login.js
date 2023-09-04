@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Login.css";
 import logo from "../../images/logo.svg";
-import { Link, Navigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../App/App";
 
 export function Login() {
+
+    const {loggedIn, setLoggedIn} = useContext(CurrentUserContext);
+
     const navigate = useNavigate();
 
     function handleLogin() {
+        setLoggedIn(true);
         navigate("/movies")
     }
 

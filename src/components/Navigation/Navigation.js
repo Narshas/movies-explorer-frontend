@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Navigation.css";
 import { Link } from "react-router-dom";
 import { Burger } from "../Burger/Burger";
 import accIcon from "../../images/account-icon.svg";
+import { CurrentUserContext } from "../App/App";
 
-export function Navigation(props) {
+export function Navigation() {
     
-
+    const {loggedIn} = useContext(CurrentUserContext);
 
     return (
         <>
-            { !props.loggedIn && (
+            { !loggedIn && (
                 <div className="navigation__notauth">
                     <Link to="/signup" className="navigation__button-signup">Регистрация</Link>
                     <Link to="/signin" className="navigation__button-signin">Войти</Link>
                 </div>
             )}
 
-            { props.loggedIn && (
+            { loggedIn && (
                 <div className="navigation__auth">
                     <div className="navigation__container-auth">
                         <div className="navigation__films">
