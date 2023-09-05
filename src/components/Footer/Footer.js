@@ -11,10 +11,10 @@ export function Footer() {
                     <p className="footer__copyright">&copy; 2023</p>
                     <ul className="footer__list">
                         <li className="footer__item">
-                            <a className="footer__item" href="https://practicum.yandex.ru">Яндекс.Практикум</a>
+                            <a className="footer__item" href="https://practicum.yandex.ru" target="_blank">Яндекс.Практикум</a>
                         </li>
                         <li className="footer__item">
-                            <a className="footer__item" href="https://github.com/Narshas">GitHub</a>
+                            <a className="footer__item" href="https://github.com/Narshas" target="_blank">GitHub</a>
                         </li>
                     </ul>
                 </div>

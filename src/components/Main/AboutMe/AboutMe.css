@@ -49,6 +49,7 @@
     line-height: 1.57;
     max-width: 600px;
     width: 80%;
+    margin: 0;
 }
 
 .about-me__link {
@@ -89,14 +90,21 @@
         letter-spacing: -1.6px;
     }
 
+    .about-me__title {
+        margin: 90px 0 0;
+
+    }
+
     .about-me__subtitle {
         font-size: 12px;
         line-height: 1.5;
+        margin: 16px 0 20px;
     }
 
     .about-me__about {
         font-size: 12px;
         line-height: 1.5;
+        min-height: 108px;
     }
 
     .about-me__photo {

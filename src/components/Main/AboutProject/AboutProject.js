@@ -20,12 +20,12 @@ export function AboutProject() {
                 </ul>
                 <div className="infographic">
                     <div className="infographic__back">
-                        <p className="infographic__back-visual">Back-end</p>
-                        <p className="infographic__text">1 неделя</p>
+                        <p className="infographic__back-visual">1 неделя</p>
+                        <p className="infographic__text">Back-end</p>
                     </div>
                     <div className="infographic__front">
-                        <p className="infographic__front-visual">Front-end</p>
-                        <p className="infographic__text">4 недели</p>
+                        <p className="infographic__front-visual">4 недели</p>
+                        <p className="infographic__text">Front-end</p>
                     </div>
                 </div>
             </div>

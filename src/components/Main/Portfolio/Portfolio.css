@@ -15,7 +15,7 @@
 .portfolio__list {
     list-style: none;
     margin: 0;
-    padding: 0 0 85px;
+    padding: 0 0 106px;
     display: flex;
     flex-direction: column;
 }
@@ -26,7 +26,7 @@
 }
 
 .portfolio__item:last-of-type {
-    padding: 20px 0 19px;
+    padding: 20px 0 0;
     border-bottom: none;
 }
 
@@ -48,8 +48,9 @@
 }
 
 .portfolio__icon {
-    width: 29px;
-    height: 29px;
+    width: 18px;
+    height: 18px;
+    padding-right: 4px;
 }
 
 @media screen and (max-width: 1000px) {
@@ -57,6 +58,10 @@
         font-size: 28px;
         line-height: 1.79;
         letter-spacing: -1.12px;
+    }
+
+    .portfolio__list {
+        padding-bottom: 90px;
     }
 }
 

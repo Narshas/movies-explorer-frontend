@@ -9,6 +9,7 @@ import { Profile } from "../Profile/Profile";
 import { Login } from "../Login/Login";
 import { Register } from "../Register/Register";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
+import { Popup } from "../Popup/Popup";
 
 export const CurrentUserContext = createContext();
 const defoltUser = {name: 'Тестовый пользователь', email: 'test@email.com'}
@@ -29,6 +30,7 @@ export function App() {
             <Route path="/profile" element={<Profile/>}/>
             <Route path="*" element={<PageNotFound/>}/>
           </Routes>
+          <Popup/>
         </div>
       </CurrentUserContext.Provider>
     </BrowserRouter>    
