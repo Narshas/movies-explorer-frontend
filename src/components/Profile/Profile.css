@@ -130,8 +130,13 @@
         padding: 70px 0 40px;
         width: 80%;
     }
+
+    .profile__title {
+        min-height: 58px;
+    }
+
     .profile__form {
-        padding-top: 80px;
+        padding-top: 51px;
     }
 
     .profile__buttons {

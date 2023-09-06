@@ -19,6 +19,8 @@
     color: #A0A0A0;
     text-align: center;
     border-bottom: 1px solid #E8E8E8;
+    font-size: 13px;
+    font-weight: 400;
 }
 
 .footer__signature {
@@ -44,6 +46,9 @@
 
 .footer__item {
     text-decoration: none;
+    color: #000;
+    font-size: 13px;
+    font-weight: 400;
 }
 
 .footer__item:last-of-type {
@@ -71,21 +76,34 @@
 
     .footer__text {
         /* min-height: 300px; */
+        font-size: 12px;
+        font-weight: 400;
+        padding: 79px 0 21px;
     }
 
     .footer__signature {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
     .footer__list {
         margin: 0;
-        padding: 30px 0 20px;
+        padding: 30px 0 30px;
         flex-direction: column;
         text-align: center;
+    }
+
+    .footer__item {
+        font-size: 12px;
     }
 
     .footer__item:last-of-type {
         margin-top: 12px;
         margin-left: 0;
+    }
+
+    .footer__copyright {
+        color: #A0A0A0;
+        font-size: 12px;
+        margin: 0;
     }
 }

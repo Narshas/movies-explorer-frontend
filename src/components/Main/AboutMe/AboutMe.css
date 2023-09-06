@@ -86,7 +86,7 @@
     .about-me__name {
         font-size: 40px;
         font-weight: 400;
-        line-height: 1.0;
+        /* line-height: 1.0; */
         letter-spacing: -1.6px;
     }
 
@@ -123,6 +123,15 @@
         margin: 0;
     }
 
+    .about-me__title {
+        margin: 70px 0 0;
+        font-size: 18px;
+        font-weight: 400;
+        letter-spacing: -0.72px;
+        padding: 0 0 28px;
+
+    }
+
     .about-me__container {
         padding: 60px 0 70px;
         display: flex;
@@ -140,12 +149,14 @@
     .about-me__subtitle {
         font-size: 11px;
         line-height: 1.5;   
+        margin: 20px 0 20px;
     }
 
     .about-me__about {
         font-size: 11px;
         line-height: 1.5;  
         width: 100%;
+        min-height: 112px;
     }
 
     .about-me__photo {

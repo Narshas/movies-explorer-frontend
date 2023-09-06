@@ -70,6 +70,7 @@
     font-size: 13px;
     font-weight: 400;
     line-height: 1.38;
+    margin: 0;
 }
 
 @media screen and (max-width: 1000px) {
@@ -80,6 +81,8 @@
     .searchform__toggle {
         justify-self: flex-end;
         flex-direction: row-reverse;
+        margin: 43px 0 53px;
+        
     }
 
     .searchform__toggle-text {
@@ -89,7 +92,7 @@
 
 @media screen and (max-width: 500px) {
     .searchform {
-        padding: 90px 14px 0 14px;
+        padding: 84px 14px 0 14px;
     }
 
     .searchform__wraper {
