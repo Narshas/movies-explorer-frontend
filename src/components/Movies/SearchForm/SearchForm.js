@@ -16,7 +16,7 @@ export function SearchForm() {
                     className="searchform__input"
                     placeholder="Фильм"
                 />
-                <button className="searchform__button">Найти</button>
+                <button type="button" className="searchform__button">Найти</button>
             </div>
             <div className={`searchform__toggle ${isActive ? "searchform__toggle-on" : "searchform__toggle-off" }`} onClick={handleToggle}>
                 <div className="searchform__toggle-switcher"></div>

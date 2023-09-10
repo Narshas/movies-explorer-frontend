@@ -14,7 +14,7 @@ export function Burger() {
 
             { !BurgerActive &&
                 <div className="burger__off">
-                    <button className="burger__button" onClick={() => setBurgerActive(prev => !prev)}>
+                    <button type="button" className="burger__button" onClick={() => setBurgerActive(prev => !prev)}>
                         <img className="burger__logo" alt="иконка бургер-меню" src={burger}/>
                     </button>
                 </div>
@@ -23,7 +23,7 @@ export function Burger() {
             { BurgerActive && 
                 <div className="burger__on">
                     <div className="burger__open">
-                        <button className="burger__close" onClick={() => setBurgerActive(prev => !prev)}>
+                        <button type="button" className="burger__close" onClick={() => setBurgerActive(prev => !prev)}>
                             <img className="burger__close-icon" alt="кнопка закрыть бургер-меню" src={burgerClose}/>
                         </button>
 

@@ -106,6 +106,10 @@
     cursor: pointer;
 }
 
+.login__submit:hover {
+    opacity: 0.7;
+}
+
 .login__link {
     margin: 16px 0 0;
     padding: 0;
@@ -123,6 +127,10 @@
     font-size: 14px;
     font-weight: 400;
     cursor: pointer;
+}
+
+.login__to-register {
+    opacity: 0.7;
 }
 
 @media screen and (max-width: 1000px) {

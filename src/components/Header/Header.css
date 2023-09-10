@@ -1,11 +1,13 @@
+.header {
+    width: 100%;
+}
+
 .header__loggedIn {
     background-color: #FFF;
-    width: 100%;
 }
 
 .header__loggedOut {
     background-color: #073042;
-    width: 100%;
 }
 
 .header__container {

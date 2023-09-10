@@ -14,7 +14,7 @@ export function SavedMovies() {
                     <SearchForm/>
                     {/* <Preloader/> */}
                     <MoviesCardList/>
-                    <button className="movies__button">Ещё</button>
+                    <button type="button" className="movies__button">Ещё</button>
                 </main>
             <Footer/>
         </>

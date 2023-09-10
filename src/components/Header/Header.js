@@ -11,13 +11,16 @@ export function Header() {
     const {loggedIn} = useContext(CurrentUserContext);
 
     return (
-        <header className={loggedIn ? "header__loggedIn" : "header__loggedOut"}>
-            <div className="header__container">
-                <Link to="/" className="header__logo">
-                    <img src={logo} className="header__logo-image" alt="logo"/>
-                </Link>
-                <Navigation/>
+        <header className="header">
+            <div className={loggedIn ? "header__loggedIn" : "header__loggedOut"}>
+                <div className="header__container">
+                    <Link to="/" className="header__logo">
+                        <img src={logo} className="header__logo-image" alt="logo"/>
+                    </Link>
+                    <Navigation/>
+                </div>
             </div>
+           
         </header>
     );
 }

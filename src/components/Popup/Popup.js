@@ -8,7 +8,7 @@ export function Popup() {
         <div className={`popup`}>
             {/* ${isOpen ? "popup_active" : ""} */}
             <div className="popup__container">
-                <button className="popup__close"></button>
+                <button type="button" className="popup__close"></button>
                 <p className="popup__text"></p>
             </div>
         </div>

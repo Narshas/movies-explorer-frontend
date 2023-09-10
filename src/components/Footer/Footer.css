@@ -44,18 +44,18 @@
     font-size: 13px;
 }
 
-.footer__item {
+.footer__link {
     text-decoration: none;
     color: #000;
     font-size: 13px;
     font-weight: 400;
 }
 
-.footer__item:last-of-type {
+.footer__link:last-of-type {
     margin-left: 10px;
 }
 
-.footer__item:hover {
+.footer__link:hover {
     opacity: 0.7;
 }
 

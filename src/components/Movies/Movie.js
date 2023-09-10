@@ -14,7 +14,7 @@ export function Movies() {
                 <SearchForm/>
                 {/* <Preloader/> */}
                 <MoviesCardList/>
-                <button className="movies__button">Eщё</button>
+                <button type="button" className="movies__button">Eщё</button>
             </main>
             <Footer/>
         </>

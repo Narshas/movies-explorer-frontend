@@ -17,7 +17,7 @@ export function MoviesCard() {
             </a>
             <div className="movies-card__about">
                 <h2 className="movies-card__name">Gimme Danger: История Игги и The Stooges</h2>
-                <button className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLike}></button>
+                <button type="button" className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLike}></button>
             </div>
             <p className="movies-card__duration">1ч42м</p>
         </div>
