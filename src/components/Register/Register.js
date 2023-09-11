@@ -54,7 +54,7 @@ export function Register() {
                             </div>
                         </fieldset>
                         <div className="register__submit-container">
-                            <button type="button" className="register__submit" onClick={handleRegister}>Зарегистрироваться</button>
+                            <button type="submit" className="register__submit" onClick={handleRegister}>Зарегистрироваться</button>
                             <div className="register__link">
                                 Уже зарегистрированы?
                                 <Link to="/signin" className="register__to-login">Войти</Link>

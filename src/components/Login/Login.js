@@ -48,7 +48,7 @@ export function Login() {
 
                         </fieldset>
                         <div className="login__submit-container">
-                            <button type="button" className="login__submit" onClick={handleLogin}>Войти</button>
+                            <button type="submit" className="login__submit" onClick={handleLogin}>Войти</button>
                             <div className="login__link">
                                 Ещё не зарегистрированы?
                                 <Link to="/signup" className="login__to-register">Регистрация</Link>

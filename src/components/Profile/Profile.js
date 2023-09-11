@@ -33,7 +33,7 @@ export function Profile() {
                                 </label>
                             </fieldset>
                             <div className="profile__buttons">
-                                <button type="button" className="profile__edit">Редактировать</button>
+                                <button type="submit" className="profile__edit">Редактировать</button>
                                 <button type="button" className="profile__signout" onClick={handleLogout}>Выйти из аккаунта</button>
                             </div>
                         </form>
