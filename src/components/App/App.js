@@ -13,9 +13,18 @@ import { Popup } from "../Popup/Popup";
 
 export const CurrentUserContext = createContext();
 const defoltUser = {name: 'Тестовый пользователь', email: 'test@email.com'}
+
 export function App() {
+
   const [user, setUser] = useState(defoltUser);
   const [loggedIn, setLoggedIn] = useState(false);
+
+  const mainApi = new MainApi({
+    baseUrl: "https://api.narshas.diploma.nomoreparties.co";
+    headers: {
+      "Content-type": "application/json",
+    }
+  })
 
   return (
     <BrowserRouter>
