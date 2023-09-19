@@ -19,13 +19,6 @@ export function App() {
   const [user, setUser] = useState(defoltUser);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const mainApi = new MainApi({
-    baseUrl: "https://api.narshas.diploma.nomoreparties.co";
-    headers: {
-      "Content-type": "application/json",
-    }
-  })
-
   return (
     <BrowserRouter>
       <CurrentUserContext.Provider value={{user, setUser, loggedIn, setLoggedIn}}> 

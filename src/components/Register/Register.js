@@ -1,18 +1,43 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../App/App";
-import { Main } from "../Main/Main";
+import { signin, signup } from "../../utils/MainApi";
 
 export function Register() {
-    const {loggedIn, setLoggedIn} = useContext(CurrentUserContext);
+    const {loggedIn, setLoggedIn, openPopup} = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+
+
     function handleRegister() {
-        setLoggedIn(true);
-        navigate("/movies")
+        signup({ name, email, password })
+            .then(userData => {
+                if (userData.message) {
+                    openPopup(userData.message);
+                    return Promise.reject(userData.message);
+                } else {
+                    return signin({ email, password });
+                }
+            })
+            .then(userData => {
+                if (userData.message) {
+                    console.error(userData.message);
+                    return Promise.reject(userData.message);
+                } else {
+                    localStorage.setItem('token', userData.token);
+                    setLoggedIn(true);
+                    navigate("/movies");
+                }
+            })
+            .catch(error => {
+                console.log('hendleRegister error:', error);
+            });   
     }
 
     return (
