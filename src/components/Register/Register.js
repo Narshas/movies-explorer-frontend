@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
@@ -14,30 +14,43 @@ export function Register() {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
 
+    const [errorEmail, setErrorEmail] = useState('type your email');
+    const [errorPassword, setErrorPassword] = useState('type your password');
+    const [errorName, setErrorName] = useState('type your name');
+
+    const [dataValid, setDataValid] = useState(false);
+
+    useEffect(() => {
+        if ( errorEmail || errorPassword || errorName ) {
+            setDataValid(false)
+        } else {
+            setDataValid(true)
+        }
+    }, [errorEmail, errorPassword, errorName])
 
     function handleRegister() {
         signup({ name, email, password })
-            .then(userData => {
-                if (userData.message) {
-                    openPopup(userData.message);
-                    return Promise.reject(userData.message);
+            .then(res => {
+                if (res.message) {
+                    openPopup(res.message);
+                    return Promise.reject(res.message);
                 } else {
                     return signin({ email, password });
                 }
             })
-            .then(userData => {
-                if (userData.message) {
-                    console.error(userData.message);
-                    return Promise.reject(userData.message);
+            .then(res => {
+                if (res.message) {
+                    console.log(res.message);
+                    return Promise.reject(res.message);
                 } else {
-                    localStorage.setItem('token', userData.token);
+                    localStorage.setItem('token', res.token);
                     setLoggedIn(true);
                     navigate("/movies");
                 }
             })
             .catch(error => {
                 console.log('hendleRegister error:', error);
-            });   
+            });
     }
 
     return (
@@ -57,7 +70,13 @@ export function Register() {
                             <div className="register__input-container">
                                 <label className="register__name">
                                     Имя
-                                    <input className="register__input" placeholder="how can we call you?" minlength="2" maxlength="13"/>
+                                    <input className="register__input" 
+                                        placeholder="how can we call you?" 
+                                        minlength="2" maxlength="13"
+                                        name="name"
+                                        value={name}
+
+                                    />
                                     <div className="register__error">Тестовая ошибка</div>
                                 </label>
                             </div>
@@ -65,7 +84,11 @@ export function Register() {
                             <div className="register__input-container">
                                 <label className="register__email">
                                     E-mail
-                                    <input className="register__input" placeholder="type your email here"/>
+                                    <input className="register__input" 
+                                        placeholder="type your email here"
+                                        name="email"
+                                        value={email}
+                                    />
                                     <div className="register__error">Тестовая ошибка</div>
                                 </label>
                             </div>
@@ -73,13 +96,18 @@ export function Register() {
                             <div className="register__input-container">
                                 <label className="register__password">
                                     Пароль
-                                    <input className="register__input" placeholder="and your password here" minlength="4" maxlength="10"/>
+                                    <input className="register__input" 
+                                        placeholder="and your password here" 
+                                        minlength="4" maxlength="10"
+                                        name="password"
+                                        value={password}
+                                    />
                                     <div className="register__error" >Тестовая ошибка</div>
                                 </label>
                             </div>
                         </fieldset>
                         <div className="register__submit-container">
-                            <button type="submit" className="register__submit" onClick={handleRegister}>Зарегистрироваться</button>
+                            <button type="submit" className="register__submit" onClick={handleRegister} disabled={!dataValid}>Зарегистрироваться</button>
                             <div className="register__link">
                                 Уже зарегистрированы?
                                 <Link to="/signin" className="register__to-login">Войти</Link>
