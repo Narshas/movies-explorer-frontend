@@ -12,7 +12,7 @@ function testRes(res) {
     return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-export function register({ name, password, email }) {
+export function signup({ name, password, email }) {
         return fetch(`${settings.baseUrl}/signup`, {
             method: 'POST',
             headers: settings.headers,
@@ -21,7 +21,7 @@ export function register({ name, password, email }) {
         .then(res => testRes(res))
 }
 
-export function authoraizer({ password, email }) {
+export function signin({ password, email }) {
     return fetch(`${settings.baseUrl}/signin`, {
         method: 'POST',
         headers: settings.headers,
@@ -50,7 +50,7 @@ export function patchUserInfo(userData) {
         headers: {
             "Content-Type": "application/json",
             "Authorization" : `Bearer ${currentToken}`,
-        }
+        },
         body: JSON.stringify(userData)
     })
     .then(res => testRes(res))

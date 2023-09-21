@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import './App.css';
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movie";
@@ -11,12 +11,13 @@ import { Register } from "../Register/Register";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Popup } from "../Popup/Popup";
 import { getUserInfo } from "../../utils/MainApi";
+import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 export const CurrentUserContext = createContext();
 const defoltUser = {name: '', email: ''}
 
 export function App() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   
   const [user, setUser] = useState(defoltUser);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -32,7 +33,8 @@ export function App() {
         if (res.message) {
           setLoggedIn(false)
           localStorage.removeIten('token')
-          navigate('/signin')
+          // navigate('/signin')
+          window.location.href = '/signin'
         }
       })
       .catch(error => {
@@ -51,20 +53,42 @@ export function App() {
     setPopupText('');
   }
 
+  const handleSearch = () => {
+
+  } 
+
   return (
     <BrowserRouter>
       <CurrentUserContext.Provider value={{ user, setUser, loggedIn, setLoggedIn, openPopup }}> 
         <div className="app">
           <Routes>
             <Route path="/" element={<Main/>} />
-            <Route path="/movies" element={<Movies/>} />
-            <Route path="/saved-movies" element={<SavedMovies/>}/>
+
+            <Route path="/movies" element={
+                <ProtectedRoute loggenIn={loggedIn}>
+                  <Movies/>
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="/saved-movies" element={
+                <ProtectedRoute loggenIn={loggedIn}>
+                  <SavedMovies/>
+                </ProtectedRoute>
+              }
+            />
             <Route path="/signup" element={<Register/>}/>
+
             <Route path="/signin" element={<Login/>}/>
-            <Route path="/profile" element={<Profile/>}/>
+
+            <Route path="/profile" element={
+                <ProtectedRoute loggenIn={loggedIn}>
+                  <Profile/>
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<PageNotFound/>}/>
           </Routes>
-          <Popup/>
+          <Popup popupOpen={popupOpen} popupText={popupText} closePopup={closePopup}/>
         </div>
       </CurrentUserContext.Provider>
     </BrowserRouter>    

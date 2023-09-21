@@ -62,7 +62,7 @@ export function Profile() {
                     <div className="profile__container">
                         <h2 className="profile__title">Привет, {user ? user.name : ''}</h2>
                         {/* {user ? user.name : ''} */}
-                        <form className="profile__form">
+                        <form className="profile__form" onSubmit={e => e.preventDefault()}>
                             <fieldset className="profile__fieldset">
                                 <label className="profile__label">
                                     <p className="profile__caption">Имя</p>
@@ -71,6 +71,7 @@ export function Profile() {
                                         required 
                                         minlength="2" maxlength="13"
                                         value={name}
+                                        name="name"
                                         onChange={(e) => setName(e.target.value)}
                                     />
                                 </label>
@@ -79,7 +80,7 @@ export function Profile() {
                                     <input className="profile__email" 
                                         placeholder="your@email.com" 
                                         required
-                                        name={email}
+                                        name="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />

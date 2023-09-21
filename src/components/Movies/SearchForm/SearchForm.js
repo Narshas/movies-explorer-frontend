@@ -4,13 +4,15 @@ import { useState } from "react";
 
 export function SearchForm() {
     const [isActive, setIsActive] = useState(false);
+    const [isFilmEdited, setIsFilmEdited] = useState('type what you would like to find');
+    
 
     const handleToggle = () => {
         setIsActive(!isActive);
     }
 
     return(
-        <form className="searchform">
+        <form className="searchform" onSubmit={e => e.preventDefault()}>
             <div className="searchform__wraper">
                 <input 
                     className="searchform__input"

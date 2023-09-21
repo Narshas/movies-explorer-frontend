@@ -3,7 +3,7 @@ import "./Login.css";
 import logo from "../../images/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../App/App";
-import { signin } from "../../MainApi";
+import { signin } from "../../utils/MainApi";
 
 export function Login() {
 
@@ -16,6 +16,8 @@ export function Login() {
     const [errorEmail, setErrorEmail] = useState('type your email');
     const [errorPassword, setErrorPassword] = useState('type your password');
     const [dataValid, setDataValid] = useState(false);
+
+    const [isEmailEdited, setIsEmailEdited] = useState('type email');
 
     useEffect(() => {
         if ( errorEmail || errorPassword ) {

@@ -7,12 +7,12 @@ import { useState } from "react";
 
 export function Burger() {
 
-    const [BurgerActive, setBurgerActive] = useState(false);
+    const [burgerActive, setBurgerActive] = useState(false);
 
     return (
         <div className="burger">
 
-            { !BurgerActive &&
+            { !burgerActive &&
                 <div className="burger__off">
                     <button type="button" className="burger__button" onClick={() => setBurgerActive(prev => !prev)}>
                         <img className="burger__logo" alt="иконка бургер-меню" src={burger}/>
@@ -20,7 +20,7 @@ export function Burger() {
                 </div>
             }
         
-            { BurgerActive && 
+            { burgerActive && 
                 <div className="burger__on">
                     <div className="burger__open">
                         <button type="button" className="burger__close" onClick={() => setBurgerActive(prev => !prev)}>
