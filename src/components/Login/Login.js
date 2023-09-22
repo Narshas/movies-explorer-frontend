@@ -3,21 +3,22 @@ import "./Login.css";
 import logo from "../../images/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../App/App";
-import { signin } from "../../utils/MainApi";
+import { authoraizer } from "../../utils/MainApi";
 
 export function Login() {
 
     const {loggedIn, setLoggedIn} = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
-    const [email, seEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [errorEmail, setErrorEmail] = useState('type your email');
     const [errorPassword, setErrorPassword] = useState('type your password');
     const [dataValid, setDataValid] = useState(false);
 
-    const [isEmailEdited, setIsEmailEdited] = useState('type email');
+    const [isEmailTouched, setIsEmailTouched] = useState(false);
+    const [isPasswordTouched, setIsPasswordTouched] = useState(false);
 
     useEffect(() => {
         if ( errorEmail || errorPassword ) {
@@ -28,7 +29,7 @@ export function Login() {
     }, [errorEmail, errorPassword])
 
     function handleLogin() {
-        signin({ email, password })
+        authoraizer({ email, password })
         .then(res => {
             if (res.message) {
                 console.log(res.message)
@@ -43,6 +44,39 @@ export function Login() {
         });
     }
 
+    function handleInputTouched(e) {
+        const inputName = e.target.name;
+
+        if (inputName === 'email') {
+            setIsEmailTouched(true)
+        } else if (inputName === 'password'){
+            setIsPasswordTouched(true)
+        }
+    }
+
+    function handleInputEmail(e) {
+        handleInputTouched(e)
+        const validationRegx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if (validationRegx.test(String(e.target.value).toLowerCase())) {
+            setEmail(e.target.value)
+            setErrorEmail('')
+        } else {
+            setErrorEmail('invalid email')
+        }
+
+    }
+
+    function handleInputPassword(e) {
+        handleInputTouched(e)
+        if (e.target.value.length > 3 && e.target.value.length < 11) {
+            setPassword(e.target.value)
+            setErrorPassword('')
+        } else {
+            setErrorPassword('invalid password')
+        }
+        
+    }
+
     return (
         <main>
             <section className="login">
@@ -55,7 +89,7 @@ export function Login() {
 
                     <h2 className="login__title">Рады видеть!</h2>
 
-                    <form className="login__form">
+                    <form className="login__form" onSubmit={e => e.preventDefault()}>
                         <fieldset className="login__fieldset">
                             
                             <div className="login__input-container">
@@ -66,8 +100,10 @@ export function Login() {
                                         required
                                         name="email"
                                         value={email}
+                                        type="email"
+                                        onChange={e => handleInputEmail(e)}
                                     />
-                                    <div className="login__error">Тестовая ошибка</div>
+                                    <div className={`login__error ${ isEmailTouched && errorEmail ? "login__error_active" : ''}`}>{errorEmail}</div>
                                 </label>
                             </div>
 
@@ -79,9 +115,11 @@ export function Login() {
                                         required 
                                         minlength="4" maxlength="10"
                                         name="password"
+                                        type="password"
                                         value={password}
+                                        onChange={e => handleInputPassword(e)}
                                     />
-                                    <div className="login__error">Тестовая ошибка</div>
+                                    <div className={`login__error ${ isPasswordTouched && errorPassword ? "login__error_active" : ''}`}>{errorPassword}</div>
                                 </label>
                             </div>
 

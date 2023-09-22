@@ -6,7 +6,7 @@ import { CurrentUserContext } from "../App/App";
 import { getUserInfo, patchUserInfo } from "../../utils/MainApi";
 
 export function Profile() {
-    const { loggedIn, setLoggedIn, user, setUser, openPopup } = useContext(CurrentUserContext);
+    const { loggedIn, setLoggedIn, user, setUser, popupOpen } = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState(user.email);
@@ -44,9 +44,9 @@ export function Profile() {
         .then(res => {
             setUser(res)
             if (res.message) {
-                openPopup(res.message)
+                popupOpen(res.message)
             } else {
-                openPopup("you have just updated your profile")
+                popupOpen("you have just updated your profile")
             }
         })
         .catch(error => {
@@ -73,6 +73,7 @@ export function Profile() {
                                         value={name}
                                         name="name"
                                         onChange={(e) => setName(e.target.value)}
+                                        type="text"
                                     />
                                 </label>
                                 <label className="profile__label">
@@ -83,6 +84,7 @@ export function Profile() {
                                         name="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                        type="email"
                                     />
                                 </label>
                             </fieldset>

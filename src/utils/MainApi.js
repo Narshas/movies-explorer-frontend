@@ -12,7 +12,7 @@ function testRes(res) {
     return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-export function signup({ name, password, email }) {
+export function register({ name, password, email }) {
         return fetch(`${settings.baseUrl}/signup`, {
             method: 'POST',
             headers: settings.headers,
@@ -21,7 +21,7 @@ export function signup({ name, password, email }) {
         .then(res => testRes(res))
 }
 
-export function signin({ password, email }) {
+export function authoraizer({ password, email }) {
     return fetch(`${settings.baseUrl}/signin`, {
         method: 'POST',
         headers: settings.headers,

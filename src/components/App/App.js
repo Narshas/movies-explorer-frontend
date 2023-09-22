@@ -21,7 +21,7 @@ export function App() {
   
   const [user, setUser] = useState(defoltUser);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [popupOpen, setPopupOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupText, setPopupText] = useState('');
 
   useEffect(() => {
@@ -43,30 +43,30 @@ export function App() {
     }
   }, [])
 
-  const openPopup = (text) => {
-    setPopupOpen(true);
+  const popupOpen = (text) => {
+    setIsPopupOpen(true);
     setPopupText(text);
   }
 
-  const closePopup = () => {
-    setPopupOpen(false);
+  const popupClose = () => {
+    setIsPopupOpen(false);
     setPopupText('');
   }
 
-  const handleSearch = () => {
-
+  const handleSearch = (searchQuery) => {
+    searchQuery
   } 
 
   return (
     <BrowserRouter>
-      <CurrentUserContext.Provider value={{ user, setUser, loggedIn, setLoggedIn, openPopup }}> 
+      <CurrentUserContext.Provider value={{ user, setUser, loggedIn, setLoggedIn, popupOpen }}> 
         <div className="app">
           <Routes>
             <Route path="/" element={<Main/>} />
 
             <Route path="/movies" element={
                 <ProtectedRoute loggenIn={loggedIn}>
-                  <Movies/>
+                  <Movies searchQuery={searchQuery} handleSearch={handleSearch}/>
                 </ProtectedRoute>
               } 
             />
@@ -88,7 +88,7 @@ export function App() {
             />
             <Route path="*" element={<PageNotFound/>}/>
           </Routes>
-          <Popup popupOpen={popupOpen} popupText={popupText} closePopup={closePopup}/>
+          <Popup isOpen={isPopupOpen} popupText={popupText} onClose={popupClose}/>
         </div>
       </CurrentUserContext.Provider>
     </BrowserRouter>    

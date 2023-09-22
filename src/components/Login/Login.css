@@ -87,7 +87,11 @@
     color: #EE3465;
     font-size: 10px;
     font-weight: 400;
-    
+    visibility: hidden;
+}
+
+.login__error_active {
+    visibility: visible;
 }
 
 .login__submit-container {

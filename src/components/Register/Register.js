@@ -4,10 +4,10 @@ import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../App/App";
-import { signin, signup } from "../../utils/MainApi";
+import { authoraizer, register } from "../../utils/MainApi";
 
 export function Register() {
-    const {loggedIn, setLoggedIn, openPopup} = useContext(CurrentUserContext);
+    const {loggedIn, setLoggedIn, popupOpen} = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
@@ -20,6 +20,10 @@ export function Register() {
 
     const [dataValid, setDataValid] = useState(false);
 
+    const [isEmailTouched, setIsEmailTouched] = useState(false);
+    const [isPasswordTouched, setIsPasswordTouched] = useState(false);
+    const [isNameTouched, setIsNameTouched] = useState(false);
+
     useEffect(() => {
         if ( errorEmail || errorPassword || errorName ) {
             setDataValid(false)
@@ -29,13 +33,13 @@ export function Register() {
     }, [errorEmail, errorPassword, errorName])
 
     function handleRegister() {
-        signup({ name, email, password })
+        register({ name, email, password })
             .then(res => {
                 if (res.message) {
-                    openPopup(res.message);
+                    popupOpen(res.message);
                     return Promise.reject(res.message);
                 } else {
-                    return signin({ email, password });
+                    return authoraizer({ email, password });
                 }
             })
             .then(res => {
@@ -51,6 +55,50 @@ export function Register() {
             .catch(error => {
                 console.log('hendleRegister error:', error);
             });
+    }
+
+    function handleInputTouched(e) {
+        const inputName = e.target.name;
+
+        if (inputName === 'email') {
+            setIsEmailTouched(true)
+        } else if (inputName === 'password'){
+            setIsPasswordTouched(true)
+        } else if (inputName === 'name') {
+            setIsNameTouched(true)
+        }
+    }
+
+    function handleInputName(e) {
+        handleInputTouched(e)
+        const validationRegx = /^[A-Za-zА-Яа-яЁё\s-]{2,}$/
+        if (validationRegx.test(String(e.target.value))) {
+            setName(e.target.value)
+            setErrorName('')
+        } else {
+            setErrorName('invalid name')
+        }
+    }
+
+    function handleInputEmail(e) {
+        handleInputTouched(e)
+        const validationRegx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if (validationRegx.test(String(e.target.value).toLowerCase())) {
+            setEmail(e.target.value)
+            setErrorEmail('')
+        } else {
+            setErrorEmail('invalid email')
+        }
+    }
+
+    function handleInputPassword(e) {
+        handleInputTouched(e)
+        if (e.target.value.length > 3 && e.target.value.length < 11) {
+            setPassword(e.target.value)
+            setErrorPassword('')
+        } else {
+            setErrorPassword('invalid password')
+        }
     }
 
     return (
@@ -75,9 +123,10 @@ export function Register() {
                                         minlength="2" maxlength="13"
                                         name="name"
                                         value={name}
-
+                                        onChange={e => handleInputEmail(e)}
+                                        type="text"
                                     />
-                                    <div className="register__error">Тестовая ошибка</div>
+                                    <div className={`register__error ${ isNameTouched && errorName ? "register__error_active" : '' }`}>{errorName}</div>
                                 </label>
                             </div>
                             
@@ -88,8 +137,10 @@ export function Register() {
                                         placeholder="type your email here"
                                         name="email"
                                         value={email}
+                                        onChange={e => handleInputEmail(e)}
+                                        type="email"
                                     />
-                                    <div className="register__error">Тестовая ошибка</div>
+                                    <div className={`register__error ${ isEmailTouched && errorEmail ? "register__error_active" : '' }`}>{errorEmail}</div>
                                 </label>
                             </div>
 
@@ -101,8 +152,10 @@ export function Register() {
                                         minlength="4" maxlength="10"
                                         name="password"
                                         value={password}
+                                        type="password"
+                                        onChange={e => handleInputPassword(e)}
                                     />
-                                    <div className="register__error" >Тестовая ошибка</div>
+                                    <div className={`register__error ${ isPasswordTouched && errorPassword ? "register__error_active" : '' }`} >{errorPassword}</div>
                                 </label>
                             </div>
                         </fieldset>
