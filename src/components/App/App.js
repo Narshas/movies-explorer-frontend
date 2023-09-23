@@ -23,6 +23,10 @@ export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupText, setPopupText] = useState('');
+  const [search, setSearch] = useState('');
+
+  const [films, setFilms] = useState([]);
+  
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {
@@ -54,7 +58,7 @@ export function App() {
   }
 
   const handleSearch = (searchQuery) => {
-    searchQuery
+    setSearch(searchQuery);
   } 
 
   return (
@@ -66,7 +70,7 @@ export function App() {
 
             <Route path="/movies" element={
                 <ProtectedRoute loggenIn={loggedIn}>
-                  <Movies searchQuery={searchQuery} handleSearch={handleSearch}/>
+                  <Movies handleSearch={handleSearch} searchQuery={searchQuery}/>
                 </ProtectedRoute>
               } 
             />
