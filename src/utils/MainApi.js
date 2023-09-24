@@ -55,3 +55,39 @@ export function patchUserInfo(userData) {
     })
     .then(res => testRes(res))
 }
+
+export function changeSaveStatus(movieData, isSave) {
+    const currentToken = localStorage.getItem('token');
+    if (isSave) {
+        return fetch(`${settings.baseUrl}/movies/${movieData.id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : `Bearer ${currentToken}`,
+            },
+        })
+        .then(res => testRes(res))
+    } else {
+        return fetch(`${settings.baseUrl}/movies`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : `Bearer ${currentToken}`,
+            },
+            body: JSON.stringify({
+                movieId: movieData.id,
+                nameRU: movieData.nameRU,
+                nameEN: movieData.nameEN,
+                director: movieData.director,
+                country: movieData.country,
+                year: movieData.year,                
+                duration: movieData.duration,
+                description: movieData.description,
+                trailerLink: data.trailerLink,
+                image: `https://api.narshas.diploma.nomoreparties.co${movieData.image.url}`,
+                thumbnail: `https://api.narshas.diploma.nomoreparties.co${movieData.image.url}`,                
+            })
+        })
+        .then(res => testRes(res))
+    }
+} 

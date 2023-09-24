@@ -19,7 +19,7 @@ export function MoviesCard() {
                 <h2 className="movies-card__name">Gimme Danger: История Игги и The Stooges</h2>
                 <button type="button" className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLike}></button>
             </div>
-            <p className="movies-card__duration">1ч42м</p>
+            <p className="movies-card__duration">{Math.round()}</p>
         </div>
 
     );
