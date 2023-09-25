@@ -7,6 +7,7 @@ import { Preloader } from "./Preloader/Preloader";
 import { MoviesCardList } from "./MoviesCardList/MoviesCardList";
 import { SearchForm } from "./SearchForm/SearchForm";
 import { CurrentUserContext } from "../App/App";
+import { getMovies } from "../../utils/MoviesApi";
 
 export function Movies(props) {
     const { handleSearch, searchQuery } = props;
@@ -14,20 +15,30 @@ export function Movies(props) {
     const [isToggleActive, setIsToggleActive] = useState(false);
     const [isMoreFilms setIsMoreFilms] = useState(false);
     const [foundMovies, setFoundMovies] = useState([]);
+    const [allMovies, setAllMovies] = useState([]);
+
 
     useEffect (() => {
-
-    })
+        getMovies()
+            .then(res => {
+                setAllMovies(res)
+                setFoundMovies(res)
+            })
+            .catch(err => console.log(err))
+    }, [])
 
     const searchMovies = (query) => {
         setIsLoading(true)
-        if (!text.lenght) {
+        if (!query.lenght) {
 
         } else {
-            const results = films.filter(film => 
-                film.nameRU.toLowerCase().includes(query.toLowerCase()) ||
-                film.nameEN.toLowerCase().includes(query.toLowerCase())
+            const results = films.filter(movie => 
+                movie.nameRU.toLowerCase().includes(query.toLowerCase()) ||
+                movie.nameEN.toLowerCase().includes(query.toLowerCase())
             )
+            if (isToggleActive){
+                results = results.filter(movie => movie.duration <= 40)
+            }
             setFoundMovies(results);
         }
 
@@ -49,6 +60,7 @@ export function Movies(props) {
                     searchQuery={searchQuery}
                     handleToggle={handleToggle}
                     searchMovies={searchMovies}
+                    isToggleActive={isToggleActive}
                 />
                 {isLoading && <Preloader/>}
                 {!isLoading && (

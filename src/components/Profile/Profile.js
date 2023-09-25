@@ -35,8 +35,9 @@ export function Profile() {
 
     function handleLogout() {
         setLoggedIn(false);
+        localStorage.removeItem('token')
         navigate("/signin");
-        localStorage.clear();
+        
     }
 
     function handlePatchUser({ name, email }) {

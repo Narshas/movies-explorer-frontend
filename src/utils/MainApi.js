@@ -84,10 +84,28 @@ export function changeSaveStatus(movieData, isSave) {
                 duration: movieData.duration,
                 description: movieData.description,
                 trailerLink: data.trailerLink,
-                image: `https://api.narshas.diploma.nomoreparties.co${movieData.image.url}`,
-                thumbnail: `https://api.narshas.diploma.nomoreparties.co${movieData.image.url}`,                
+                image: `https://api.nomoreparties.co${movieData.image.url}`,
+                thumbnail: `https://api.nomoreparties.co${movieData.image.formats.thumbnail.url}`,                
             })
         })
         .then(res => testRes(res))
     }
-} 
+}
+
+export function getSavedFilms() {
+    const currentToken = localStorage.getItem('token');
+    return fetch(`${settings.baseUrl}/movies`, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization" : `Bearer ${currentToken}`,
+        },
+    })
+    .then(res => {
+        if (res.status === 401) {
+            localStorage.removeItem('token')
+            return [];
+        } else {
+            testRes(res)
+        }
+    })
+}
