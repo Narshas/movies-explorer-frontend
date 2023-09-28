@@ -1,14 +1,35 @@
 import React from "react";
 import "./SearchForm.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-export function SearchForm({searchMovies, searchQuery, setSearchQuery,isToggleActive, filterShortMovies}) {
+export function SearchForm({
+    handleSearchButton,
+    filterShortMovies,
+    isToggleActive,
+    setIsToggleActive,
+
+    searchQuery, setSearchQuery,
+    allMovies, foundMovies,
+}) {
+    const location = useLocation();
+    const [isErr, setIsErr] = useState("");
+
+    useEffect(() => {
+        if (localStorage.getItem('searchQuery') && location.pathname === '/movies') {
+            const newQuery = localStorage.getItem('searchQuery');
+            setSearchQuery(newQuery);
+        }
+    }, [location])
     
-    const [isFilmTouched, setIsFilmTouched] = useState('type what you would like to find');
-    const [input, setInput] = useState("");
 
-    const handleSearch = (e) => {
-        searchMovies(query, isToggleActive);
+    const handleSearch = () => {
+        if (!searchQuery) {
+            setIsErr(true);
+        } else {
+            handleSearchButton(searchQuery);
+            setIsErr(false);
+        }
     }
 
     const handleToggle = () => {
@@ -18,7 +39,12 @@ export function SearchForm({searchMovies, searchQuery, setSearchQuery,isToggleAc
         } else {
             filterShortMovies(allMovies)
         }
-        
+    }
+
+    const handleEnter = (e) => {
+        if (e.key === "Enter") {
+            handleSearch()
+        }
     }
 
     return(
@@ -30,8 +56,8 @@ export function SearchForm({searchMovies, searchQuery, setSearchQuery,isToggleAc
                     required
                     onChange={e => setSearchQuery(e.target.value)}
                     type="text"
-                    value={searchQuery}
-                    onKeyUp={if (event.key === "Enter") {handleSearch}}
+                    value={searchQuery || ''}
+                    onKeyUp={handleEnter}
 
                 />
                 <button type="button" className="searchform__button" onClick={handleSearch}>Найти</button>
@@ -40,6 +66,7 @@ export function SearchForm({searchMovies, searchQuery, setSearchQuery,isToggleAc
                 <div className="searchform__toggle-switcher"></div>
                 <p className="searchform__toggle-text">Короткометражки</p>
             </div>
+            {isErr && <div>{'Нужно ввести ключевое слово'}</div>}
             
         </form>
     );

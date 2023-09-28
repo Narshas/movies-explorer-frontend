@@ -83,7 +83,7 @@ export function changeSaveStatus(movieData, isSave) {
                 year: movieData.year,                
                 duration: movieData.duration,
                 description: movieData.description,
-                trailerLink: data.trailerLink,
+                trailerLink: movieData.trailerLink,
                 image: `https://api.nomoreparties.co${movieData.image.url}`,
                 thumbnail: `https://api.nomoreparties.co${movieData.image.formats.thumbnail.url}`,                
             })
@@ -92,7 +92,7 @@ export function changeSaveStatus(movieData, isSave) {
     }
 }
 
-export function getSavedFilms() {
+export function getSavedMovies() {
     const currentToken = localStorage.getItem('token');
     return fetch(`${settings.baseUrl}/movies`, {
         headers: {

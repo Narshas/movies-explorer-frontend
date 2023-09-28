@@ -2,31 +2,28 @@ import React from "react";
 import { useState, createContext, useEffect } from "react";
 import './App.css';
 import { Main } from "../Main/Main";
-import { Movies } from "../Movies/Movie";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { Movies } from "../Movies/Movies";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
 import { Profile } from "../Profile/Profile";
 import { Login } from "../Login/Login";
 import { Register } from "../Register/Register";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Popup } from "../Popup/Popup";
-import { getUserInfo } from "../../utils/MainApi";
+import { getSavedMovies, getUserInfo } from "../../utils/MainApi";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 export const CurrentUserContext = createContext();
 const defoltUser = {name: '', email: ''}
 
 export function App() {
-  // const navigate = useNavigate();
   
   const [user, setUser] = useState(defoltUser);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupText, setPopupText] = useState('');
-  const [search, setSearch] = useState('');
+  const [savedMovies, setSavedMovies] = useState([]);
 
-  const [films, setFilms] = useState([]);
-  
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {
@@ -36,14 +33,20 @@ export function App() {
       .then(res => {
         if (res.message) {
           setLoggedIn(false)
-          localStorage.removeIten('token')
-          // navigate('/signin')
+          localStorage.removeItem('token')
           window.location.href = '/signin'
+        } else {
+          getSavedMovies()
+            .then(res => {
+              setSavedMovies(res)
+            })
+            .catch(err => console.log(err))
         }
       })
       .catch(error => {
         console.log(error)
       })
+
     }
   }, [])
 
@@ -57,10 +60,6 @@ export function App() {
     setPopupText('');
   }
 
-  const handleSearch = (searchQuery) => {
-    setSearch(searchQuery);
-  } 
-
   return (
     <BrowserRouter>
       <CurrentUserContext.Provider value={{ user, setUser, loggedIn, setLoggedIn, popupOpen }}> 
@@ -70,13 +69,18 @@ export function App() {
 
             <Route path="/movies" element={
                 <ProtectedRoute loggenIn={loggedIn}>
-                  <Movies handleSearch={handleSearch} searchQuery={searchQuery}/>
+                  <Movies 
+                    
+              
+                  />
                 </ProtectedRoute>
               } 
             />
             <Route path="/saved-movies" element={
                 <ProtectedRoute loggenIn={loggedIn}>
-                  <SavedMovies/>
+                  <SavedMovies
+                    savedMovies={savedMovies}
+                  />
                 </ProtectedRoute>
               }
             />

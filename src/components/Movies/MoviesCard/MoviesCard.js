@@ -2,12 +2,17 @@ import React from "react";
 import "./MoviesCard.css";
 import testCover from "../../../images/test-cover.png";
 import { useState } from "react";
+import { changeSaveStatus } from "../../utils/MainApi"
 
-export function MoviesCard() {
+export function MoviesCard({ movie }) {
     const [isSaved, setIsSaved] = useState(false);
 
     const handleLike = () => {
-        setIsSaved(!isSaved);
+        changeSaveStatus(movie, isSaved)
+            .then(() => {
+                setIsSaved(!isSaved);
+            })
+            .catch(err => console.log(err);)        
     }
 
     return (
@@ -16,10 +21,10 @@ export function MoviesCard() {
                 <img className="movies-card__cover" src={testCover} alt="Обложка фильма"/>    
             </a>
             <div className="movies-card__about">
-                <h2 className="movies-card__name">Gimme Danger: История Игги и The Stooges</h2>
+                <h2 className="movies-card__name">{movie.name}</h2>
                 <button type="button" className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLike}></button>
             </div>
-            <p className="movies-card__duration">{Math.round()}</p>
+            <p className="movies-card__duration">{movie.duration}</p>
         </div>
 
     );

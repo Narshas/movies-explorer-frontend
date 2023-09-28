@@ -6,27 +6,74 @@ import { Footer } from "../Footer/Footer";
 import { Preloader } from "./Preloader/Preloader";
 import { MoviesCardList } from "./MoviesCardList/MoviesCardList";
 import { SearchForm } from "./SearchForm/SearchForm";
-import { CurrentUserContext } from "../App/App";
-import { getMovies } from "../../utils/MoviesApi";
+//import { CurrentUserContext } from "../App/App";
+import { getAllMovies } from "../../utils/MoviesApi";
 
-export function Movies({ }) {
+export function Movies({loggedIn}) {
     
     const [isLoading, setIsLoading] = useState(false);
-    const [isToggleActive, setIsToggleActive] = useState(false);
-    const [isMoreFilms, setIsMoreFilms] = useState(false);
     const [foundMovies, setFoundMovies] = useState([]);
+    const [isToggleActive, setIsToggleActive] = useState(false);
     const [allMovies, setAllMovies] = useState([]);
+
+    const [searchError, setSearchError] = useState('');
+    const [filtredShortMovies, setFiltredShortMovies] = useState([]);
+
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || '');
     const [shownCards, setShownCards] = useState(presetCards());
     const [isSavedMovies, setIsSaveMovies] = useState(false);
+
+    const filterShortMovies = (arrayMovies) => {
+            let results = arrayMovies.filter(movie => movie.duration <= 40);
+            return results;
+    }
+    
+    const searchMovies = (arrMovies, searchQuery, isToggleActive) => {
+        let results = allMovies.filter(movie => 
+            movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        if (isToggleActive) {
+            const filtredArr = filterShortMovies(arrMovies)
+            setFiltredShortMovies(filtredArr);
+        }
+        setFoundMovies(results)
+        localStorage.setItem('found movies', results)
+    }
+    
+    const handleSearchButton = (searchQuery) => {
+        setIsLoading(true)
+        if (!allMovies) {
+            getAllMovies()
+                .then(res => {
+                    setAllMovies(res);
+                    searchMovies(res, searchQuery, isToggleActive);
+                })
+                .catch(err => {
+                    console.log(err);
+                    setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+                })
+        } else {
+            searchMovies(allMovies, searchQuery, isToggleActive)
+        }
+        setIsLoading(false)
+    }
 
     useEffect (() => {
         localStorage.setItem('isToggleActive', isToggleActive);
     }, [isToggleActive])
 
+    useEffect(() => {
+        if (localStorage.setItem('isToggleActive')) {
+            setIsToggleActive(true)
+        }
+    }, [])
+
     useEffect (() => {
         localStorage.setItem('searchQuery', searchQuery);
     }, [searchQuery])
+
+    
 
     function presetCards() {
         const windowSize = window.innerWidth;
@@ -41,7 +88,7 @@ export function Movies({ }) {
         }
     }
 
-    function handleMoreButton = () => {
+    function handleMoreButton() {
         const windowSize = window.innerWidth;
         if (windowSize >= 1280) {
             setShownCards(shownCards + 4);
@@ -55,67 +102,44 @@ export function Movies({ }) {
     }
 
     useEffect(() => {
-        handleResize() {
+        function handleResize() {
             setShownCards(presetCards());
         }
         window.addEventListener('resize', handleResize);
-        return () => { window.removeEventListener("resize", handleResize) };
-    }, [])    
+        return () => { 
+            window.removeEventListener("resize", handleResize) 
+        };
+    }, []);
 
     useEffect(() => {
         localStorage.setItem("searchQuery", searchQuery)
     }, [searchQuery]);
 
-    const getAllMovies = () => {
-        getMovies()
-            .then(res => {
-                setAllMovies(res)
-                console.log("Загруженные фильмы:", res);
-            })
-            .catch(err => console.log(err))
-    }
-
-
-
-    const searchMovies = (searchQuery, isToggleActive) => {
-        setIsLoading(true)
-        if (!allMovies) {
-            getAllMovies();
+    useEffect(() => {
+        if (localStorage.getItem('searchQuer') && filtredShortMovies) {
+            setSearchError('Ничего не найдено');
         } else {
-            let results = allMovies.filter(movie => 
-                movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-            if (isToggleActive) {
-                filterShortMovies(results)
-            }
-            setFoundMovies(results);
-            localStorage.setItem("searchResults", JSON.stringify(results))
+            setSearchError('');
         }
-        setIsLoading(false)
-    }
-
-    const filterShortMovies = (arrayMovies) => {
-        return results = arrayMovies.filter(movie => movie.duration <= 40)
-    }
-
+    }, []);
 
     return (
         <>
             <Header/>
             <main className="movies">
                 <SearchForm
-                    searchMovies={searchMovies}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    
+                    handleSearchButton={handleSearchButton}
+                    filterShortMovies={filterShortMovies}
                     isToggleActive={isToggleActive}
                     setIsToggleActive={setIsToggleActive}
+
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}                    
                     
                     allMovies={allMovies}
                     foundMovies={foundMovies}
 
-                    filterShortMovies={filterShortMovies}
+                    
                 />
                 {isLoading && <Preloader/>}
                 {!isLoading && (
