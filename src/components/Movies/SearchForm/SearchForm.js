@@ -24,7 +24,7 @@ export function SearchForm({
     
 
     const handleSearch = () => {
-        if (!searchQuery) {
+        if (!searchQuery.length) {
             setIsErr(true);
         } else {
             handleSearchButton(searchQuery);

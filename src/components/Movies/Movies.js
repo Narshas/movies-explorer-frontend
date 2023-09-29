@@ -9,7 +9,7 @@ import { SearchForm } from "./SearchForm/SearchForm";
 //import { CurrentUserContext } from "../App/App";
 import { getAllMovies } from "../../utils/MoviesApi";
 
-export function Movies({loggedIn}) {
+export function Movies({loggedIn, savedMovies}) {
     
     const [isLoading, setIsLoading] = useState(false);
     const [foundMovies, setFoundMovies] = useState([]);
@@ -21,7 +21,6 @@ export function Movies({loggedIn}) {
 
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || '');
     const [shownCards, setShownCards] = useState(presetCards());
-    const [isSavedMovies, setIsSaveMovies] = useState(false);
 
     const filterShortMovies = (arrayMovies) => {
             let results = arrayMovies.filter(movie => movie.duration <= 40);
@@ -33,12 +32,14 @@ export function Movies({loggedIn}) {
             movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) ||
             movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase())
         )
+        setFoundMovies(results);
+        localStorage.setItem('found movies', JSON.stringify(results));
+
         if (isToggleActive) {
-            const filtredArr = filterShortMovies(arrMovies)
-            setFiltredShortMovies(filtredArr);
-        }
-        setFoundMovies(results)
-        localStorage.setItem('found movies', results)
+            results = filterShortMovies(results);
+            setFiltredShortMovies(results);
+            localStorage.setItem('filtredShortMovies', JSON.stringify(results));
+        }        
     }
     
     const handleSearchButton = (searchQuery) => {
@@ -73,7 +74,7 @@ export function Movies({loggedIn}) {
         localStorage.setItem('searchQuery', searchQuery);
     }, [searchQuery])
 
-    
+
 
     function presetCards() {
         const windowSize = window.innerWidth;
@@ -116,7 +117,7 @@ export function Movies({loggedIn}) {
     }, [searchQuery]);
 
     useEffect(() => {
-        if (localStorage.getItem('searchQuer') && filtredShortMovies) {
+        if (localStorage.getItem('searchQuer') && !filtredShortMovies.length) {
             setSearchError('Ничего не найдено');
         } else {
             setSearchError('');
@@ -144,7 +145,11 @@ export function Movies({loggedIn}) {
                 {isLoading && <Preloader/>}
                 {!isLoading && (
                     <MoviesCardList
+                        filtredShortMovies={filtredShortMovies}
+                        searchError={searchError}
+                        savedMovies={savedMovies}
                         foundMovies={foundMovies}
+
                         shownCards={shownCards}
                         isSavedMovies={isSavedMovies}
                     />

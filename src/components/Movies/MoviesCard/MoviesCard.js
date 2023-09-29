@@ -24,7 +24,7 @@ export function MoviesCard({ movie }) {
                 <h2 className="movies-card__name">{movie.name}</h2>
                 <button type="button" className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLike}></button>
             </div>
-            <p className="movies-card__duration">{movie.duration}</p>
+            <p className="movies-card__duration">{Math.floor(movie.duration / 60) + 'ч' + (movie.duration % 60) + 'м'}</p>
         </div>
 
     );

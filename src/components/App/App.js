@@ -68,8 +68,10 @@ export function App() {
             <Route path="/" element={<Main/>} />
 
             <Route path="/movies" element={
-                <ProtectedRoute loggenIn={loggedIn}>
+                <ProtectedRoute loggedIn={loggedIn}>
                   <Movies 
+                    loggedIn={loggedIn}
+                    savedMovies={savedMovies}
                     
               
                   />
@@ -89,7 +91,7 @@ export function App() {
             <Route path="/signin" element={<Login/>}/>
 
             <Route path="/profile" element={
-                <ProtectedRoute loggenIn={loggedIn}>
+                <ProtectedRoute loggedIn={loggedIn}>
                   <Profile/>
                 </ProtectedRoute>
               }
