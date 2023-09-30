@@ -10,7 +10,7 @@ import { Login } from "../Login/Login";
 import { Register } from "../Register/Register";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Popup } from "../Popup/Popup";
-import { getSavedMovies, getUserInfo } from "../../utils/MainApi";
+import { getSavedMovies, getUserInfo, changeSaveStatus } from "../../utils/MainApi";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 export const CurrentUserContext = createContext();
@@ -23,6 +23,7 @@ export function App() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupText, setPopupText] = useState('');
   const [savedMovies, setSavedMovies] = useState([]);
+  const [isSaved, setIsSaved] = useState(false);
 
 
   useEffect(() => {
@@ -60,6 +61,44 @@ export function App() {
     setPopupText('');
   }
 
+  useEffect(() => {
+    if (loggedIn) {
+      getUserInfo()
+        .then(res => {
+          setUser(res);
+          console.log("user", res);
+
+          return getSavedMovies();
+        })
+        .then(res => {
+          setSavedMovies(res)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
+
+  const handleLike = (movie) => {
+    if (!savedMovies.some((i) => i.movieID === movie.id)) {
+      changeSaveStatus(movie, false)
+        .then(res => {
+          setSavedMovies([res].concat(savedMovies));
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      changeSaveStatus(movie, true)
+        .then(res => {
+          setSavedMovies(savedMovies => savedMovies.filter(i => i.movieID !== res.id));
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+  } 
+
   return (
     <BrowserRouter>
       <CurrentUserContext.Provider value={{ user, setUser, loggedIn, setLoggedIn, popupOpen }}> 
@@ -72,6 +111,7 @@ export function App() {
                   <Movies 
                     loggedIn={loggedIn}
                     savedMovies={savedMovies}
+                    handleLike={handleLike}
                     
               
                   />

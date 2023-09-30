@@ -9,7 +9,7 @@ import { SearchForm } from "./SearchForm/SearchForm";
 //import { CurrentUserContext } from "../App/App";
 import { getAllMovies } from "../../utils/MoviesApi";
 
-export function Movies({loggedIn, savedMovies}) {
+export function Movies({loggedIn, savedMovies, handleLike }) {
     
     const [isLoading, setIsLoading] = useState(false);
     const [foundMovies, setFoundMovies] = useState([]);
@@ -149,6 +149,8 @@ export function Movies({loggedIn, savedMovies}) {
                         searchError={searchError}
                         savedMovies={savedMovies}
                         foundMovies={foundMovies}
+                        handleLike={handleLike}
+            
 
                         shownCards={shownCards}
                         isSavedMovies={isSavedMovies}

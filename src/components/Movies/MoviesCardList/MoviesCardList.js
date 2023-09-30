@@ -4,7 +4,7 @@ import "./MoviesCardList.css";
 import { MoviesCard } from "../MoviesCard/MoviesCard";
 import { useLocation } from "react-router-dom";
 
-export function MoviesCardList({ filtredShortMovies, searchError, savedMovies, shownCards, foundMovies }) {
+export function MoviesCardList({ filtredShortMovies, searchError, savedMovies, shownCards, foundMovies, handleLike}) {
 
     const [toRender, setToRender] = useState([]);
     const location = useLocation();
@@ -42,6 +42,8 @@ export function MoviesCardList({ filtredShortMovies, searchError, savedMovies, s
                             <MoviesCard 
                                 movie={movie}
                                 savedMovies={savedMovies}
+                                handleLike={handleLike}
+                                
                             />
                         </li>
                     );

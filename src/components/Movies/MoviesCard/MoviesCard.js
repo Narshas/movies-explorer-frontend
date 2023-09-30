@@ -1,18 +1,23 @@
 import React from "react";
 import "./MoviesCard.css";
 import testCover from "../../../images/test-cover.png";
-import { useState } from "react";
-import { changeSaveStatus } from "../../utils/MainApi"
+import { useState, useEffect } from "react";
 
-export function MoviesCard({ movie }) {
+export function MoviesCard({ movie, savedMovies, handleLike}) {
     const [isSaved, setIsSaved] = useState(false);
 
-    const handleLike = () => {
-        changeSaveStatus(movie, isSaved)
-            .then(() => {
-                setIsSaved(!isSaved);
-            })
-            .catch(err => console.log(err);)        
+
+    useEffect(() => {
+        if (savedMovies.some((i) => i.movieID === movie.id)) {
+            setIsSaved(true);
+        } else {
+            setIsSaved(false);
+        }
+    }, [movie])
+
+    const handleLikeButton = () => {
+        handleLike(movie);
+        setIsSaved(!isSaved);
     }
 
     return (
@@ -22,7 +27,7 @@ export function MoviesCard({ movie }) {
             </a>
             <div className="movies-card__about">
                 <h2 className="movies-card__name">{movie.name}</h2>
-                <button type="button" className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLike}></button>
+                <button type="button" className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLikeButton}></button>
             </div>
             <p className="movies-card__duration">{Math.floor(movie.duration / 60) + 'ч' + (movie.duration % 60) + 'м'}</p>
         </div>
