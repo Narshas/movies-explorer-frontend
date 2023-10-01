@@ -22,13 +22,22 @@ export function Movies({loggedIn, savedMovies, handleLike }) {
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || '');
     const [shownCards, setShownCards] = useState(presetCards());
 
+    const handleToggle = () => {
+        setIsToggleActive(!isToggleActive);
+        if (foundMovies) {
+            setFiltredShortMovies(filterShortMovies(foundMovies));
+        } else {
+            setFiltredShortMovies(filterShortMovies(allMovies));
+        }
+    }
+
     const filterShortMovies = (arrayMovies) => {
             let results = arrayMovies.filter(movie => movie.duration <= 40);
             return results;
     }
     
     const searchMovies = (arrMovies, searchQuery, isToggleActive) => {
-        let results = allMovies.filter(movie => 
+        let results = arrMovies.filter(movie => 
             movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) ||
             movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase())
         )
@@ -74,44 +83,6 @@ export function Movies({loggedIn, savedMovies, handleLike }) {
         localStorage.setItem('searchQuery', searchQuery);
     }, [searchQuery])
 
-
-
-    function presetCards() {
-        const windowSize = window.innerWidth;
-        if (windowSize >= 1280) {
-            return 16;
-        } else if (windowSize >= 1001) {
-            return 12;
-        } else if ( windowSize >= 768 ) {
-            return 8;
-        } else {
-            return 5;
-        }
-    }
-
-    function handleMoreButton() {
-        const windowSize = window.innerWidth;
-        if (windowSize >= 1280) {
-            setShownCards(shownCards + 4);
-        } else if (windowSize >= 1001) {
-            setShownCards(shownCards + 3);
-        } else if ( windowSize >= 768 ) {
-            setShownCards(shownCards + 2);
-        } else {
-            setShownCards(shownCards + 1);
-        }
-    }
-
-    useEffect(() => {
-        function handleResize() {
-            setShownCards(presetCards());
-        }
-        window.addEventListener('resize', handleResize);
-        return () => { 
-            window.removeEventListener("resize", handleResize) 
-        };
-    }, []);
-
     useEffect(() => {
         localStorage.setItem("searchQuery", searchQuery)
     }, [searchQuery]);
@@ -132,28 +103,22 @@ export function Movies({loggedIn, savedMovies, handleLike }) {
                     handleSearchButton={handleSearchButton}
                     filterShortMovies={filterShortMovies}
                     isToggleActive={isToggleActive}
-                    setIsToggleActive={setIsToggleActive}
-
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}                    
                     
-                    allMovies={allMovies}
-                    foundMovies={foundMovies}
+                    handleToggle={handleToggle}
 
                     
                 />
                 {isLoading && <Preloader/>}
                 {!isLoading && (
                     <MoviesCardList
-                        filtredShortMovies={filtredShortMovies}
-                        searchError={searchError}
-                        savedMovies={savedMovies}
-                        foundMovies={foundMovies}
                         handleLike={handleLike}
-            
+                        savedMovies={savedMovies}
+                        searchError={searchError}
 
-                        shownCards={shownCards}
-                        isSavedMovies={isSavedMovies}
+                        filtredShortMovies={filtredShortMovies}
+                        foundMovies={foundMovies}
                     />
                 )}
                 {foundMovies.length > shownCards (

@@ -6,14 +6,13 @@ import { useState, useEffect } from "react";
 export function MoviesCard({ movie, savedMovies, handleLike}) {
     const [isSaved, setIsSaved] = useState(false);
 
-
     useEffect(() => {
         if (savedMovies.some((i) => i.movieID === movie.id)) {
             setIsSaved(true);
         } else {
             setIsSaved(false);
         }
-    }, [movie])
+    }, [movie, savedMovies])
 
     const handleLikeButton = () => {
         handleLike(movie);

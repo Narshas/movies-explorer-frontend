@@ -119,9 +119,11 @@ export function App() {
               } 
             />
             <Route path="/saved-movies" element={
-                <ProtectedRoute loggenIn={loggedIn}>
+                <ProtectedRoute loggedIn={loggedIn}>
                   <SavedMovies
                     savedMovies={savedMovies}
+                    loggedIn={loggedIn}
+                    handleLike={handleLike}
                   />
                 </ProtectedRoute>
               }

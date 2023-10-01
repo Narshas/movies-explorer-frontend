@@ -5,12 +5,9 @@ import { useLocation } from "react-router-dom";
 
 export function SearchForm({
     handleSearchButton,
-    filterShortMovies,
-    isToggleActive,
-    setIsToggleActive,
-
     searchQuery, setSearchQuery,
-    allMovies, foundMovies,
+    handleToggle,
+    isToggleActive
 }) {
     const location = useLocation();
     const [isErr, setIsErr] = useState("");
@@ -29,15 +26,6 @@ export function SearchForm({
         } else {
             handleSearchButton(searchQuery);
             setIsErr(false);
-        }
-    }
-
-    const handleToggle = () => {
-        setIsToggleActive(!isToggleActive);
-        if (foundMovies) {
-            filterShortMovies(foundMovies)
-        } else {
-            filterShortMovies(allMovies)
         }
     }
 
