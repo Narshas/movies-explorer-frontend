@@ -1,18 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Login.css";
 import logo from "../../images/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { CurrentUserContext } from "../App/App";
 import { authoraizer } from "../../utils/MainApi";
+import { CurrentUserContext } from "../App/App";
 
 export function Login() {
-
-    const {loggedIn, setLoggedIn} = useContext(CurrentUserContext);
     const navigate = useNavigate();
-
+    const {loggedIn, setLoggedIn} = useContext(CurrentUserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [errorEmail, setErrorEmail] = useState('type your email');
     const [errorPassword, setErrorPassword] = useState('type your password');
     const [dataValid, setDataValid] = useState(false);
@@ -42,7 +39,7 @@ export function Login() {
         .catch(error => {
             console.log(error)
         });
-    }
+      }
 
     function handleInputTouched(e) {
         const inputName = e.target.name;
@@ -113,7 +110,7 @@ export function Login() {
                                     <input className="login__input" 
                                         placeholder="and your password here" 
                                         required 
-                                        minlength="4" maxlength="10"
+                                        minLength="4" maxLength="10"
                                         name="password"
                                         type="password"
                                         value={password}

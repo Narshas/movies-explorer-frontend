@@ -1,5 +1,6 @@
 const settings = {
-    baseUrl: "https://api.narshas.diploma.nomoreparties.co",
+    // baseUrl: "https://api.narshas.diploma.nomoreparties.co",
+    baseUrl: "http://localhost:3001",
     headers: {
       "Content-type": "application/json",
     }

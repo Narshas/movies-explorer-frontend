@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../App/App";
 import { authoraizer, register } from "../../utils/MainApi";
 
-export function Register() {
+export function Register({handleRegister}) {
     const {loggedIn, setLoggedIn, popupOpen} = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
@@ -31,31 +31,6 @@ export function Register() {
             setDataValid(true)
         }
     }, [errorEmail, errorPassword, errorName])
-
-    function handleRegister() {
-        register({ name, email, password })
-            .then(res => {
-                if (res.message) {
-                    popupOpen(res.message);
-                    return Promise.reject(res.message);
-                } else {
-                    return authoraizer({ email, password });
-                }
-            })
-            .then(res => {
-                if (res.message) {
-                    console.log(res.message);
-                    return Promise.reject(res.message);
-                } else {
-                    localStorage.setItem('token', res.token);
-                    setLoggedIn(true);
-                    navigate("/movies");
-                }
-            })
-            .catch(error => {
-                console.log('hendleRegister error:', error);
-            });
-    }
 
     function handleInputTouched(e) {
         const inputName = e.target.name;
@@ -149,7 +124,7 @@ export function Register() {
                                     Пароль
                                     <input className="register__input" 
                                         placeholder="and your password here" 
-                                        minlength="4" maxlength="10"
+                                        minLength="4" maxLength="10"
                                         name="password"
                                         value={password}
                                         type="password"

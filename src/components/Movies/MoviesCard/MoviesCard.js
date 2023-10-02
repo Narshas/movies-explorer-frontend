@@ -1,6 +1,5 @@
 import React from "react";
 import "./MoviesCard.css";
-import testCover from "../../../images/test-cover.png";
 import { useState, useEffect } from "react";
 
 export function MoviesCard({ movie, savedMovies, handleLike}) {
@@ -19,10 +18,12 @@ export function MoviesCard({ movie, savedMovies, handleLike}) {
         setIsSaved(!isSaved);
     }
 
+    let coverSrc = `https://api.nomoreparties.co${movie.image.url}`
+
     return (
         <div className="movies-card">
-            <a className="movies-card__link" href="https://media.giphy.com/media/l0MYw1yaEBNH2UhoI/giphy.gif" target="_blank">
-                <img className="movies-card__cover" src={testCover} alt="Обложка фильма"/>    
+            <a className="movies-card__link" href={movie.trailerLink} target="_blank" rel="noreferrer">
+                <img className="movies-card__cover" src={coverSrc} alt="Обложка фильма"/>    
             </a>
             <div className="movies-card__about">
                 <h2 className="movies-card__name">{movie.name}</h2>
