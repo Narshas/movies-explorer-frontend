@@ -3,7 +3,6 @@ import "./Header.css";
 import { Link } from "react-router-dom"; 
 import logo from "../../images/logo.svg";
 import { Navigation } from "../Navigation/Navigation";
-import { useState } from "react";
 import { CurrentUserContext } from "../App/App";
 
 export function Header() {

@@ -9,7 +9,7 @@ import { SearchForm } from "./SearchForm/SearchForm";
 //import { CurrentUserContext } from "../App/App";
 import { getAllMovies } from "../../utils/MoviesApi";
 
-export function Movies({loggedIn, savedMovies, handleLike }) {
+export function Movies({savedMovies, handleLike }) {
     
     const [isLoading, setIsLoading] = useState(false);
     const [foundMovies, setFoundMovies] = useState([]);
@@ -74,25 +74,57 @@ export function Movies({loggedIn, savedMovies, handleLike }) {
     }, [isToggleActive])
 
     useEffect(() => {
-        if (localStorage.setItem('isToggleActive')) {
+        if (localStorage.setItem('isToggleActive') === 'true') {
             setIsToggleActive(true)
         }
-    }, [])
+    }, [isToggleActive])
 
     useEffect (() => {
         localStorage.setItem('searchQuery', searchQuery);
     }, [searchQuery])
 
     useEffect(() => {
-        localStorage.setItem("searchQuery", searchQuery)
-    }, [searchQuery]);
-
-    useEffect(() => {
-        if (localStorage.getItem('searchQuer') && !filtredShortMovies.length) {
+        if (localStorage.getItem('searchQuery') && !filtredShortMovies.length) {
             setSearchError('Ничего не найдено');
         } else {
             setSearchError('');
         }
+    }, []);
+
+    function presetCards() {
+        const windowSize = window.innerWidth;
+        if (windowSize >= 1280) {
+            return 16;
+        } else if (windowSize >= 1001) {
+            return 12;
+        } else if ( windowSize >= 768 ) {
+            return 8;
+        } else {
+            return 5;
+        }
+    }
+
+    function handleMoreButton() {
+        const windowSize = window.innerWidth;
+        if (windowSize >= 1280) {
+            setShownCards(shownCards + 4);
+        } else if (windowSize >= 1001) {
+            setShownCards(shownCards + 3);
+        } else if ( windowSize >= 768 ) {
+            setShownCards(shownCards + 2);
+        } else {
+            setShownCards(shownCards + 1);
+        }
+    }
+
+    useEffect(() => {
+        function handleResize() {
+            setShownCards(presetCards());
+        }
+        window.addEventListener('resize', handleResize);
+        return () => { 
+            window.removeEventListener("resize", handleResize) 
+        };
     }, []);
 
     return (
@@ -116,16 +148,16 @@ export function Movies({loggedIn, savedMovies, handleLike }) {
                         handleLike={handleLike}
                         savedMovies={savedMovies}
                         searchError={searchError}
-
+                        shownCards={shownCards}
                         filtredShortMovies={filtredShortMovies}
                         foundMovies={foundMovies}
                     />
                 )}
-                {foundMovies.length > shownCards (
+                {foundMovies.length > shownCards ? (
                     <button type="button" className="movies__button" onClick={handleMoreButton}>
                         Ещё
                     </button>
-                )}
+                ) : null}
             </main>
             <Footer/>
         </>

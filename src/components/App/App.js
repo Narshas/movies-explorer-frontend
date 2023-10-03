@@ -3,7 +3,7 @@ import { useState, createContext, useEffect } from "react";
 import './App.css';
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
 import { Profile } from "../Profile/Profile";
 import { Login } from "../Login/Login";
@@ -12,7 +12,7 @@ import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Popup } from "../Popup/Popup";
 import { getSavedMovies, getUserInfo, changeSaveStatus } from "../../utils/MainApi";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
-import { authoraizer, register } from "../../utils/MainApi";
+// import { authoraizer, register } from "../../utils/MainApi";
 
 export const CurrentUserContext = createContext();
 const defoltUser = {name: '', email: ''}
@@ -24,7 +24,7 @@ export function App() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupText, setPopupText] = useState('');
   const [savedMovies, setSavedMovies] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // ======== UserData =========
 
@@ -51,49 +51,7 @@ export function App() {
       })
 
     }
-  }, [])
-
-  function handleLogin() {
-    authoraizer({ email, password })
-    .then(res => {
-        if (res.message) {
-            console.log(res.message)
-        } else {
-            setLoggedIn(true)
-            localStorage.setItem('token', res.token)
-            navigate("/movies")
-        }
-    })
-    .catch(error => {
-        console.log(error)
-    });
-  }
-
-  function handleRegister() {
-    register({ name, email, password })
-        .then(res => {
-            if (res.message) {
-                popupOpen(res.message);
-                return Promise.reject(res.message);
-            } else {
-                return authoraizer({ email, password });
-            }
-        })
-        .then(res => {
-            if (res.message) {
-                console.log(res.message);
-                return Promise.reject(res.message);
-            } else {
-                localStorage.setItem('token', res.token);
-                setLoggedIn(true);
-                navigate("/movies");
-            }
-        })
-        .catch(error => {
-            console.log('hendleRegister error:', error);
-        });
-  }
-
+  }, [loggedIn])
 
   // ======== Support =========
   const popupOpen = (text) => {
@@ -128,7 +86,7 @@ export function App() {
 
   const handleLike = (movie) => {
     if (!savedMovies.some((i) => i.movieID === movie.id)) {
-      changeSaveStatus(movie, false)
+      return changeSaveStatus(movie, false)
         .then(res => {
           setSavedMovies([res].concat(savedMovies));
         })
@@ -136,7 +94,7 @@ export function App() {
           console.log(err);
         });
     } else {
-      changeSaveStatus(movie, true)
+      return changeSaveStatus(movie, true)
         .then(res => {
           setSavedMovies(savedMovies => savedMovies.filter(i => i.movieID !== res.id));
         })
@@ -175,11 +133,16 @@ export function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/signup" element={<Register/>}/>
+            <Route path="/signup" element={
+              <Register
+          
+              />
+            }
+            />
 
             <Route path="/signin" element={
               <Login
-                handleLogin={handleLogin}
+                
               />
             }
             />

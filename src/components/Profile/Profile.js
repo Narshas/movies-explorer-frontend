@@ -11,7 +11,7 @@ export function Profile() {
 
     const [email, setEmail] = useState(user.email);
     const [name, setName] = useState(user.name);
-    const {isPatched, setIsPatched} = useState(false);
+    const [isPatched, setIsPatched] = useState(false);
 
     useEffect(() => {
         getUserInfo()

@@ -9,48 +9,12 @@ export function MoviesCardList({
     searchError, 
     savedMovies, 
     foundMovies, 
-    handleLike
+    handleLike,
+    shownCards
 }) {
 
     const [toRender, setToRender] = useState([]);
     const location = useLocation();
-    const [shownCards, setShownCards] = useState(presetCards());
-
-    function presetCards() {
-        const windowSize = window.innerWidth;
-        if (windowSize >= 1280) {
-            return 16;
-        } else if (windowSize >= 1001) {
-            return 12;
-        } else if ( windowSize >= 768 ) {
-            return 8;
-        } else {
-            return 5;
-        }
-    }
-
-    function handleMoreButton() {
-        const windowSize = window.innerWidth;
-        if (windowSize >= 1280) {
-            setShownCards(shownCards + 4);
-        } else if (windowSize >= 1001) {
-            setShownCards(shownCards + 3);
-        } else if ( windowSize >= 768 ) {
-            setShownCards(shownCards + 2);
-        } else {
-            setShownCards(shownCards + 1);
-        }
-    }
-
-    useEffect(() => {
-        function handleResize() {
-            setShownCards(presetCards());
-        }
-        window.addEventListener('resize', handleResize);
-        return () => { 
-            window.removeEventListener("resize", handleResize) 
-        };
-    }, []);
 
     // useEffect(() => {
     //     if (!isSavedMovies) {
@@ -71,7 +35,7 @@ export function MoviesCardList({
         } else if (location.pathname === "/movies" && foundMovies) {
             setToRender(foundMovies.slice(0, shownCards));
         }
-    }, [filtredShortMovies, foundMovies, shownCards])
+    }, [filtredShortMovies, foundMovies, shownCards, savedMovies])
 
     return (
         <section className="movies-cardlist">

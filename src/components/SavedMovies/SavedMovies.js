@@ -4,7 +4,7 @@ import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { SearchForm } from "../Movies/SearchForm/SearchForm";
 import { MoviesCardList } from "../Movies/MoviesCardList/MoviesCardList";
-import { Preloader } from "../Movies/Preloader/Preloader";
+// import { Preloader } from "../Movies/Preloader/Preloader";
 
 export function SavedMovies({savedMovies, loggedIn, handleLike}) {
     const [searchError, setSearchError] = useState('');
@@ -13,34 +13,31 @@ export function SavedMovies({savedMovies, loggedIn, handleLike}) {
     const [localQuery, setLocalQuery] = useState('');
 
     useEffect(() => {
-        searchMovies(savedMovies, localQuery, isToggleActive)
-    }, [savedMovies, localQuery, isToggleActive])
+        let results = savedMovies.filter(movie => 
+            movie.nameRU.toLowerCase().includes(localQuery.toLowerCase()) ||
+            movie.nameEN.toLowerCase().includes(localQuery.toLowerCase())
+        )
 
-    function transferSerchText (text) {
-        setLocalQuery(text);
-    }
+        if (isToggleActive) {
+            results = filterShortMovies(results);
+        }
+        
+        setFiltredSavedMovies(results)
+
+    }, [savedMovies, localQuery, isToggleActive]);
 
     const filterShortMovies = (arrayMovies) => {
         let results = arrayMovies.filter(movie => movie.duration <= 40);
         return results;
-}
-
-    const searchMovies = (arrMovies, localQuery, isToggleActive) => {
-        let results = arrMovies.filter(movie => 
-            movie.nameRU.toLowerCase().includes(localQuery.toLowerCase()) ||
-            movie.nameEN.toLowerCase().includes(localQuery.toLowerCase())
-        )
-        setFiltredSavedMovies(results);
-
-        if (isToggleActive) {
-            results = filterShortMovies(results);
-            setFiltredSavedMovies(results);
-        }        
     }
 
     const handleToggle = () => {
         setIsToggleActive(!isToggleActive)
     }
+
+    const transferSearchText = (text) => {
+        setLocalQuery(text);
+    };
 
 
     return (
@@ -48,7 +45,7 @@ export function SavedMovies({savedMovies, loggedIn, handleLike}) {
             <Header/>
                 <main className="movies">
                     <SearchForm
-                        handleSearchButton={transferSerchText}
+                        handleSearchButton={transferSearchText}
                         isToggleActive={isToggleActive}
                         handleToggle={handleToggle}
                         
@@ -59,10 +56,10 @@ export function SavedMovies({savedMovies, loggedIn, handleLike}) {
                         handleLike={handleLike}
                         savedMovies={filtredSavedtMovies}
                         searchError={searchError}
+                        isToggleActive={isToggleActive}
                         
 
                     />
-                    <button type="button" className="movies__button">Ещё</button>
                 </main>
             <Footer/>
         </>

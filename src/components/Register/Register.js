@@ -6,23 +6,48 @@ import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../App/App";
 import { authoraizer, register } from "../../utils/MainApi";
 
-export function Register({handleRegister}) {
-    const {loggedIn, setLoggedIn, popupOpen} = useContext(CurrentUserContext);
+export function Register() {
     const navigate = useNavigate();
+    const {setLoggedIn, popupOpen} = useContext(CurrentUserContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
 
-    const [errorEmail, setErrorEmail] = useState('type your email');
-    const [errorPassword, setErrorPassword] = useState('type your password');
-    const [errorName, setErrorName] = useState('type your name');
+    const [errorEmail, setErrorEmail] = useState('');
+    const [errorPassword, setErrorPassword] = useState('');
+    const [errorName, setErrorName] = useState('');
 
     const [dataValid, setDataValid] = useState(false);
 
     const [isEmailTouched, setIsEmailTouched] = useState(false);
     const [isPasswordTouched, setIsPasswordTouched] = useState(false);
     const [isNameTouched, setIsNameTouched] = useState(false);
+
+    function handleRegister() {
+        register({ name, email, password })
+            .then(res => {
+                if (res.message) {
+                    popupOpen(res.message);
+                    return Promise.reject(res.message);
+                } else {
+                    return authoraizer({ email, password });
+                }
+            })
+            .then(res => {
+                if (res.message) {
+                    console.log(res.message);
+                    return Promise.reject(res.message);
+                } else {
+                    localStorage.setItem('token', res.token);
+                    setLoggedIn(true);
+                    navigate("/movies");
+                }
+            })
+            .catch(error => {
+                console.log('hendleRegister error:', error);
+            });
+    }
 
     useEffect(() => {
         if ( errorEmail || errorPassword || errorName ) {
@@ -95,10 +120,10 @@ export function Register({handleRegister}) {
                                     Имя
                                     <input className="register__input" 
                                         placeholder="how can we call you?" 
-                                        minlength="2" maxlength="13"
+                                        minLength="2" maxLength="13"
                                         name="name"
                                         value={name}
-                                        onChange={e => handleInputEmail(e)}
+                                        onChange={e => handleInputName(e)}
                                         type="text"
                                     />
                                     <div className={`register__error ${ isNameTouched && errorName ? "register__error_active" : '' }`}>{errorName}</div>

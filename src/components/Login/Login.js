@@ -7,11 +7,11 @@ import { CurrentUserContext } from "../App/App";
 
 export function Login() {
     const navigate = useNavigate();
-    const {loggedIn, setLoggedIn} = useContext(CurrentUserContext);
+    const {setLoggedIn} = useContext(CurrentUserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorEmail, setErrorEmail] = useState('type your email');
-    const [errorPassword, setErrorPassword] = useState('type your password');
+    const [errorEmail, setErrorEmail] = useState('');
+    const [errorPassword, setErrorPassword] = useState('');
     const [dataValid, setDataValid] = useState(false);
 
     const [isEmailTouched, setIsEmailTouched] = useState(false);

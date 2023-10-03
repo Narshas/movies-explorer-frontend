@@ -11,7 +11,7 @@ function testRes(res) {
         return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
-}ы
+}
 
 export function register({ name, password, email }) {
         return fetch(`${settings.baseUrl}/signup`, {
@@ -106,7 +106,7 @@ export function getSavedMovies() {
             localStorage.removeItem('token')
             return [];
         } else {
-            testRes(res)
+            return testRes(res)
         }
     })
 }

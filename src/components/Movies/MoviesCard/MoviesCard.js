@@ -14,8 +14,12 @@ export function MoviesCard({ movie, savedMovies, handleLike}) {
     }, [movie, savedMovies])
 
     const handleLikeButton = () => {
-        handleLike(movie);
-        setIsSaved(!isSaved);
+        handleLike(movie)
+            .then(() => {
+                setIsSaved(!isSaved);
+            })
+            .catch(err => console.log(err));
+        
     }
 
     let coverSrc = `https://api.nomoreparties.co${movie.image.url}`
