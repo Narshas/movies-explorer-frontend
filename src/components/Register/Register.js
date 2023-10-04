@@ -101,6 +101,21 @@ export function Register() {
         }
     }
 
+    function handleChangeName(e) {
+        setName(e.target.value);
+        handleInputName(e);  
+    }
+
+    function handleChangeEmail(e) {
+        setEmail(e.target.value);
+        handleInputEmail(e);
+    }
+
+    function handleChangePassword(e) {
+        setPassword(e.target.value);
+        handleInputPassword(e);
+    }
+
     return (
         <main>
             <section className="register">
@@ -123,8 +138,9 @@ export function Register() {
                                         minLength="2" maxLength="13"
                                         name="name"
                                         value={name}
-                                        onChange={e => handleInputName(e)}
+                                        onBlur={e => handleInputName(e)}
                                         type="text"
+                                        onChange={handleChangeName}
                                     />
                                     <div className={`register__error ${ isNameTouched && errorName ? "register__error_active" : '' }`}>{errorName}</div>
                                 </label>
@@ -137,8 +153,9 @@ export function Register() {
                                         placeholder="type your email here"
                                         name="email"
                                         value={email}
-                                        onChange={e => handleInputEmail(e)}
+                                        onBlur={e => handleInputEmail(e)}
                                         type="email"
+                                        onChange={handleChangeEmail}
                                     />
                                     <div className={`register__error ${ isEmailTouched && errorEmail ? "register__error_active" : '' }`}>{errorEmail}</div>
                                 </label>
@@ -153,7 +170,9 @@ export function Register() {
                                         name="password"
                                         value={password}
                                         type="password"
-                                        onChange={e => handleInputPassword(e)}
+                                        onBlur={e => handleInputPassword(e)}
+                                        onChange={handleChangePassword}
+
                                     />
                                     <div className={`register__error ${ isPasswordTouched && errorPassword ? "register__error_active" : '' }`} >{errorPassword}</div>
                                 </label>

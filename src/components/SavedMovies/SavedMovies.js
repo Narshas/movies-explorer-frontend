@@ -6,7 +6,8 @@ import { SearchForm } from "../Movies/SearchForm/SearchForm";
 import { MoviesCardList } from "../Movies/MoviesCardList/MoviesCardList";
 // import { Preloader } from "../Movies/Preloader/Preloader";
 
-export function SavedMovies({savedMovies, loggedIn, handleLike}) {
+export function SavedMovies({savedMovies, handleLike}) {
+    // eslint-disable-next-line
     const [searchError, setSearchError] = useState('');
     const [isToggleActive, setIsToggleActive] = useState(false);
     const [filtredSavedtMovies, setFiltredSavedMovies] = useState([]);

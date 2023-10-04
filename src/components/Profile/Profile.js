@@ -6,7 +6,7 @@ import { CurrentUserContext } from "../App/App";
 import { getUserInfo, patchUserInfo } from "../../utils/MainApi";
 
 export function Profile() {
-    const { loggedIn, setLoggedIn, user, setUser, popupOpen } = useContext(CurrentUserContext);
+    const { setLoggedIn, user, setUser, popupOpen } = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState(user.email);
@@ -70,10 +70,10 @@ export function Profile() {
                                     <input className="profile__name" 
                                         placeholder="how can we call you?" 
                                         required 
-                                        minlength="2" maxlength="13"
+                                        minLength="2" maxLength="13"
                                         value={name}
                                         name="name"
-                                        onChange={(e) => setName(e.target.value)}
+                                        onBlur={(e) => setName(e.target.value)}
                                         type="text"
                                     />
                                 </label>
@@ -84,7 +84,7 @@ export function Profile() {
                                         required
                                         name="email"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onBlur={(e) => setEmail(e.target.value)}
                                         type="email"
                                     />
                                 </label>

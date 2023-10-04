@@ -98,7 +98,7 @@ export function Login() {
                                         name="email"
                                         value={email}
                                         type="email"
-                                        onChange={e => handleInputEmail(e)}
+                                        onBlur={e => handleInputEmail(e)}
                                     />
                                     <div className={`login__error ${ isEmailTouched && errorEmail ? "login__error_active" : ''}`}>{errorEmail}</div>
                                 </label>
@@ -114,7 +114,7 @@ export function Login() {
                                         name="password"
                                         type="password"
                                         value={password}
-                                        onChange={e => handleInputPassword(e)}
+                                        onBlur={e => handleInputPassword(e)}
                                     />
                                     <div className={`login__error ${ isPasswordTouched && errorPassword ? "login__error_active" : ''}`}>{errorPassword}</div>
                                 </label>
