@@ -1,22 +1,25 @@
 import React from "react";
 import "./MoviesCard.css";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 
 export function MoviesCard({ movie, savedMovies, handleLike}) {
-    const [isSaved, setIsSaved] = useState(false);
+    console.log(`Rendering movie card: ${movie.name}`);
+    // const [isSaved, setIsSaved] = useState(false);
 
-    useEffect(() => {
-        if (savedMovies.some((i) => i.movieID === movie.id)) {
-            setIsSaved(true);
-        } else {
-            setIsSaved(false);
-        }
-    }, [movie, savedMovies])
+    let isSaved = savedMovies.some((i) => i.movieID === movie.id);
+
+    // useEffect(() => {
+    //     if (savedMovies.some((i) => i.movieID === movie.id)) {
+    //         setIsSaved(true);
+    //     } else {
+    //         setIsSaved(false);
+    //     }
+    // }, [movie, savedMovies])
 
     const handleLikeButton = () => {
         handleLike(movie)
             .then(() => {
-                setIsSaved(!isSaved);
+                isSaved = !isSaved;
             })
             .catch(err => console.log(err));
         

@@ -10,7 +10,7 @@ import { SearchForm } from "./SearchForm/SearchForm";
 import { getAllMovies } from "../../utils/MoviesApi";
 
 export function Movies({savedMovies, handleLike }) {
-    
+    console.log("Movies is rendering");
     const [isLoading, setIsLoading] = useState(false);
     const [foundMovies, setFoundMovies] = useState([]);
     const [isToggleActive, setIsToggleActive] = useState(false);
@@ -41,6 +41,7 @@ export function Movies({savedMovies, handleLike }) {
             movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) ||
             movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase())
         )
+        console.log("filtered results:", results);
         setFoundMovies(results);
         localStorage.setItem('found movies', JSON.stringify(results));
 
@@ -51,20 +52,23 @@ export function Movies({savedMovies, handleLike }) {
         }        
     }
     
-    const handleSearchButton = (searchQuery) => {
+    const handleSearchButton = (searchQuery, currentMovies, currentToggleState) => {
         setIsLoading(true)
-        if (!allMovies) {
+        console.log("allMovies stat:", allMovies);
+        if (!currentMovies.length) {
+            console.log('begore fetch allMovies');
             getAllMovies()
                 .then(res => {
+                    console.log('movies fetched:', res);
                     setAllMovies(res);
-                    searchMovies(res, searchQuery, isToggleActive);
+                    searchMovies(res, searchQuery, currentToggleState);
                 })
                 .catch(err => {
                     console.log(err);
                     setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
                 })
         } else {
-            searchMovies(allMovies, searchQuery, isToggleActive)
+            searchMovies(currentMovies, searchQuery, currentToggleState);
         }
         setIsLoading(false)
     }
@@ -74,22 +78,25 @@ export function Movies({savedMovies, handleLike }) {
     }, [isToggleActive])
 
     useEffect(() => {
-        if (localStorage.setItem('isToggleActive') === 'true') {
+        const currentToggleValue = localStorage.getItem('isToggleActive');
+        if (currentToggleValue === 'true') {
             setIsToggleActive(true)
+        } else {
+            setIsToggleActive(false)
         }
-    }, [isToggleActive])
+    }, [])
 
     useEffect (() => {
         localStorage.setItem('searchQuery', searchQuery);
     }, [searchQuery])
 
     useEffect(() => {
-        if (localStorage.getItem('searchQuery') && !filtredShortMovies.length) {
+        if (!filtredShortMovies.length && searchQuery) {
             setSearchError('Ничего не найдено');
         } else {
             setSearchError('');
         }
-    }, []);
+    }, [filtredShortMovies, searchQuery]);
 
     function presetCards() {
         const windowSize = window.innerWidth;
@@ -137,7 +144,7 @@ export function Movies({savedMovies, handleLike }) {
                     isToggleActive={isToggleActive}
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}                    
-                    
+                    allMovies={allMovies}
                     handleToggle={handleToggle}
 
                     

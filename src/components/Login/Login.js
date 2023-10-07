@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import logo from "../../images/logo.svg";
-import { Link, useNavigate } from "react-router-dom";
-import { authoraizer } from "../../utils/MainApi";
-import { CurrentUserContext } from "../App/App";
+import { Link } from "react-router-dom";
+// import { authoraizer } from "../../utils/MainApi";
+// import { CurrentUserContext } from "../App/App";
 
-export function Login() {
-    const navigate = useNavigate();
-    const {setLoggedIn} = useContext(CurrentUserContext);
+export function Login({handleLogin}) {
+    // const navigate = useNavigate();
+    // const {setLoggedIn} = useContext(CurrentUserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorEmail, setErrorEmail] = useState('');
@@ -25,21 +25,21 @@ export function Login() {
         }
     }, [errorEmail, errorPassword])
 
-    function handleLogin() {
-        authoraizer({ email, password })
-        .then(res => {
-            if (res.message) {
-                console.log(res.message)
-            } else {
-                setLoggedIn(true)
-                localStorage.setItem('token', res.token)
-                navigate("/movies")
-            }
-        })
-        .catch(error => {
-            console.log(error)
-        });
-      }
+    // function handleLogin() {
+    //     authoraizer({ email, password })
+    //     .then(res => {
+    //         if (res && res.message) {
+    //             console.log(res.message)
+    //         } else {
+    //             setLoggedIn(true)
+    //             localStorage.setItem('token', res.token)
+    //             navigate("/movies")
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //     });
+    //   }
 
     function handleInputTouched(e) {
         const inputName = e.target.name;
@@ -61,6 +61,16 @@ export function Login() {
             setErrorEmail('invalid email')
         }
 
+    }
+
+    function handleChangeEmail(e) {
+        setEmail(e.target.value);
+        handleInputEmail(e);
+    }
+
+    function handleChangePassword(e) {
+        setPassword(e.target.value);
+        handleInputPassword(e);
     }
 
     function handleInputPassword(e) {
@@ -99,6 +109,7 @@ export function Login() {
                                         value={email}
                                         type="email"
                                         onBlur={e => handleInputEmail(e)}
+                                        onChange={handleChangeEmail}
                                     />
                                     <div className={`login__error ${ isEmailTouched && errorEmail ? "login__error_active" : ''}`}>{errorEmail}</div>
                                 </label>
@@ -115,6 +126,7 @@ export function Login() {
                                         type="password"
                                         value={password}
                                         onBlur={e => handleInputPassword(e)}
+                                        onChange={handleChangePassword}
                                     />
                                     <div className={`login__error ${ isPasswordTouched && errorPassword ? "login__error_active" : ''}`}>{errorPassword}</div>
                                 </label>
@@ -122,7 +134,7 @@ export function Login() {
 
                         </fieldset>
                         <div className="login__submit-container">
-                            <button type="submit" className="login__submit" onClick={handleLogin} disabled={!dataValid}>Войти</button>
+                            <button type="submit" className="login__submit" onClick={() => handleLogin(email, password)} disabled={!dataValid}>Войти</button>
                             <div className="login__link">
                                 Ещё не зарегистрированы?
                                 <Link to="/signup" className="login__to-register">Регистрация</Link>

@@ -1,9 +1,6 @@
 const settings = {
     // baseUrl: "https://api.narshas.diploma.nomoreparties.co",
     baseUrl: "http://localhost:3001",
-    headers: {
-      "Content-type": "application/json",
-    }
 }
 
 function testRes(res) {
@@ -16,19 +13,29 @@ function testRes(res) {
 export function register({ name, password, email }) {
         return fetch(`${settings.baseUrl}/signup`, {
             method: 'POST',
-            headers: settings.headers,
+            headers: {
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify({ name, password, email }),
         })
-        .then(res => testRes(res))
+        .then(res => {
+            return testRes(res);
+        })
 }
 
 export function authoraizer({ password, email }) {
     return fetch(`${settings.baseUrl}/signin`, {
         method: 'POST',
-        headers: settings.headers,
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify({ password, email }),
     })
-    .then(res => testRes(res))
+    .then(res => {
+        console.log("authoraizer called");
+        return testRes(res);
+        
+    })
 }
 
 
@@ -38,10 +45,12 @@ export function getUserInfo() {
         headers: {
             // "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${currentToken}`,
+            "Authorization": `Bearer ${currentToken}`,
         },
     })
-    .then(res => testRes(res))
+    .then(res => {
+        return testRes(res);
+    })
 }
 
 export function patchUserInfo(userData) {
@@ -50,11 +59,13 @@ export function patchUserInfo(userData) {
         method: 'PATCH',
         headers: {
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${currentToken}`,
+            "Authorization": `Bearer ${currentToken}`,
         },
         body: JSON.stringify(userData)
     })
-    .then(res => testRes(res))
+    .then(res => {
+        return testRes(res);
+    })
 }
 
 export function changeSaveStatus(movieData, isSave) {
@@ -64,16 +75,18 @@ export function changeSaveStatus(movieData, isSave) {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization" : `Bearer ${currentToken}`,
+                "Authorization": `Bearer ${currentToken}`,
             },
         })
-        .then(res => testRes(res))
+        .then(res => {
+            return testRes(res);
+        })
     } else {
         return fetch(`${settings.baseUrl}/movies`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization" : `Bearer ${currentToken}`,
+                "Authorization": `Bearer ${currentToken}`,
             },
             body: JSON.stringify({
                 movieId: movieData.id,
@@ -89,7 +102,9 @@ export function changeSaveStatus(movieData, isSave) {
                 thumbnail: `https://api.nomoreparties.co${movieData.image.formats.thumbnail.url}`,                
             })
         })
-        .then(res => testRes(res))
+        .then(res => {
+            return testRes(res);
+        })
     }
 }
 
@@ -98,7 +113,7 @@ export function getSavedMovies() {
     return fetch(`${settings.baseUrl}/movies`, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${currentToken}`,
+            "Authorization": `Bearer ${currentToken}`,
         },
     })
     .then(res => {
@@ -108,5 +123,17 @@ export function getSavedMovies() {
         } else {
             return testRes(res)
         }
+    })
+}
+
+export function tokenCheker(currentToken) {
+    return fetch(`${settings.baseUrl}/users/me`, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization" : `Bearer ${currentToken}`,
+        },
+    })
+    .then(res => {
+        testRes(res);
     })
 }

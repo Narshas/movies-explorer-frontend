@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 
 export function SearchForm({
     handleSearchButton,
+    allMovies,
     searchQuery, setSearchQuery,
     handleToggle,
     isToggleActive
@@ -24,8 +25,7 @@ export function SearchForm({
         if (!searchQuery.length) {
             setIsErr(true);
         } else {
-            handleSearchButton(searchQuery);
-            setIsErr(false);
+            handleSearchButton(searchQuery, allMovies, isToggleActive);
         }
     }
 

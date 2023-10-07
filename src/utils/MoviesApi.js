@@ -4,6 +4,6 @@ export function getAllMovies() {
             return res.json();
         })
         .catch(error => {
-            console.error(error);
+            console.error('Error in getAllMovies:', error);
         });
 }

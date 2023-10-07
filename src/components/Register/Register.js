@@ -24,7 +24,8 @@ export function Register() {
     const [isPasswordTouched, setIsPasswordTouched] = useState(false);
     const [isNameTouched, setIsNameTouched] = useState(false);
 
-    function handleRegister() {
+    function handleRegister(e) {
+        e.preventDefault();
         register({ name, email, password })
             .then(res => {
                 if (res.message) {

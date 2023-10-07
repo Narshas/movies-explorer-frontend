@@ -3,16 +3,15 @@ import { useState, createContext, useEffect } from "react";
 import './App.css';
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
 import { Profile } from "../Profile/Profile";
 import { Login } from "../Login/Login";
 import { Register } from "../Register/Register";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Popup } from "../Popup/Popup";
-import { getSavedMovies, getUserInfo, changeSaveStatus } from "../../utils/MainApi";
+import { getSavedMovies, getUserInfo, changeSaveStatus, tokenCheker, authoraizer } from "../../utils/MainApi";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
-// import { authoraizer, register } from "../../utils/MainApi";
 
 export const CurrentUserContext = createContext();
 const defoltUser = {name: '', email: ''}
@@ -24,12 +23,13 @@ export function App() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupText, setPopupText] = useState('');
   const [savedMovies, setSavedMovies] = useState([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // ======== UserData =========
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
+    if (!token) {
       setLoggedIn(false)
     } else {
       getUserInfo()
@@ -37,7 +37,7 @@ export function App() {
         if (res.message) {
           setLoggedIn(false)
           localStorage.removeItem('token')
-          window.location.href = '/signin'
+          navigate('/signin')
         } else {
           getSavedMovies()
             .then(res => {
@@ -52,6 +52,45 @@ export function App() {
 
     }
   }, [loggedIn])
+
+  const checkToken = () => {
+    const currentToken = localStorage.getItem('token');
+    if (currentToken) {
+      tokenCheker(currentToken)
+        .then(res => {
+          if(res) {
+            setUser(res)
+            setLoggedIn(true)
+          }
+        })
+        .catch((err) => {
+          setUser(null);
+          setLoggedIn(false)
+          console.log('tokenCheker bad result', err )
+        })
+    }
+  }
+
+  useEffect(() => {
+    checkToken()
+  }, [])
+
+  function handleLogin(email, password) {
+        authoraizer({ email, password })
+          .then(res => {
+              if (res && res.message) {
+                  console.log(res.message);
+              } else {
+                  localStorage.setItem('token', res.token);
+                  checkToken();
+                  setLoggedIn(true);
+                  navigate("/movies");
+              }
+          })
+          .catch(error => {
+              console.log(error)
+          });
+  }
 
   // ======== Support =========
   const popupOpen = (text) => {
@@ -105,7 +144,6 @@ export function App() {
   } 
 
   return (
-    <BrowserRouter>
       <CurrentUserContext.Provider value={{ user, setUser, loggedIn, setLoggedIn, popupOpen }}> 
         <div className="app">
           <Routes>
@@ -142,7 +180,7 @@ export function App() {
 
             <Route path="/signin" element={
               <Login
-                
+                handleLogin={handleLogin}
               />
             }
             />
@@ -157,8 +195,7 @@ export function App() {
           </Routes>
           <Popup isOpen={isPopupOpen} popupText={popupText} onClose={popupClose}/>
         </div>
-      </CurrentUserContext.Provider>
-    </BrowserRouter>    
+      </CurrentUserContext.Provider>   
   );
 }
   
