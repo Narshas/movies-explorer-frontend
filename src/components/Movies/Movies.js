@@ -17,17 +17,18 @@ export function Movies({savedMovies, handleLike }) {
     const [allMovies, setAllMovies] = useState([]);
 
     const [searchError, setSearchError] = useState('');
-    const [filtredShortMovies, setFiltredShortMovies] = useState([]);
+    // const [filtredShortMovies, setFiltredShortMovies] = useState([]);
+    const [shownMovies, setShownMovies] = useState([]);
 
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || '');
     const [shownCards, setShownCards] = useState(presetCards());
 
     const handleToggle = () => {
         setIsToggleActive(!isToggleActive);
-        if (foundMovies) {
-            setFiltredShortMovies(filterShortMovies(foundMovies));
+        if (isToggleActive) {
+            setShownMovies(foundMovies);
         } else {
-            setFiltredShortMovies(filterShortMovies(allMovies));
+            setShownMovies(filterShortMovies(foundMovies));
         }
     }
 
@@ -41,20 +42,20 @@ export function Movies({savedMovies, handleLike }) {
             movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) ||
             movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase())
         )
-        console.log("filtered results:", results);
         setFoundMovies(results);
         localStorage.setItem('found movies', JSON.stringify(results));
 
         if (isToggleActive) {
-            results = filterShortMovies(results);
-            setFiltredShortMovies(results);
-            localStorage.setItem('filtredShortMovies', JSON.stringify(results));
-        }        
+            const filteredResults = filterShortMovies(results);
+            setShownMovies(filteredResults);
+            localStorage.setItem('filtredShortMovies', JSON.stringify(filteredResults));
+        } else {
+            setShownMovies(results);
+        }
     }
     
     const handleSearchButton = (searchQuery, currentMovies, currentToggleState) => {
         setIsLoading(true)
-        console.log("allMovies stat:", allMovies);
         if (!currentMovies.length) {
             console.log('begore fetch allMovies');
             getAllMovies()
@@ -91,12 +92,15 @@ export function Movies({savedMovies, handleLike }) {
     }, [searchQuery])
 
     useEffect(() => {
-        if (!filtredShortMovies.length && searchQuery) {
-            setSearchError('Ничего не найдено');
-        } else {
-            setSearchError('');
+        if (searchQuery) {
+            if (shownMovies.length || foundMovies.length) {
+                setSearchError('');
+            } else {
+                setSearchError('Ничего не найдено');
+            }
         }
-    }, [filtredShortMovies, searchQuery]);
+        
+    }, [shownMovies, searchQuery, foundMovies]);
 
     function presetCards() {
         const windowSize = window.innerWidth;
@@ -156,7 +160,7 @@ export function Movies({savedMovies, handleLike }) {
                         savedMovies={savedMovies}
                         searchError={searchError}
                         shownCards={shownCards}
-                        filtredShortMovies={filtredShortMovies}
+                        shownMovies={shownMovies}
                         foundMovies={foundMovies}
                     />
                 )}

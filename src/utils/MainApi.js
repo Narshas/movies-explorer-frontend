@@ -5,12 +5,15 @@ const settings = {
 
 function testRes(res) {
     if (res.ok) {
+        console.log("Response received from", res.url, "with status:", res.status);
         return res.json();
     }
+    console.log("Error in response from", res.url, "with status:", res.status);
     return Promise.reject(`Ошибка: ${res.status}`);
 }
 
 export function register({ name, password, email }) {
+        console.log("Making request to:", '/signup');
         return fetch(`${settings.baseUrl}/signup`, {
             method: 'POST',
             headers: {
@@ -24,6 +27,7 @@ export function register({ name, password, email }) {
 }
 
 export function authoraizer({ password, email }) {
+    console.log("Making request to:", '/signin');
     return fetch(`${settings.baseUrl}/signin`, {
         method: 'POST',
         headers: {
@@ -40,6 +44,7 @@ export function authoraizer({ password, email }) {
 
 
 export function getUserInfo() {
+    console.log("Making request to:", '/users/me');
     const currentToken = localStorage.getItem('token');
     return fetch(`${settings.baseUrl}/users/me`, {
         headers: {
@@ -54,6 +59,7 @@ export function getUserInfo() {
 }
 
 export function patchUserInfo(userData) {
+    console.log("Making request to:", '/users/me');
     const currentToken = localStorage.getItem('token');
     return fetch(`${settings.baseUrl}/users/me`, {
         method: 'PATCH',
@@ -69,6 +75,7 @@ export function patchUserInfo(userData) {
 }
 
 export function changeSaveStatus(movieData, isSave) {
+    console.log("Making request to:", '/movies/${movieData.id}');
     const currentToken = localStorage.getItem('token');
     if (isSave) {
         return fetch(`${settings.baseUrl}/movies/${movieData.id}`, {
@@ -82,6 +89,7 @@ export function changeSaveStatus(movieData, isSave) {
             return testRes(res);
         })
     } else {
+        console.log("Making request to:", '/movies');
         return fetch(`${settings.baseUrl}/movies`, {
             method: 'POST',
             headers: {
@@ -109,6 +117,7 @@ export function changeSaveStatus(movieData, isSave) {
 }
 
 export function getSavedMovies() {
+    console.log("Making request to:", '/movies');
     const currentToken = localStorage.getItem('token');
     return fetch(`${settings.baseUrl}/movies`, {
         headers: {
@@ -127,6 +136,7 @@ export function getSavedMovies() {
 }
 
 export function tokenCheker(currentToken) {
+    console.log("Making request to:", '/users/me');
     return fetch(`${settings.baseUrl}/users/me`, {
         headers: {
             "Content-Type": "application/json",
@@ -134,6 +144,6 @@ export function tokenCheker(currentToken) {
         },
     })
     .then(res => {
-        testRes(res);
+        return testRes(res);
     })
 }

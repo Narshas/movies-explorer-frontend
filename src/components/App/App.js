@@ -27,10 +27,11 @@ export function App() {
 
   // ======== UserData =========
 
-  useEffect(() => {
+  const loadUserData = () => {
     const token = localStorage.getItem('token');
     if (!token) {
       setLoggedIn(false)
+      navigate('/signin');
     } else {
       getUserInfo()
       .then(res => {
@@ -39,51 +40,62 @@ export function App() {
           localStorage.removeItem('token')
           navigate('/signin')
         } else {
-          getSavedMovies()
-            .then(res => {
-              setSavedMovies(res)
-            })
-            .catch(err => console.log(err))
+          setUser(res);
+          return getSavedMovies()
         }
       })
-      .catch(error => {
-        console.log(error)
+      .then(res => {
+        if (res) {
+          setSavedMovies(res);
+        }
       })
-
+      .catch(err => console.log(err));
     }
-  }, [loggedIn])
+  }
 
   const checkToken = () => {
+    console.log("Entered checkToken function");
     const currentToken = localStorage.getItem('token');
     if (currentToken) {
       tokenCheker(currentToken)
         .then(res => {
           if(res) {
-            setUser(res)
-            setLoggedIn(true)
+            setLoggedIn(true);
+            console.log("Token valid. User data received:", res);
+            loadUserData();
+          } else {
+            setLoggedIn(false);
+            navigate('/signin');
           }
         })
         .catch((err) => {
           setUser(null);
           setLoggedIn(false)
           console.log('tokenCheker bad result', err )
-        })
+          console.log('Token check failed:', err);
+        });
+    } else {
+      setLoggedIn(false);
+      navigate('/signin');
     }
   }
 
   useEffect(() => {
+    console.log("Checking token on App mount");
     checkToken()
   }, [])
 
   function handleLogin(email, password) {
+        console.log("Attempt to login with email:", email);
         authoraizer({ email, password })
           .then(res => {
               if (res && res.message) {
                   console.log(res.message);
               } else {
+                  // setLoggedIn(true);
                   localStorage.setItem('token', res.token);
                   checkToken();
-                  setLoggedIn(true);
+                  console.log("Login successful. Token received:", res.token);
                   navigate("/movies");
               }
           })
@@ -105,23 +117,6 @@ export function App() {
 
 
   // ======== Movies =========
-  useEffect(() => {
-    if (loggedIn) {
-      getUserInfo()
-        .then(res => {
-          setUser(res);
-          console.log("user", res);
-
-          return getSavedMovies();
-        })
-        .then(res => {
-          setSavedMovies(res)
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-  }, [loggedIn]);
 
   const handleLike = (movie) => {
     if (!savedMovies.some((i) => i.movieID === movie.id)) {

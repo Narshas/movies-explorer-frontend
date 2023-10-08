@@ -25,22 +25,6 @@ export function Login({handleLogin}) {
         }
     }, [errorEmail, errorPassword])
 
-    // function handleLogin() {
-    //     authoraizer({ email, password })
-    //     .then(res => {
-    //         if (res && res.message) {
-    //             console.log(res.message)
-    //         } else {
-    //             setLoggedIn(true)
-    //             localStorage.setItem('token', res.token)
-    //             navigate("/movies")
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     });
-    //   }
-
     function handleInputTouched(e) {
         const inputName = e.target.name;
 
@@ -52,6 +36,7 @@ export function Login({handleLogin}) {
     }
 
     function handleInputEmail(e) {
+        console.log("Email input changed:", e.target.value);
         handleInputTouched(e)
         const validationRegx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
         if (validationRegx.test(String(e.target.value).toLowerCase())) {
@@ -74,6 +59,7 @@ export function Login({handleLogin}) {
     }
 
     function handleInputPassword(e) {
+        console.log("Password input changed:", e.target.value);
         handleInputTouched(e)
         if (e.target.value.length > 3 && e.target.value.length < 11) {
             setPassword(e.target.value)
