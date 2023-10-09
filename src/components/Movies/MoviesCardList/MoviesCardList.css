@@ -16,6 +16,10 @@
     justify-content: center;
 }
 
+.movies-cardlist_error {
+    text-align: center;
+}
+
 @media screen and (max-width: 1000px) {
     .movies-cardlist__container {
         padding: 70px 30px 10px;

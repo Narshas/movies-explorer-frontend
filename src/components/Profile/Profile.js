@@ -56,6 +56,35 @@ export function Profile({user, setUser}) {
         })
     }
 
+    function handleInputName (e) {
+        const validationRegx = /^[A-Za-zА-Яа-яЁё\s-]{2,}$/
+        if (validationRegx.test(String(e.target.value))) {
+            setName(e.target.value)
+        } else {
+            popupOpen('invalid name')
+        }
+
+    }
+
+    function handleInputEmail (e) {
+        const validationRegx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if (validationRegx.test(String(e.target.value).toLowerCase())) {
+            setEmail(e.target.value)
+        } else {
+            popupOpen("invalid email")
+        }
+    }
+
+    function handleChangeName (e) {
+        setName(e.target.value);
+        handleInputName(e);
+    }
+
+    function handleChangeEmail (e) {
+        setEmail(e.target.value);
+        handleInputEmail(e);
+    }
+
     return (
         <>
             <main>
@@ -74,7 +103,8 @@ export function Profile({user, setUser}) {
                                         minLength="2" maxLength="13"
                                         value={name}
                                         name="name"
-                                        onBlur={(e) => setName(e.target.value)}
+                                        onBlur={(e) => handleInputName(e)}
+                                        onChange={handleChangeName}
                                         type="text"
                                     />
                                 </label>
@@ -85,7 +115,8 @@ export function Profile({user, setUser}) {
                                         required
                                         name="email"
                                         value={email}
-                                        onBlur={(e) => setEmail(e.target.value)}
+                                        onBlur={(e) => handleInputEmail(e)}
+                                        onChange={handleChangeEmail}
                                         type="email"
                                     />
                                 </label>

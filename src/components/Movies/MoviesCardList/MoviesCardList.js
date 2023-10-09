@@ -35,7 +35,7 @@ export function MoviesCardList({
     return (
         <section className="movies-cardlist">
             {searchError && (
-                <div>{searchError}</div>
+                <div className="movies-cardlist_error">{searchError}</div>
             )}
             <ul className="movies-cardlist__container">
                 {toRender.map(movie => {

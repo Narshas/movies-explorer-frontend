@@ -1,20 +1,12 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
-// import { useState, useEffect } from "react";
 
 export function MoviesCard({ movie, savedMovies, handleLike}) {
+    const location = useLocation();
     console.log(`Rendering movie card: ${movie.name}`);
-    // const [isSaved, setIsSaved] = useState(false);
 
     let isSaved = savedMovies.some((i) => i.movieID === movie.id);
-
-    // useEffect(() => {
-    //     if (savedMovies.some((i) => i.movieID === movie.id)) {
-    //         setIsSaved(true);
-    //     } else {
-    //         setIsSaved(false);
-    //     }
-    // }, [movie, savedMovies])
 
     const handleLikeButton = () => {
         handleLike(movie)
@@ -25,7 +17,9 @@ export function MoviesCard({ movie, savedMovies, handleLike}) {
         
     }
 
-    let coverSrc = `https://api.nomoreparties.co${movie.image.url}`
+    let coverSrc = location.pathname === "/movies" 
+    ? `https://api.nomoreparties.co${movie.image.url}` 
+    : movie.image;
 
     return (
         <div className="movies-card">
@@ -33,11 +27,10 @@ export function MoviesCard({ movie, savedMovies, handleLike}) {
                 <img className="movies-card__cover" src={coverSrc} alt="Обложка фильма"/>    
             </a>
             <div className="movies-card__about">
-                <h2 className="movies-card__name">{movie.name}</h2>
+                <h2 className="movies-card__name">{movie.nameRU}</h2>
                 <button type="button" className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLikeButton}></button>
             </div>
             <p className="movies-card__duration">{Math.floor(movie.duration / 60) + 'ч' + (movie.duration % 60) + 'м'}</p>
         </div>
-
     );
 }

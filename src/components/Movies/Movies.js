@@ -17,7 +17,7 @@ export function Movies({savedMovies, handleLike }) {
     const [allMovies, setAllMovies] = useState([]);
 
     const [searchError, setSearchError] = useState('');
-    // const [filtredShortMovies, setFiltredShortMovies] = useState([]);
+    const [hasSearched, setHasSearched] = useState(false);
     const [shownMovies, setShownMovies] = useState([]);
 
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || '');
@@ -71,7 +71,8 @@ export function Movies({savedMovies, handleLike }) {
         } else {
             searchMovies(currentMovies, searchQuery, currentToggleState);
         }
-        setIsLoading(false)
+        setIsLoading(false);
+        setHasSearched(true);
     }
 
     useEffect (() => {
@@ -92,7 +93,7 @@ export function Movies({savedMovies, handleLike }) {
     }, [searchQuery])
 
     useEffect(() => {
-        if (searchQuery) {
+        if (searchQuery && hasSearched) {
             if (shownMovies.length || foundMovies.length) {
                 setSearchError('');
             } else {
