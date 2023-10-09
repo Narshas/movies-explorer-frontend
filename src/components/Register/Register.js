@@ -41,7 +41,9 @@ export function Register() {
                     return Promise.reject(res.message);
                 } else {
                     localStorage.setItem('token', res.token);
+                    
                     setLoggedIn(true);
+                    console.log("in handleRegister loggedIn set to true");
                     navigate("/movies");
                 }
             })

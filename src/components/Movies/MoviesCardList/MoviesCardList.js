@@ -14,19 +14,7 @@ export function MoviesCardList({
 }) {
 
     const [toRender, setToRender] = useState([]);
-    const location = useLocation();
-
-   
-
-    // useEffect(() => {
-    //     if (!isSavedMovies) {
-    //         setToRender(foundMovies.slice(0, shownCards));
-    //     } else {
-    //         setToRender()
-    //     }
-        
-    // }, [foundMovies])
-    
+    const location = useLocation();    
 
     useEffect(() => {
         if (location.pathname === "/saved-movies") {

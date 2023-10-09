@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../App/App";
 import { getUserInfo, patchUserInfo } from "../../utils/MainApi";
 
-export function Profile() {
-    const { setLoggedIn, user, setUser, popupOpen } = useContext(CurrentUserContext);
+export function Profile({user, setUser}) {
+    const { setLoggedIn, popupOpen } = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState(user.email);
@@ -34,6 +34,7 @@ export function Profile() {
     }, [email, name])
 
     function handleLogout() {
+        console.log("in handleLogout loggedIn set to false");
         setLoggedIn(false);
         localStorage.removeItem('token')
         navigate("/signin");

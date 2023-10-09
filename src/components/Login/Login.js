@@ -48,16 +48,6 @@ export function Login({handleLogin}) {
 
     }
 
-    function handleChangeEmail(e) {
-        setEmail(e.target.value);
-        handleInputEmail(e);
-    }
-
-    function handleChangePassword(e) {
-        setPassword(e.target.value);
-        handleInputPassword(e);
-    }
-
     function handleInputPassword(e) {
         console.log("Password input changed:", e.target.value);
         handleInputTouched(e)
@@ -69,6 +59,18 @@ export function Login({handleLogin}) {
         }
         
     }
+
+    function handleChangeEmail(e) {
+        setEmail(e.target.value);
+        handleInputEmail(e);
+    }
+
+    function handleChangePassword(e) {
+        setPassword(e.target.value);
+        handleInputPassword(e);
+    }
+
+    
 
     return (
         <main>

@@ -27,30 +27,25 @@ export function App() {
 
   // ======== UserData =========
 
+  console.log("Rendering App component. Current loggedIn state:", loggedIn);
+
+  const logOut = () => {
+        setLoggedIn(false);
+        localStorage.removeItem('token');
+        navigate('/signin');
+        console.log('logout called');
+  }
+
   const loadUserData = () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setLoggedIn(false)
-      navigate('/signin');
-    } else {
-      getUserInfo()
-      .then(res => {
-        if (res.message) {
-          setLoggedIn(false)
-          localStorage.removeItem('token')
-          navigate('/signin')
-        } else {
-          setUser(res);
-          return getSavedMovies()
-        }
-      })
-      .then(res => {
-        if (res) {
-          setSavedMovies(res);
-        }
-      })
-      .catch(err => console.log(err));
-    }
+    Promise.all([getUserInfo(), getSavedMovies()])
+    .then(([userInfo, savedMoviesList]) => {
+        setUser(userInfo);
+        setSavedMovies(savedMoviesList);
+    })
+    .catch(err => {
+        console.log(err);
+        logOut();
+    });
   }
 
   const checkToken = () => {
@@ -60,23 +55,20 @@ export function App() {
       tokenCheker(currentToken)
         .then(res => {
           if(res) {
+            console.log("in tokenCheker loggedIn set to true");
             setLoggedIn(true);
-            console.log("Token valid. User data received:", res);
             loadUserData();
           } else {
-            setLoggedIn(false);
-            navigate('/signin');
+            return logOut();
           }
         })
         .catch((err) => {
-          setUser(null);
-          setLoggedIn(false)
-          console.log('tokenCheker bad result', err )
-          console.log('Token check failed:', err);
+          // setUser(null);
+          console.log('tokenCheker bad result', err);
+          return logOut();
         });
     } else {
-      setLoggedIn(false);
-      navigate('/signin');
+      return logOut();
     }
   }
 
@@ -139,7 +131,7 @@ export function App() {
   } 
 
   return (
-      <CurrentUserContext.Provider value={{ user, setUser, loggedIn, setLoggedIn, popupOpen }}> 
+      <CurrentUserContext.Provider value={{ loggedIn, setLoggedIn, popupOpen }}> 
         <div className="app">
           <Routes>
             <Route path="/" element={<Main/>} />
@@ -182,7 +174,10 @@ export function App() {
 
             <Route path="/profile" element={
                 <ProtectedRoute loggedIn={loggedIn}>
-                  <Profile/>
+                  <Profile
+                    user={user}
+                    setUser={setUser}
+                  />
                 </ProtectedRoute>
               }
             />
