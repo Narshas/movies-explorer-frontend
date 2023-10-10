@@ -23,6 +23,15 @@ export function Movies({savedMovies, handleLike }) {
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || '');
     const [shownCards, setShownCards] = useState(presetCards());
 
+    // const handleToggle = () => {
+    //     setIsToggleActive(!isToggleActive);
+    //     if (isToggleActive) {
+    //         setShownMovies(foundMovies);
+    //     } else {
+    //         setShownMovies(filterShortMovies(foundMovies));
+    //     }
+    // }
+
     const handleToggle = () => {
         setIsToggleActive(!isToggleActive);
         if (isToggleActive) {
@@ -43,7 +52,7 @@ export function Movies({savedMovies, handleLike }) {
             movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase())
         )
         setFoundMovies(results);
-        localStorage.setItem('found movies', JSON.stringify(results));
+        localStorage.setItem('foundMovies', JSON.stringify(results));
 
         if (isToggleActive) {
             const filteredResults = filterShortMovies(results);
@@ -52,6 +61,7 @@ export function Movies({savedMovies, handleLike }) {
         } else {
             setShownMovies(results);
         }
+    
     }
     
     const handleSearchButton = (searchQuery, currentMovies, currentToggleState) => {
@@ -103,6 +113,18 @@ export function Movies({savedMovies, handleLike }) {
         
     }, [shownMovies, searchQuery, foundMovies]);
 
+    useEffect(() => {
+        const savedMovies = JSON.parse(localStorage.getItem('foundMovies'));
+        if (savedMovies && savedMovies.length) {
+            setFoundMovies(savedMovies);
+            if (isToggleActive) {
+                setShownMovies(filterShortMovies(savedMovies));
+            } else {
+                setShownMovies(savedMovies);
+            }
+        }
+    }, []);
+
     function presetCards() {
         const windowSize = window.innerWidth;
         if (windowSize >= 1280) {
@@ -137,6 +159,11 @@ export function Movies({savedMovies, handleLike }) {
         return () => { 
             window.removeEventListener("resize", handleResize) 
         };
+    }, []);
+
+    useEffect(() => {
+        const savedToggleValue = localStorage.getItem('isToggleActive');
+        setIsToggleActive(savedToggleValue === 'true');
     }, []);
 
     return (

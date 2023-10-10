@@ -6,7 +6,8 @@ import { useLocation } from "react-router-dom";
 export function SearchForm({
     handleSearchButton,
     allMovies,
-    searchQuery, setSearchQuery,
+    searchQuery, 
+    setSearchQuery,
     handleToggle,
     isToggleActive
 }) {

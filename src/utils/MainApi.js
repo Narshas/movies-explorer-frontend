@@ -78,7 +78,7 @@ export function changeSaveStatus(movieData, isSave) {
     console.log("Making request to:", '/movies/${movieData.id}');
     const currentToken = localStorage.getItem('token');
     if (isSave) {
-        return fetch(`${settings.baseUrl}/movies/${movieData.id}`, {
+        return fetch(`${settings.baseUrl}/movies/${movieData.movieId}`, {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",

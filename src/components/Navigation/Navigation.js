@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Navigation.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Burger } from "../Burger/Burger";
 import accIcon from "../../images/account-icon.svg";
 import { CurrentUserContext } from "../App/App";
@@ -8,18 +8,19 @@ import { CurrentUserContext } from "../App/App";
 export function Navigation() {
     
     const {loggedIn} = useContext(CurrentUserContext);
+    const location = useLocation();
 
     return (
         <>
             <div className="navigation">
-                { !loggedIn && (
+                { location.pathname === "/" && (
                     <div className="navigation__notauth">
                         <Link to="/signup" className="navigation__button-signup">Регистрация</Link>
                         <Link to="/signin" className="navigation__button-signin">Войти</Link>
                     </div>
                 )}
 
-                { loggedIn && (
+                { location.pathname !== "/" && loggedIn && (
                     <div className="navigation__auth">
                         <div className="navigation__container-auth">
                             <div className="navigation__films">

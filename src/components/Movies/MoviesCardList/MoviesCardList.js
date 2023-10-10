@@ -40,7 +40,8 @@ export function MoviesCardList({
             <ul className="movies-cardlist__container">
                 {toRender.map(movie => {
                     return (
-                        <li key={movie.id}>
+                        // <li key={location.pathname === "/movies" ? movie.id : movie._id}>
+                        <li key={location.pathname === "/movies" ? movie.id : movie.movieId}>
                             <MoviesCard 
                                 movie={movie}
                                 savedMovies={savedMovies}

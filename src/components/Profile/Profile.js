@@ -36,7 +36,8 @@ export function Profile({user, setUser}) {
     function handleLogout() {
         console.log("in handleLogout loggedIn set to false");
         setLoggedIn(false);
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
+        localStorage.removeItem('foundMovies');
         navigate("/signin");
         
     }
