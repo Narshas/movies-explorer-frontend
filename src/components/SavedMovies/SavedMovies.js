@@ -18,13 +18,10 @@ export function SavedMovies({savedMovies, handleLike}) {
             movie.nameRU.toLowerCase().includes(localQuery.toLowerCase()) ||
             movie.nameEN.toLowerCase().includes(localQuery.toLowerCase())
         )
-
         if (isToggleActive) {
             results = filterShortMovies(results);
         }
-        
         setFiltredSavedMovies(results)
-
     }, [savedMovies, localQuery, isToggleActive]);
 
     useEffect(() => {
@@ -36,6 +33,10 @@ export function SavedMovies({savedMovies, handleLike}) {
             }
         }
     }, [localQuery, savedMovies, filtredSavedtMovies]);
+
+    // useEffect(() => {
+    //     setFiltredSavedMovies(savedMovies);
+    // }, [savedMovies]);
 
     const filterShortMovies = (arrayMovies) => {
         let results = arrayMovies.filter(movie => movie.duration <= 40);

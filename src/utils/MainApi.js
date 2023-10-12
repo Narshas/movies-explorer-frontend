@@ -75,10 +75,9 @@ export function patchUserInfo(userData) {
 }
 
 export function changeSaveStatus(movieData, isSave) {
-    console.log("Making request to:", '/movies/${movieData.id}');
     const currentToken = localStorage.getItem('token');
     if (isSave) {
-        return fetch(`${settings.baseUrl}/movies/${movieData.movieId}`, {
+        return fetch(`${settings.baseUrl}/movies/${movieData._id}`, {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",
@@ -89,7 +88,6 @@ export function changeSaveStatus(movieData, isSave) {
             return testRes(res);
         })
     } else {
-        console.log("Making request to:", '/movies');
         return fetch(`${settings.baseUrl}/movies`, {
             method: 'POST',
             headers: {
@@ -116,8 +114,21 @@ export function changeSaveStatus(movieData, isSave) {
     }
 }
 
+export function deleteMovie(movieData) {
+    const currentToken = localStorage.getItem('token');
+    return fetch(`${settings.baseUrl}/movies/${movieData._id}`, {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentToken}`,
+        },
+    })
+    .then(res => {
+        return testRes(res);
+    })
+}
+
 export function getSavedMovies() {
-    console.log("Making request to:", '/movies');
     const currentToken = localStorage.getItem('token');
     return fetch(`${settings.baseUrl}/movies`, {
         headers: {

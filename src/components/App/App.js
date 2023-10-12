@@ -10,7 +10,7 @@ import { Login } from "../Login/Login";
 import { Register } from "../Register/Register";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Popup } from "../Popup/Popup";
-import { getSavedMovies, getUserInfo, changeSaveStatus, tokenCheker, authoraizer } from "../../utils/MainApi";
+import { getSavedMovies, getUserInfo, changeSaveStatus, tokenCheker, authoraizer, deleteMovie } from "../../utils/MainApi";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 export const CurrentUserContext = createContext();
@@ -27,13 +27,14 @@ export function App() {
 
   // ======== UserData =========
 
-  console.log("Rendering App component. Current loggedIn state:", loggedIn);
+  useEffect(() => {
+    checkToken()
+  }, [])
 
   const logOut = () => {
         setLoggedIn(false);
         localStorage.removeItem('token');
-        navigate('/signin');
-        console.log('logout called');
+        navigate('/signin'); 
   }
 
   const loadUserData = () => {
@@ -49,13 +50,11 @@ export function App() {
   }
 
   const checkToken = () => {
-    console.log("Entered checkToken function");
     const currentToken = localStorage.getItem('token');
     if (currentToken) {
       tokenCheker(currentToken)
         .then(res => {
           if(res) {
-            console.log("in tokenCheker loggedIn set to true");
             setLoggedIn(true);
             loadUserData();
           } else {
@@ -63,36 +62,33 @@ export function App() {
           }
         })
         .catch((err) => {
-          // setUser(null);
           console.log('tokenCheker bad result', err);
           return logOut();
         });
     } else {
       return logOut();
     }
-  }
-
-  useEffect(() => {
-    console.log("Checking token on App mount");
-    checkToken()
-  }, [])
+  }  
 
   function handleLogin(email, password) {
-        console.log("Attempt to login with email:", email);
         authoraizer({ email, password })
           .then(res => {
               if (res && res.message) {
                   console.log(res.message);
               } else {
-                  // setLoggedIn(true);
                   localStorage.setItem('token', res.token);
                   checkToken();
-                  console.log("Login successful. Token received:", res.token);
                   navigate("/movies");
               }
           })
           .catch(error => {
               console.log(error)
+              if (error .code === 500) {
+                popupOpen('Wrong password or email')
+              }
+              if (error .code === 401) {
+                popupOpen('We have an error on server')
+              }
           });
   }
 
@@ -107,32 +103,58 @@ export function App() {
     setPopupText('');
   }
 
+  useEffect(() => {
+    if (PageNotFound) {
+      navigate();
+    } else {
+      const lastRoute = window.sessionStorage.getItem("lastRoute");
+      if (lastRoute) {
+          navigate(JSON.parse(lastRoute));
+      }
+    }
+    const handleBeforeUnload = () => {
+      window.sessionStorage.setItem(
+        "lastRoute",
+        JSON.stringify(window.location.pathname)
+      );
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [navigate, PageNotFound]);
 
   // ======== Movies =========
 
-  const handleLike = (movie) => {
-    console.log("handleLike called for movie:", movie);
-    if (!savedMovies.some((i) => i.movieID === movie.id)) {
-      return changeSaveStatus(movie, false)
+  const handleLike = (movieCard) => {
+    if (!savedMovies.some(i => i.movieID === movieCard.id)) {
+      return changeSaveStatus(movieCard, false)
         .then(res => {
-          console.log("Before update:", savedMovies);
-          setSavedMovies([res].concat(savedMovies));
-          console.log("After update:", savedMovies);
+          setSavedMovies(prevMovies => [res, ...prevMovies]);
         })
         .catch(err => {
           console.log(err);
         });
     } else {
-      return changeSaveStatus(movie, true)
+      return changeSaveStatus(movieCard, true)
         .then(res => {
-          console.log("Saved movies after removing:", savedMovies);
-          setSavedMovies(savedMovies => savedMovies.filter(i => i.movieID !== res.id));
+          setSavedMovies(prevMovies => prevMovies.filter(i => i.movieID !== res.movieID));
         })
         .catch(err => {
           console.log(err);
         })
     }
-  } 
+  }
+
+  const handleDeleteMovie = (movieCard) => {
+    return deleteMovie(movieCard)
+      .then(res => {
+        setSavedMovies(prevMovies => prevMovies.filter(i => i.movieID !== res.movieID));
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 
   return (
       <CurrentUserContext.Provider value={{ loggedIn, setLoggedIn, popupOpen }}> 
@@ -158,6 +180,7 @@ export function App() {
                     savedMovies={savedMovies}
                     loggedIn={loggedIn}
                     handleLike={handleLike}
+                    handleDeleteMovie={handleDeleteMovie}
                   />
                 </ProtectedRoute>
               }

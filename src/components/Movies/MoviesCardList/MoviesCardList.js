@@ -14,23 +14,26 @@ export function MoviesCardList({
 }) {
 
     const [toRender, setToRender] = useState([]);
-    const location = useLocation();    
+    const location = useLocation();
+    
+    
 
     useEffect(() => {
         if (location.pathname === "/saved-movies") {
             setToRender(savedMovies.slice(0, shownCards));
-        }
-    }, [shownCards, savedMovies])
-
-    useEffect(() => {
-        if (location.pathname === "/movies") {
+        } else if (location.pathname === "/movies") {
             if (shownMovies.length) {
                 setToRender(shownMovies.slice(0, shownCards));
             } else if (foundMovies.length) {
                 setToRender(foundMovies.slice(0, shownCards));
             }
         }
-    }, [shownMovies, foundMovies, shownCards])
+
+    }, [shownCards, shownMovies, savedMovies, foundMovies, location.pathname])
+
+    useEffect(() => {
+        console.log("MoviesCardList useEffect triggered. Current toRender:", toRender);
+    }, [toRender]);
 
     // const validMovies = toRender.filter(movie => movie !== undefined);
 
@@ -41,13 +44,13 @@ export function MoviesCardList({
             ) : (
                 <>
                     <ul className="movies-cardlist__container">
-                        {toRender.map(movie => {
+                        {toRender.map(movieCard => {
                             return (
                                 // <li key={location.pathname === "/movies" ? movie.id : movie._id}>
-                                <li key={location.pathname === "/movies" ? movie.id : movie.movieId}>
-                                    {console.log(location.pathname === "/movies" ? movie.id : movie.movieId)} 
+                                <li key={location.pathname === "/movies" ? movieCard.id : movieCard._id}>
+                                    {console.log(location.pathname === "/movies" ? movieCard.id : movieCard.movieId)} 
                                     <MoviesCard 
-                                        movie={movie}
+                                        movieCard={movieCard}
                                         savedMovies={savedMovies}
                                         handleLike={handleLike}
                                         

@@ -29,10 +29,11 @@ export function Register() {
         register({ name, email, password })
             .then(res => {
                 if (res.message) {
+                    console.log(res.message)
                     popupOpen(res.message);
                     return Promise.reject(res.message);
                 } else {
-                    return authoraizer({ email, password });
+                    return authoraizer({ password, email });
                 }
             })
             .then(res => {

@@ -2,14 +2,15 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
 
-export function MoviesCard({ movie, savedMovies, handleLike}) {
+export function MoviesCard({ movieCard, savedMovies, handleLike}) {
     const location = useLocation();
 
-    let isSaved = savedMovies.some((i) => i.movieID === movie.id);
+    console.log("Checking movieCard.id:", movieCard._id);
+    let isSaved = savedMovies.some((i) => i.movieID === movieCard.movieID);
 
     const handleLikeButton = () => {
-        console.log("handleLikeButton clicked for movie:", movie);
-        handleLike(movie)
+        console.log("handleLikeButton clicked for movie:", movieCard);
+        handleLike(movieCard)
             .then(() => {
                 isSaved = !isSaved;
             })
@@ -18,19 +19,19 @@ export function MoviesCard({ movie, savedMovies, handleLike}) {
     }
 
     let coverSrc = location.pathname === "/movies" 
-    ? `https://api.nomoreparties.co${movie.image.url}` 
-    : movie.image;
+    ? `https://api.nomoreparties.co${movieCard.image.url}` 
+    : movieCard.image;
 
     return (
         <div className="movies-card">
-            <a className="movies-card__link" href={movie.trailerLink} target="_blank" rel="noreferrer">
+            <a className="movies-card__link" href={movieCard.trailerLink} target="_blank" rel="noreferrer">
                 <img className="movies-card__cover" src={coverSrc} alt="Обложка фильма"/>    
             </a>
             <div className="movies-card__about">
-                <h2 className="movies-card__name">{movie.nameRU}</h2>
+                <h2 className="movies-card__name">{movieCard.nameRU}</h2>
                 <button type="button" className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} onClick={handleLikeButton}></button>
             </div>
-            <p className="movies-card__duration">{Math.floor(movie.duration / 60) + 'ч' + (movie.duration % 60) + 'м'}</p>
+            <p className="movies-card__duration">{Math.floor(movieCard.duration / 60) + 'ч' + (movieCard.duration % 60) + 'м'}</p>
         </div>
     );
 }

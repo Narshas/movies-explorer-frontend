@@ -34,27 +34,31 @@ export function Profile({user, setUser}) {
     }, [email, name])
 
     function handleLogout() {
-        console.log("in handleLogout loggedIn set to false");
         setLoggedIn(false);
         localStorage.removeItem('token');
         localStorage.removeItem('foundMovies');
         navigate("/signin");
-        
     }
 
     function handlePatchUser({ name, email }) {
         patchUserInfo({ name, email })
-        .then(res => {
-            setUser(res)
-            if (res.message) {
-                popupOpen(res.message)
-            } else {
-                popupOpen("you have just updated your profile")
-            }
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            .then(res => {
+                setUser(res)
+                if (res.message) {
+                    popupOpen(res.message)
+                } else {
+                    popupOpen("you have just updated your profile")
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                if (error.code === 500) {
+                    popupOpen('We have an error on server');
+                }
+                if (error.code === 409) {
+                    popupOpen('We already have a user with this email');
+                }
+            })
     }
 
     function handleInputName (e) {
