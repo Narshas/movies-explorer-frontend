@@ -111,10 +111,13 @@ export function App() {
   // ======== Movies =========
 
   const handleLike = (movie) => {
+    console.log("handleLike called for movie:", movie);
     if (!savedMovies.some((i) => i.movieID === movie.id)) {
       return changeSaveStatus(movie, false)
         .then(res => {
+          console.log("Before update:", savedMovies);
           setSavedMovies([res].concat(savedMovies));
+          console.log("After update:", savedMovies);
         })
         .catch(err => {
           console.log(err);
@@ -122,6 +125,7 @@ export function App() {
     } else {
       return changeSaveStatus(movie, true)
         .then(res => {
+          console.log("Saved movies after removing:", savedMovies);
           setSavedMovies(savedMovies => savedMovies.filter(i => i.movieID !== res.id));
         })
         .catch(err => {

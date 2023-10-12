@@ -32,26 +32,32 @@ export function MoviesCardList({
         }
     }, [shownMovies, foundMovies, shownCards])
 
+    // const validMovies = toRender.filter(movie => movie !== undefined);
+
     return (
         <section className="movies-cardlist">
-            {searchError && (
+            {searchError ? (
                 <div className="movies-cardlist_error">{searchError}</div>
+            ) : (
+                <>
+                    <ul className="movies-cardlist__container">
+                        {toRender.map(movie => {
+                            return (
+                                // <li key={location.pathname === "/movies" ? movie.id : movie._id}>
+                                <li key={location.pathname === "/movies" ? movie.id : movie.movieId}>
+                                    {console.log(location.pathname === "/movies" ? movie.id : movie.movieId)} 
+                                    <MoviesCard 
+                                        movie={movie}
+                                        savedMovies={savedMovies}
+                                        handleLike={handleLike}
+                                        
+                                    />
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </>
             )}
-            <ul className="movies-cardlist__container">
-                {toRender.map(movie => {
-                    return (
-                        // <li key={location.pathname === "/movies" ? movie.id : movie._id}>
-                        <li key={location.pathname === "/movies" ? movie.id : movie.movieId}>
-                            <MoviesCard 
-                                movie={movie}
-                                savedMovies={savedMovies}
-                                handleLike={handleLike}
-                                
-                            />
-                        </li>
-                    );
-                })}
-            </ul>
         </section>
     );
 }

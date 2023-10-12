@@ -9,7 +9,8 @@ export function SearchForm({
     searchQuery, 
     setSearchQuery,
     handleToggle,
-    isToggleActive
+    isToggleActive,
+    setSearchError
 }) {
     const location = useLocation();
     const [isErr, setIsErr] = useState("");
@@ -19,14 +20,20 @@ export function SearchForm({
             const newQuery = localStorage.getItem('searchQuery');
             setSearchQuery(newQuery);
         }
-    }, [location])
-    
+    }, [location])    
 
     const handleSearch = () => {
         if (!searchQuery.length) {
+            setSearchError('');
             setIsErr(true);
+            return
         } else {
-            handleSearchButton(searchQuery, allMovies, isToggleActive);
+            setIsErr(false);
+            if (location.pathname === "/movies") {
+                handleSearchButton(searchQuery, allMovies, isToggleActive);
+            } else {
+                handleSearchButton(searchQuery);
+            }
         }
     }
 
@@ -43,7 +50,10 @@ export function SearchForm({
                     className="searchform__input"
                     placeholder="Фильм"
                     required
-                    onChange={e => setSearchQuery(e.target.value)}
+                    onChange={e => {
+                        setIsErr(false);
+                        setSearchQuery(e.target.value);
+                    }}
                     type="text"
                     value={searchQuery || ''}
                     onKeyUp={handleEnter}
@@ -55,7 +65,7 @@ export function SearchForm({
                 <div className="searchform__toggle-switcher"></div>
                 <p className="searchform__toggle-text">Короткометражки</p>
             </div>
-            {isErr && <div>{'Нужно ввести ключевое слово'}</div>}
+            {isErr && <div className="searchform__error">{'Нужно ввести ключевое слово'}</div>}
             
         </form>
     );

@@ -27,6 +27,16 @@ export function SavedMovies({savedMovies, handleLike}) {
 
     }, [savedMovies, localQuery, isToggleActive]);
 
+    useEffect(() => {
+        if (localQuery && savedMovies.length) {
+            if (filtredSavedtMovies.length) {
+                setSearchError('');
+            } else {
+                setSearchError('Ничего не найдено');
+            }
+        }
+    }, [localQuery, savedMovies, filtredSavedtMovies]);
+
     const filterShortMovies = (arrayMovies) => {
         let results = arrayMovies.filter(movie => movie.duration <= 40);
         return results;
@@ -49,6 +59,9 @@ export function SavedMovies({savedMovies, handleLike}) {
                         handleSearchButton={transferSearchText}
                         isToggleActive={isToggleActive}
                         handleToggle={handleToggle}
+                        setSearchQuery={setLocalQuery}
+                        searchQuery={localQuery}
+                        setSearchError={setSearchError}
                         
 
                     />

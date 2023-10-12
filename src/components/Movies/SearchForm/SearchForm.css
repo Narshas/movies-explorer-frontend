@@ -120,4 +120,8 @@
         font-size: 11px;
         padding: 0 49px 0 0;
     }
+
+    .searchform__error {
+        text-align: center;
+    }
 }

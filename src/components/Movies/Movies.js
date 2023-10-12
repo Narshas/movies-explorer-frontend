@@ -23,15 +23,6 @@ export function Movies({savedMovies, handleLike }) {
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || '');
     const [shownCards, setShownCards] = useState(presetCards());
 
-    // const handleToggle = () => {
-    //     setIsToggleActive(!isToggleActive);
-    //     if (isToggleActive) {
-    //         setShownMovies(foundMovies);
-    //     } else {
-    //         setShownMovies(filterShortMovies(foundMovies));
-    //     }
-    // }
-
     const handleToggle = () => {
         setIsToggleActive(!isToggleActive);
         if (isToggleActive) {
@@ -61,6 +52,12 @@ export function Movies({savedMovies, handleLike }) {
         } else {
             setShownMovies(results);
         }
+
+        if (shownMovies.length) {
+            setSearchError('');
+        } else {
+            setSearchError('Ничего не найдено');
+        }
     
     }
     
@@ -79,6 +76,7 @@ export function Movies({savedMovies, handleLike }) {
                     setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
                 })
         } else {
+            setSearchError('');
             searchMovies(currentMovies, searchQuery, currentToggleState);
         }
         setIsLoading(false);
@@ -88,15 +86,6 @@ export function Movies({savedMovies, handleLike }) {
     useEffect (() => {
         localStorage.setItem('isToggleActive', isToggleActive);
     }, [isToggleActive])
-
-    useEffect(() => {
-        const currentToggleValue = localStorage.getItem('isToggleActive');
-        if (currentToggleValue === 'true') {
-            setIsToggleActive(true)
-        } else {
-            setIsToggleActive(false)
-        }
-    }, [])
 
     useEffect (() => {
         localStorage.setItem('searchQuery', searchQuery);
@@ -114,6 +103,13 @@ export function Movies({savedMovies, handleLike }) {
     }, [shownMovies, searchQuery, foundMovies]);
 
     useEffect(() => {
+        const currentToggleValue = localStorage.getItem('isToggleActive');
+        if (currentToggleValue === 'true') {
+            setIsToggleActive(true)
+        } else {
+            setIsToggleActive(false)
+        }
+
         const savedMovies = JSON.parse(localStorage.getItem('foundMovies'));
         if (savedMovies && savedMovies.length) {
             setFoundMovies(savedMovies);
@@ -161,11 +157,6 @@ export function Movies({savedMovies, handleLike }) {
         };
     }, []);
 
-    useEffect(() => {
-        const savedToggleValue = localStorage.getItem('isToggleActive');
-        setIsToggleActive(savedToggleValue === 'true');
-    }, []);
-
     return (
         <>
             <Header/>
@@ -178,6 +169,7 @@ export function Movies({savedMovies, handleLike }) {
                     setSearchQuery={setSearchQuery}                    
                     allMovies={allMovies}
                     handleToggle={handleToggle}
+                    setSearchError={setSearchError}
 
                     
                 />

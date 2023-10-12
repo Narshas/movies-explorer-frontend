@@ -4,11 +4,11 @@ import "./MoviesCard.css";
 
 export function MoviesCard({ movie, savedMovies, handleLike}) {
     const location = useLocation();
-    console.log(`Rendering movie card: ${movie.name}`);
 
     let isSaved = savedMovies.some((i) => i.movieID === movie.id);
 
     const handleLikeButton = () => {
+        console.log("handleLikeButton clicked for movie:", movie);
         handleLike(movie)
             .then(() => {
                 isSaved = !isSaved;
