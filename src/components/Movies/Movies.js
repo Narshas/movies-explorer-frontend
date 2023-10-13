@@ -23,19 +23,7 @@ export function Movies({savedMovies, handleLike }) {
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || '');
     const [shownCards, setShownCards] = useState(presetCards());
 
-    const handleToggle = () => {
-        setIsToggleActive(!isToggleActive);
-        if (isToggleActive) {
-            setShownMovies(foundMovies);
-        } else {
-            setShownMovies(filterShortMovies(foundMovies));
-        }
-    }
-
-    const filterShortMovies = (arrayMovies) => {
-            let results = arrayMovies.filter(movie => movie.duration <= 40);
-            return results;
-    }
+    //======search-zone========= 
     
     const searchMovies = (arrMovies, searchQuery, isToggleActive) => {
         let results = arrMovies.filter(movie => 
@@ -52,22 +40,34 @@ export function Movies({savedMovies, handleLike }) {
         } else {
             setShownMovies(results);
         }
-
         if (shownMovies.length) {
             setSearchError('');
         } else {
             setSearchError('Ничего не найдено');
         }
-    
     }
-    
+
+    const filterShortMovies = (arrayMovies) => {
+        let results = arrayMovies.filter(movie => movie.duration <= 40);
+        return results;
+    }
+
+    const handleToggle = () => {
+        if (isToggleActive) {
+            setShownMovies(foundMovies);
+        } else {
+            setShownMovies(filterShortMovies(foundMovies));
+        }
+        setIsToggleActive(!isToggleActive);
+        //нужен, чтобы тогл работал и после поиска
+        //========проверить, не перевернуть ли isToggleActive
+    }
+
     const handleSearchButton = (searchQuery, currentMovies, currentToggleState) => {
         setIsLoading(true)
         if (!currentMovies.length) {
-            console.log('begore fetch allMovies');
             getAllMovies()
                 .then(res => {
-                    console.log('movies fetched:', res);
                     setAllMovies(res);
                     searchMovies(res, searchQuery, currentToggleState);
                 })
@@ -81,7 +81,7 @@ export function Movies({savedMovies, handleLike }) {
         }
         setIsLoading(false);
         setHasSearched(true);
-    }
+    }    
 
     useEffect (() => {
         localStorage.setItem('isToggleActive', isToggleActive);
@@ -93,14 +93,13 @@ export function Movies({savedMovies, handleLike }) {
 
     useEffect(() => {
         if (searchQuery && hasSearched) {
-            if (shownMovies.length || foundMovies.length) {
+            if (shownMovies.length) {
                 setSearchError('');
             } else {
                 setSearchError('Ничего не найдено');
             }
         }
-        
-    }, [shownMovies, searchQuery, foundMovies]);
+    }, [shownMovies, searchQuery]);
 
     useEffect(() => {
         const currentToggleValue = localStorage.getItem('isToggleActive');
@@ -110,17 +109,26 @@ export function Movies({savedMovies, handleLike }) {
             setIsToggleActive(false)
         }
 
-        const savedMovies = JSON.parse(localStorage.getItem('foundMovies'));
-        if (savedMovies && savedMovies.length) {
-            setFoundMovies(savedMovies);
+        const foundMovies = JSON.parse(localStorage.getItem('foundMovies'));
+        if (foundMovies && foundMovies.length) {
             if (isToggleActive) {
-                setShownMovies(filterShortMovies(savedMovies));
+                setShownMovies(filterShortMovies(foundMovies));
             } else {
-                setShownMovies(savedMovies);
+                setShownMovies(foundMovies);
             }
         }
+        // const savedMovies = JSON.parse(localStorage.getItem('foundMovies'));
+        // if (savedMovies && savedMovies.length) {
+        //     setFoundMovies(savedMovies);
+        //     if (isToggleActive) {
+        //         setShownMovies(filterShortMovies(savedMovies));
+        //     } else {
+        //         setShownMovies(savedMovies);
+        //     }
+        // }
     }, []);
 
+    // ==========resize-zone===============
     function presetCards() {
         const windowSize = window.innerWidth;
         if (windowSize >= 1280) {
@@ -181,7 +189,7 @@ export function Movies({savedMovies, handleLike }) {
                         searchError={searchError}
                         shownCards={shownCards}
                         shownMovies={shownMovies}
-                        foundMovies={foundMovies}
+                        // foundMovies={foundMovies}
                     />
                 )}
                 {foundMovies.length > shownCards ? (

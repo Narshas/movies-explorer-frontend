@@ -140,7 +140,7 @@ export function App() {
         .then(res => {
           setSavedMovies(prevMovies => prevMovies.filter(i => i.movieID !== res.movieID));
         })
-        .catch(err => {
+        .catch(err => { 
           console.log(err);
         })
     }

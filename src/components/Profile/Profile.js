@@ -37,6 +37,7 @@ export function Profile({user, setUser}) {
         setLoggedIn(false);
         localStorage.removeItem('token');
         localStorage.removeItem('foundMovies');
+        localStorage.removeItem('foundMovies');
         navigate("/signin");
     }
 

@@ -8,15 +8,14 @@ export function MoviesCardList({
     shownMovies, 
     searchError, 
     savedMovies, 
-    foundMovies, 
+    // foundMovies, 
     handleLike,
-    shownCards
+    shownCards,
+    handleDeleteMovie
 }) {
 
     const [toRender, setToRender] = useState([]);
     const location = useLocation();
-    
-    
 
     useEffect(() => {
         if (location.pathname === "/saved-movies") {
@@ -24,19 +23,14 @@ export function MoviesCardList({
         } else if (location.pathname === "/movies") {
             if (shownMovies.length) {
                 setToRender(shownMovies.slice(0, shownCards));
-            } else if (foundMovies.length) {
-                setToRender(foundMovies.slice(0, shownCards));
-            }
+            } 
+            // else if (foundMovies.length) {
+            //     setToRender(foundMovies.slice(0, shownCards));
+            // }
         }
 
-    }, [shownCards, shownMovies, savedMovies, foundMovies, location.pathname])
-
-    useEffect(() => {
-        console.log("MoviesCardList useEffect triggered. Current toRender:", toRender);
-    }, [toRender]);
-
-    // const validMovies = toRender.filter(movie => movie !== undefined);
-
+    }, [shownCards, shownMovies, savedMovies, location.pathname])
+    // }, [shownCards, shownMovies, savedMovies, foundMovies, location.pathname])
     return (
         <section className="movies-cardlist">
             {searchError ? (
@@ -46,16 +40,15 @@ export function MoviesCardList({
                     <ul className="movies-cardlist__container">
                         {toRender.map(movieCard => {
                             return (
-                                // <li key={location.pathname === "/movies" ? movie.id : movie._id}>
-                                <li key={location.pathname === "/movies" ? movieCard.id : movieCard._id}>
-                                    {console.log(location.pathname === "/movies" ? movieCard.id : movieCard.movieId)} 
-                                    <MoviesCard 
+                                //<li key={location.pathname === "/movies" ? movieCard.id : movieCard._id}>
+                                    <MoviesCard
+                                        key={movieCard.id || movieCard._id}
                                         movieCard={movieCard}
                                         savedMovies={savedMovies}
                                         handleLike={handleLike}
-                                        
+                                        handleDeleteMovie={handleDeleteMovie}
                                     />
-                                </li>
+                                // </li>
                             );
                         })}
                     </ul>

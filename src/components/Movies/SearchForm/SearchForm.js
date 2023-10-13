@@ -32,7 +32,7 @@ export function SearchForm({
             if (location.pathname === "/movies") {
                 handleSearchButton(searchQuery, allMovies, isToggleActive);
             } else {
-                handleSearchButton(searchQuery);
+                handleSearchButton(searchQuery, isToggleActive);
             }
         }
     }
