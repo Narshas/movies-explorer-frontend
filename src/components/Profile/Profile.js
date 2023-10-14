@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../App/App";
 import { getUserInfo, patchUserInfo } from "../../utils/MainApi";
 
-export function Profile({user, setUser}) {
-    const { setLoggedIn, popupOpen } = useContext(CurrentUserContext);
+export function Profile() {
+    const { setLoggedIn, popupOpen, user, setUser } = useContext(CurrentUserContext);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState(user.email);
@@ -15,14 +15,14 @@ export function Profile({user, setUser}) {
 
     useEffect(() => {
         getUserInfo()
-        .then(res => {
-            setUser(res)
-            setEmail(res.email)
-            setName(res.name)
-        })
-        .catch(error => {
-            console.log(error)
-        });
+            .then(res => {
+                setUser(res)
+                setEmail(res.email)
+                setName(res.name)
+            })
+            .catch(error => {
+                console.log(error)
+            });
     }, [])
 
     useEffect(() => {
@@ -36,8 +36,7 @@ export function Profile({user, setUser}) {
     function handleLogout() {
         setLoggedIn(false);
         localStorage.removeItem('token');
-        localStorage.removeItem('foundMovies');
-        localStorage.removeItem('foundMovies');
+        localStorage.clear();
         navigate("/signin");
     }
 

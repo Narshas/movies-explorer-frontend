@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 export function ProtectedRoute ({ loggedIn, children }) {
     return (
         <>
-            { loggedIn ? children : <Navigate to="/signin"/> }
+            { loggedIn ? children : <Navigate to="/"/> }
         </>
     )
 }

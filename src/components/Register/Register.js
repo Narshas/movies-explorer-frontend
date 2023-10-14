@@ -1,15 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { CurrentUserContext } from "../App/App";
-import { authoraizer, register } from "../../utils/MainApi";
 
-export function Register() {
-    const navigate = useNavigate();
-    const {setLoggedIn, popupOpen} = useContext(CurrentUserContext);
-
+export function Register({handleRegister}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -23,35 +17,6 @@ export function Register() {
     const [isEmailTouched, setIsEmailTouched] = useState(false);
     const [isPasswordTouched, setIsPasswordTouched] = useState(false);
     const [isNameTouched, setIsNameTouched] = useState(false);
-
-    function handleRegister(e) {
-        e.preventDefault();
-        register({ name, email, password })
-            .then(res => {
-                if (res.message) {
-                    console.log(res.message)
-                    popupOpen(res.message);
-                    return Promise.reject(res.message);
-                } else {
-                    return authoraizer({ password, email });
-                }
-            })
-            .then(res => {
-                if (res.message) {
-                    console.log(res.message);
-                    return Promise.reject(res.message);
-                } else {
-                    localStorage.setItem('token', res.token);
-                    
-                    setLoggedIn(true);
-                    console.log("in handleRegister loggedIn set to true");
-                    navigate("/movies");
-                }
-            })
-            .catch(error => {
-                console.log('hendleRegister error:', error);
-            });
-    }
 
     useEffect(() => {
         if ( errorEmail || errorPassword || errorName ) {
@@ -132,7 +97,7 @@ export function Register() {
 
                     <h2 className="register__title">Добро пожаловать!</h2>
 
-                    <form className="register__form">
+                    <form className="register__form" onSubmit={e => e.preventDefault()}>
                         <fieldset className="register__fieldset">
                             <div className="register__input-container">
                                 <label className="register__name">
@@ -183,7 +148,7 @@ export function Register() {
                             </div>
                         </fieldset>
                         <div className="register__submit-container">
-                            <button type="submit" className="register__submit" onClick={handleRegister} disabled={!dataValid}>Зарегистрироваться</button>
+                            <button type="submit" className="register__submit" onClick={() => handleRegister(name, email, password)} disabled={!dataValid}>Зарегистрироваться</button>
                             <div className="register__link">
                                 Уже зарегистрированы?
                                 <Link to="/signin" className="register__to-login">Войти</Link>

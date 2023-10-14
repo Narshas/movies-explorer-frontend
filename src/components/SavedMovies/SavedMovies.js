@@ -10,11 +10,14 @@ export function SavedMovies({savedMovies, handleLike, handleDeleteMovie}) {
     // eslint-disable-next-line
     const [searchError, setSearchError] = useState('');
     const [isToggleActive, setIsToggleActive] = useState(false);
-    const [filtredSavedtMovies, setFiltredSavedMovies] = useState([]);
+    const [filtredSavedMovies, setFiltredSavedMovies] = useState(savedMovies);
     const [localQuery, setLocalQuery] = useState('');
+
+    console.log('savedMovies после обновления — в savedMovies', savedMovies);
 
     useEffect(() => {
         setFiltredSavedMovies(savedMovies);
+        // setFiltredSavedMovies(searchSavedMovies(localQuery, isToggleActive));
     }, [savedMovies]);
 
     const searchSavedMovies = (localQuery, isToggleActive) => {
@@ -31,7 +34,13 @@ export function SavedMovies({savedMovies, handleLike, handleDeleteMovie}) {
     }
 
     const handleToggle = () => {
-        setIsToggleActive(!isToggleActive)
+        if (isToggleActive) {
+            setFiltredSavedMovies(savedMovies);
+        } else {
+            setFiltredSavedMovies(filterShortMovies(savedMovies));
+        }
+        setIsToggleActive(!isToggleActive);
+
     }
 
     const filterShortMovies = (arrayMovies) => {
@@ -43,34 +52,6 @@ export function SavedMovies({savedMovies, handleLike, handleDeleteMovie}) {
         setLocalQuery(text);
         searchSavedMovies (text, isToggleActive);
     }
-
-    // const transferSearchText = (text) => {
-    //     setLocalQuery(text);
-    // };
-
-    //тут надо подумать: возможно этот эффект как раз приводит 
-    //к не-отрисовке после удаления
-
-    // useEffect(() => {
-    //     if (localQuery && savedMovies.length) {
-    //         if (filtredSavedtMovies.length) {
-    //             setSearchError('');
-    //         } else {
-    //             setSearchError('Ничего не найдено');
-    //         }
-    //     }
-    // }, [localQuery, savedMovies, filtredSavedtMovies]);
-
-    // useEffect(() => {
-    //     let results = savedMovies.filter(movie => 
-    //         movie.nameRU.toLowerCase().includes(localQuery.toLowerCase()) ||
-    //         movie.nameEN.toLowerCase().includes(localQuery.toLowerCase())
-    //     )
-    //     if (isToggleActive) {
-    //         results = filterShortMovies(results);
-    //     }
-    //     setFiltredSavedMovies(results)
-    // }, [savedMovies, localQuery, isToggleActive]);
 
     return (
         <>
@@ -86,7 +67,7 @@ export function SavedMovies({savedMovies, handleLike, handleDeleteMovie}) {
                     />
                     <MoviesCardList
                         handleLike={handleLike}
-                        savedMovies={filtredSavedtMovies}
+                        savedMovies={filtredSavedMovies}
                         searchError={searchError}
                         isToggleActive={isToggleActive}
                         handleDeleteMovie={handleDeleteMovie}

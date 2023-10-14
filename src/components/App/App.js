@@ -10,44 +10,52 @@ import { Login } from "../Login/Login";
 import { Register } from "../Register/Register";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Popup } from "../Popup/Popup";
-import { getSavedMovies, getUserInfo, changeSaveStatus, tokenCheker, authoraizer, deleteMovie } from "../../utils/MainApi";
+import { getSavedMovies, getUserInfo, changeSaveStatus, tokenCheker, authoraizer, deleteMovie, register } from "../../utils/MainApi";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 export const CurrentUserContext = createContext();
 const defoltUser = {name: '', email: ''}
 
 export function App() {
-  
+  const navigate = useNavigate();
   const [user, setUser] = useState(defoltUser);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupText, setPopupText] = useState('');
   const [savedMovies, setSavedMovies] = useState([]);
-  const navigate = useNavigate();
+  
 
   // ======== UserData =========
 
   useEffect(() => {
     checkToken()
-  }, [])
+  }, [])  
 
-  const logOut = () => {
-        setLoggedIn(false);
-        localStorage.removeItem('token');
-        navigate('/signin'); 
-  }
+  // const loadUserData = () => {
+  //   Promise.all([getUserInfo(), getSavedMovies()])
+  //     .then(([userInfo, savedMoviesList]) => {
+  //         setUser(userInfo);
+  //         setSavedMovies(savedMoviesList);
+  //     })
+  //     .catch(err => {
+  //         console.log(err);
+  //         logOut();
+  //     });
+  // }
 
-  const loadUserData = () => {
-    Promise.all([getUserInfo(), getSavedMovies()])
-    .then(([userInfo, savedMoviesList]) => {
-        setUser(userInfo);
-        setSavedMovies(savedMoviesList);
-    })
-    .catch(err => {
-        console.log(err);
-        logOut();
-    });
-  }
+  useEffect(() => {
+    if (loggedIn) {
+      Promise.all([getUserInfo(), getSavedMovies()])
+      .then(([userInfo, savedMoviesList]) => {
+          setUser(userInfo);
+          setSavedMovies(savedMoviesList);
+      })
+      .catch(err => {
+          console.log(err);
+          logOut();
+      });
+    }
+  }, [loggedIn]);
 
   const checkToken = () => {
     const currentToken = localStorage.getItem('token');
@@ -56,7 +64,7 @@ export function App() {
         .then(res => {
           if(res) {
             setLoggedIn(true);
-            loadUserData();
+            // loadUserData();
           } else {
             return logOut();
           }
@@ -70,11 +78,19 @@ export function App() {
     }
   }  
 
+  const logOut = () => {
+    setLoggedIn(false);
+    localStorage.removeItem('token');
+    navigate('/signin'); 
+  }
+
   function handleLogin(email, password) {
         authoraizer({ email, password })
           .then(res => {
               if (res && res.message) {
                   console.log(res.message);
+                  popupOpen(res.message);
+                  return Promise.reject(res.message);
               } else {
                   localStorage.setItem('token', res.token);
                   checkToken();
@@ -83,13 +99,35 @@ export function App() {
           })
           .catch(error => {
               console.log(error)
-              if (error .code === 500) {
-                popupOpen('Wrong password or email')
-              }
-              if (error .code === 401) {
+              if (error === 'Ошибка: 500') {
                 popupOpen('We have an error on server')
               }
+              if (error === 'Ошибка: 401') {
+                popupOpen('Wrong password or email')
+              }
           });
+  }
+
+  function handleRegister(name, email, password) {
+    register({ name, email, password })
+        .then(res => {
+            if (res & res.message) {
+                console.log(res.message)
+                popupOpen(res.message);
+                return Promise.reject(res.message);
+            } else {
+                handleLogin(email, password)
+            }
+        })
+        .catch(error => {
+          console.log(error)
+          if (error === 'Ошибка: 500') {
+              popupOpen('We have an error on server');
+          }
+          if (error === 'Ошибка: 409') {
+              popupOpen('We already have a user with this email');
+          }
+        })
   }
 
   // ======== Support =========
@@ -127,29 +165,41 @@ export function App() {
   // ======== Movies =========
 
   const handleLike = (movieCard) => {
-    if (!savedMovies.some(i => i.movieID === movieCard.id)) {
+    console.log('saved movies before put like', savedMovies)
+    if (!savedMovies.some(i => i.movieId === movieCard.id)) {
       return changeSaveStatus(movieCard, false)
         .then(res => {
+          console.log('что возвращает putlike', res);
           setSavedMovies(prevMovies => [res, ...prevMovies]);
+          console.log('savedMovies после like — в app', savedMovies);
         })
         .catch(err => {
           console.log(err);
         });
     } else {
-      return changeSaveStatus(movieCard, true)
-        .then(res => {
-          setSavedMovies(prevMovies => prevMovies.filter(i => i.movieID !== res.movieID));
-        })
-        .catch(err => { 
-          console.log(err);
-        })
+      const deletedMovie = savedMovies.find(i => i.movieId === movieCard.id);
+      if (deletedMovie && deletedMovie._id) {
+        return changeSaveStatus(deletedMovie, true)
+          .then(res => {
+            console.log('что возвращает dislike', res);
+            // setSavedMovies(prevMovies => prevMovies.filter(i => i.movieId !== res.movieId));
+            setSavedMovies(prevMovies => prevMovies.filter(i => i.movieId !== movieCard.id));
+            console.log('savedMovies после like — в app', savedMovies);
+          })
+          .catch(err => { 
+            console.log(err);
+          })
+      } else {
+        console.log('this movie is not in SavedMovies');
+      }
+      
     }
   }
 
   const handleDeleteMovie = (movieCard) => {
     return deleteMovie(movieCard)
-      .then(res => {
-        setSavedMovies(prevMovies => prevMovies.filter(i => i.movieID !== res.movieID));
+      .then(() => {
+        setSavedMovies(prevMovies => prevMovies.filter(i => i._id !== movieCard._id))
       })
       .catch(err => {
         console.log(err);
@@ -157,7 +207,7 @@ export function App() {
   }
 
   return (
-      <CurrentUserContext.Provider value={{ loggedIn, setLoggedIn, popupOpen }}> 
+      <CurrentUserContext.Provider value={{ loggedIn, setLoggedIn, popupOpen, user, setUser }}> 
         <div className="app">
           <Routes>
             <Route path="/" element={<Main/>} />
@@ -167,9 +217,7 @@ export function App() {
                   <Movies 
                     loggedIn={loggedIn}
                     savedMovies={savedMovies}
-                    handleLike={handleLike}
-                    
-              
+                    handleLike={handleLike}              
                   />
                 </ProtectedRoute>
               } 
@@ -187,7 +235,7 @@ export function App() {
             />
             <Route path="/signup" element={
               <Register
-          
+                handleRegister={handleRegister}
               />
             }
             />
@@ -202,8 +250,8 @@ export function App() {
             <Route path="/profile" element={
                 <ProtectedRoute loggedIn={loggedIn}>
                   <Profile
-                    user={user}
-                    setUser={setUser}
+                    // user={user}
+                    // setUser={setUser}
                   />
                 </ProtectedRoute>
               }

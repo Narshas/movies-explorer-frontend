@@ -1,30 +1,25 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./MoviesCard.css";
 
 export function MoviesCard({ movieCard, savedMovies, handleLike, handleDeleteMovie}) {
     const location = useLocation();
-    // const [isSaved, setIsSaved] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
 
-    // const isSaved = savedMovies.some((i) => i.movieID === movieCard.movieID);
-    let isSaved = location.pathname === "/movies"
-    ? savedMovies.some((i) => i.movieID === movieCard.id)
-    : true;
-
-    // useEffect(() => {
-    //     setIsSaved(savedMovies.some((i) => i.movieID === movieCard.movieID));
-    // }, [savedMovies]);
+    useEffect(() => {
+        setIsSaved(location.pathname === "/movies" ? savedMovies.some((i) => i.movieId === movieCard.id) : true);
+    }, [savedMovies, location.pathname, movieCard.id]);
 
     const handleButtonClick = () => {
+        console.log('isSaved before change', isSaved);
         if (location.pathname === "/saved-movies") {
-            handleDeleteMovie(movieCard);
+            handleDeleteMovie(movieCard)
         } else {
             handleLike(movieCard)
                 .then(() => {
-                    // setIsSaved(!isSaved);
-                    isSaved = !isSaved;
-                    console.log('isSaved changed, now it is:', isSaved);
+                    setIsSaved(!isSaved);
+                    // isSaved = !isSaved;
                 })
                 .catch(err => console.log(err));
         }
@@ -34,8 +29,6 @@ export function MoviesCard({ movieCard, savedMovies, handleLike, handleDeleteMov
     ? `https://api.nomoreparties.co${movieCard.image.url}` 
     : movieCard.image;
 
-    let buttonCSS = `movies-card__button ${isSaved ? "movies-card__button_active" : ""}`;
-
     return (
         <div className="movies-card">
             <a className="movies-card__link" href={movieCard.trailerLink} target="_blank" rel="noreferrer">
@@ -44,7 +37,7 @@ export function MoviesCard({ movieCard, savedMovies, handleLike, handleDeleteMov
             <div className="movies-card__about">
                 <h2 className="movies-card__name">{movieCard.nameRU}</h2>
                 <button type="button" 
-                    className={buttonCSS} 
+                    className={`movies-card__button ${isSaved ? "movies-card__button_active" : ""}`} 
                     onClick={handleButtonClick}
                 >
                 </button>

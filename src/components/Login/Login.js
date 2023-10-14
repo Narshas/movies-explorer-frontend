@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./Login.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
-// import { authoraizer } from "../../utils/MainApi";
-// import { CurrentUserContext } from "../App/App";
 
 export function Login({handleLogin}) {
-    // const navigate = useNavigate();
-    // const {setLoggedIn} = useContext(CurrentUserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorEmail, setErrorEmail] = useState('');
@@ -36,7 +32,6 @@ export function Login({handleLogin}) {
     }
 
     function handleInputEmail(e) {
-        console.log("Email input changed:", e.target.value);
         handleInputTouched(e)
         const validationRegx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
         if (validationRegx.test(String(e.target.value).toLowerCase())) {
@@ -49,7 +44,6 @@ export function Login({handleLogin}) {
     }
 
     function handleInputPassword(e) {
-        console.log("Password input changed:", e.target.value);
         handleInputTouched(e)
         if (e.target.value.length > 3 && e.target.value.length < 11) {
             setPassword(e.target.value)

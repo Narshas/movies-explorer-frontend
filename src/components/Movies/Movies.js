@@ -13,7 +13,7 @@ export function Movies({savedMovies, handleLike }) {
     console.log("Movies is rendering");
     const [isLoading, setIsLoading] = useState(false);
     const [foundMovies, setFoundMovies] = useState([]);
-    const [isToggleActive, setIsToggleActive] = useState(false);
+    const [isToggleActive, setIsToggleActive] = useState(localStorage.getItem("isToggleActive") === 'true');
     const [allMovies, setAllMovies] = useState([]);
 
     const [searchError, setSearchError] = useState('');
@@ -36,7 +36,7 @@ export function Movies({savedMovies, handleLike }) {
         if (isToggleActive) {
             const filteredResults = filterShortMovies(results);
             setShownMovies(filteredResults);
-            localStorage.setItem('filtredShortMovies', JSON.stringify(filteredResults));
+            //localStorage.setItem('filtredShortMovies', JSON.stringify(filteredResults));
         } else {
             setShownMovies(results);
         }
@@ -53,18 +53,30 @@ export function Movies({savedMovies, handleLike }) {
     }
 
     const handleToggle = () => {
-        if (isToggleActive) {
-            setShownMovies(foundMovies);
-        } else {
+        setIsToggleActive(prev => !prev);
+        if (!isToggleActive) {
             setShownMovies(filterShortMovies(foundMovies));
+        } else {
+            setShownMovies(foundMovies);
         }
-        setIsToggleActive(!isToggleActive);
-        //нужен, чтобы тогл работал и после поиска
-        //========проверить, не перевернуть ли isToggleActive
-    }
+    };
+
+    // const handleToggle = () => {
+    //     console.log('toggle touched');
+    //     if (isToggleActive) {
+    //         setShownMovies(foundMovies);
+    //     } else {
+    //         setShownMovies(filterShortMovies(foundMovies));
+    //     }
+    //     setIsToggleActive(!isToggleActive);
+    //     //нужен, чтобы тогл работал и после поиска
+    //     //========проверить, не перевернуть ли isToggleActive
+        
+    // }
 
     const handleSearchButton = (searchQuery, currentMovies, currentToggleState) => {
         setIsLoading(true)
+        console.log('now IsLoading(true)')
         if (!currentMovies.length) {
             getAllMovies()
                 .then(res => {
@@ -75,15 +87,18 @@ export function Movies({savedMovies, handleLike }) {
                     console.log(err);
                     setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
                 })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         } else {
             setSearchError('');
             searchMovies(currentMovies, searchQuery, currentToggleState);
         }
-        setIsLoading(false);
         setHasSearched(true);
     }    
 
     useEffect (() => {
+        console.log('toggle added to storage like', isToggleActive);
         localStorage.setItem('isToggleActive', isToggleActive);
     }, [isToggleActive])
 
@@ -102,28 +117,34 @@ export function Movies({savedMovies, handleLike }) {
     }, [shownMovies, searchQuery]);
 
     useEffect(() => {
-        const currentToggleValue = localStorage.getItem('isToggleActive');
-        if (currentToggleValue === 'true') {
-            setIsToggleActive(true)
-        } else {
-            setIsToggleActive(false)
+        localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+    }, [foundMovies]);
+
+    useEffect(() => {
+        const currentToggleValue = localStorage.getItem('isToggleActive') === 'true';
+        const currenQueryValue = localStorage.getItem('searchQuery');
+
+        setIsToggleActive(currentToggleValue);
+        setSearchQuery(currenQueryValue || '');
+
+        if (currenQueryValue) {
+            handleSearchButton(currenQueryValue, allMovies, currentToggleValue);
         }
 
-        const foundMovies = JSON.parse(localStorage.getItem('foundMovies'));
-        if (foundMovies && foundMovies.length) {
-            if (isToggleActive) {
-                setShownMovies(filterShortMovies(foundMovies));
-            } else {
-                setShownMovies(foundMovies);
-            }
-        }
-        // const savedMovies = JSON.parse(localStorage.getItem('foundMovies'));
-        // if (savedMovies && savedMovies.length) {
-        //     setFoundMovies(savedMovies);
+        // const currentToggleValue = localStorage.getItem('isToggleActive');
+        // console.log('currentToggleValue now is', currentToggleValue);
+        // if (currentToggleValue === 'true') {
+        //     setIsToggleActive(true)
+        // } else {
+        //     setIsToggleActive(false)
+        // }
+
+        // const foundMovies = JSON.parse(localStorage.getItem('foundMovies'));
+        // if (foundMovies && foundMovies.length) {
         //     if (isToggleActive) {
-        //         setShownMovies(filterShortMovies(savedMovies));
+        //         setShownMovies(filterShortMovies(foundMovies));
         //     } else {
-        //         setShownMovies(savedMovies);
+        //         setShownMovies(foundMovies);
         //     }
         // }
     }, []);

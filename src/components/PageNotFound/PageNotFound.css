@@ -28,6 +28,8 @@
     color: #3456F3;
     font-size: 14px;
     font-weight: 400;
+    background: none;
+    border: none;
 }
 
 .pageNotFound__link:hover {
