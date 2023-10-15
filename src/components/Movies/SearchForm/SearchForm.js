@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 
 export function SearchForm({
     handleSearchButton,
-    allMovies,
+    // allMovies,
     searchQuery, 
     setSearchQuery,
     handleToggle,
@@ -29,11 +29,13 @@ export function SearchForm({
             return
         } else {
             setIsErr(false);
-            if (location.pathname === "/movies") {
-                handleSearchButton(searchQuery, allMovies, isToggleActive);
-            } else {
-                handleSearchButton(searchQuery, isToggleActive);
-            }
+            handleSearchButton(searchQuery, isToggleActive);
+            // if (location.pathname === "/movies") {
+            //     // handleSearchButton(searchQuery, allMovies, isToggleActive);
+            //     handleSearchButton(searchQuery, isToggleActive);
+            // } else {
+            //     handleSearchButton(searchQuery, isToggleActive);
+            // }
         }
     }
 
@@ -49,7 +51,6 @@ export function SearchForm({
                 <input 
                     className="searchform__input"
                     placeholder="Фильм"
-                    required
                     onChange={e => {
                         setIsErr(false);
                         setSearchQuery(e.target.value);

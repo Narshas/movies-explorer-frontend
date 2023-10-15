@@ -19,12 +19,12 @@ export function Register({handleRegister}) {
     const [isNameTouched, setIsNameTouched] = useState(false);
 
     useEffect(() => {
-        if ( errorEmail || errorPassword || errorName ) {
+        if ( errorEmail || errorPassword || errorName || !email || !password || !name) {
             setDataValid(false)
         } else {
             setDataValid(true)
         }
-    }, [errorEmail, errorPassword, errorName])
+    }, [errorEmail, errorPassword, errorName, email, password, name])
 
     function handleInputTouched(e) {
         const inputName = e.target.name;

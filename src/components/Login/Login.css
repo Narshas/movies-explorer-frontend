@@ -110,6 +110,11 @@
     cursor: pointer;
 }
 
+.login__submit:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 .login__submit:hover {
     opacity: 0.7;
 }

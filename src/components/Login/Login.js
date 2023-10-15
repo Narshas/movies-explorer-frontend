@@ -14,12 +14,12 @@ export function Login({handleLogin}) {
     const [isPasswordTouched, setIsPasswordTouched] = useState(false);
 
     useEffect(() => {
-        if ( errorEmail || errorPassword ) {
+        if ( errorEmail || errorPassword || !email || !password) {
             setDataValid(false)
         } else {
             setDataValid(true)
         }
-    }, [errorEmail, errorPassword])
+    }, [errorEmail, errorPassword, email, password])
 
     function handleInputTouched(e) {
         const inputName = e.target.name;
@@ -85,8 +85,7 @@ export function Login({handleLogin}) {
                                 <label className="login__email">
                                     E-mail
                                     <input className="login__input" 
-                                        placeholder="type your email here" 
-                                        required
+                                        placeholder="type your email here"
                                         name="email"
                                         value={email}
                                         type="email"
@@ -101,8 +100,7 @@ export function Login({handleLogin}) {
                                 <label className="login__password">
                                     Пароль
                                     <input className="login__input" 
-                                        placeholder="and your password here" 
-                                        required 
+                                        placeholder="and your password here"
                                         minLength="4" maxLength="10"
                                         name="password"
                                         type="password"

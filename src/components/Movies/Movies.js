@@ -24,6 +24,55 @@ export function Movies({savedMovies, handleLike }) {
     const [shownCards, setShownCards] = useState(presetCards());
 
     //======search-zone========= 
+
+    const requestFilmApi = () => {
+        setIsLoading(true);
+        return getAllMovies()
+            .then(res => {
+                setAllMovies(res);
+                localStorage.setItem('allMovies', JSON.stringify(res));
+                return res;
+            })
+            .catch(err => {
+                console.log(err);
+                setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+        // } else {
+        //     setSearchError('');
+        //     // lightSearch(currentMovies, searchQuery, currentToggleState);
+        //     searchMovies(currentMovies, searchQuery, currentToggleState);
+        // }
+    }
+
+    useEffect(() => {
+        const currentToggleValue = localStorage.getItem('isToggleActive') === 'true';
+        const currentQueryValue = localStorage.getItem('searchQuery');
+        //const storedFoundMovies = JSON.parse(localStorage.getItem('foundMovies'));
+
+        setIsToggleActive(currentToggleValue);
+        setSearchQuery(currentQueryValue || '');
+
+        if (currentQueryValue) {
+            handleSearchButton(currentQueryValue, currentToggleValue);
+        }
+        
+    }, []);
+
+    const handleSearchButton = (searchQuery, currentToggleState) => {
+        const storedMovies = JSON.parse(localStorage.getItem('allMovies'));
+        if (!storedMovies || !storedMovies.length) {   
+            requestFilmApi()
+                .then((res) => {
+                    searchMovies(res, searchQuery, currentToggleState);
+                })
+        } else {
+            searchMovies(storedMovies, searchQuery, currentToggleState);
+        }
+        setHasSearched(true);
+    }    
     
     const searchMovies = (arrMovies, searchQuery, isToggleActive) => {
         let results = arrMovies.filter(movie => 
@@ -61,41 +110,7 @@ export function Movies({savedMovies, handleLike }) {
         }
     };
 
-    // const handleToggle = () => {
-    //     console.log('toggle touched');
-    //     if (isToggleActive) {
-    //         setShownMovies(foundMovies);
-    //     } else {
-    //         setShownMovies(filterShortMovies(foundMovies));
-    //     }
-    //     setIsToggleActive(!isToggleActive);
-    //     //нужен, чтобы тогл работал и после поиска
-    //     //========проверить, не перевернуть ли isToggleActive
-        
-    // }
-
-    const handleSearchButton = (searchQuery, currentMovies, currentToggleState) => {
-        setIsLoading(true)
-        console.log('now IsLoading(true)')
-        if (!currentMovies.length) {
-            getAllMovies()
-                .then(res => {
-                    setAllMovies(res);
-                    searchMovies(res, searchQuery, currentToggleState);
-                })
-                .catch(err => {
-                    console.log(err);
-                    setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                });
-        } else {
-            setSearchError('');
-            searchMovies(currentMovies, searchQuery, currentToggleState);
-        }
-        setHasSearched(true);
-    }    
+    
 
     useEffect (() => {
         console.log('toggle added to storage like', isToggleActive);
@@ -120,35 +135,6 @@ export function Movies({savedMovies, handleLike }) {
         localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
     }, [foundMovies]);
 
-    useEffect(() => {
-        const currentToggleValue = localStorage.getItem('isToggleActive') === 'true';
-        const currenQueryValue = localStorage.getItem('searchQuery');
-
-        setIsToggleActive(currentToggleValue);
-        setSearchQuery(currenQueryValue || '');
-
-        if (currenQueryValue) {
-            handleSearchButton(currenQueryValue, allMovies, currentToggleValue);
-        }
-
-        // const currentToggleValue = localStorage.getItem('isToggleActive');
-        // console.log('currentToggleValue now is', currentToggleValue);
-        // if (currentToggleValue === 'true') {
-        //     setIsToggleActive(true)
-        // } else {
-        //     setIsToggleActive(false)
-        // }
-
-        // const foundMovies = JSON.parse(localStorage.getItem('foundMovies'));
-        // if (foundMovies && foundMovies.length) {
-        //     if (isToggleActive) {
-        //         setShownMovies(filterShortMovies(foundMovies));
-        //     } else {
-        //         setShownMovies(foundMovies);
-        //     }
-        // }
-    }, []);
-
     // ==========resize-zone===============
     function presetCards() {
         const windowSize = window.innerWidth;
@@ -172,7 +158,7 @@ export function Movies({savedMovies, handleLike }) {
         } else if ( windowSize >= 768 ) {
             setShownCards(shownCards + 2);
         } else {
-            setShownCards(shownCards + 1);
+            setShownCards(shownCards + 2);
         }
     }
 
