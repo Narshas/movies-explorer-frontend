@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Navigation.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, NavLink } from "react-router-dom";
 import { Burger } from "../Burger/Burger";
 import accIcon from "../../images/account-icon.svg";
 import { CurrentUserContext } from "../App/App";
@@ -24,8 +24,8 @@ export function Navigation() {
                     <div className="navigation__auth">
                         <div className="navigation__container-auth">
                             <div className="navigation__films">
-                                <Link to="/movies" className="navigation__all-films">Фильмы</Link>
-                                <Link to="/saved-movies" className="navigation__my-films">Сохранённые фильмы</Link>
+                                <NavLink to="/movies" className={({ isActive }) => isActive ? "navigation__all-films navigation__allfilms-active" : "navigation__all-films"}>Фильмы</NavLink>
+                                <NavLink to="/saved-movies" className="navigation__my-films">Сохранённые фильмы</NavLink>
                             </div>
 
                             <Link to="/profile" className="navigation__account-button">
@@ -41,8 +41,8 @@ export function Navigation() {
                     <div className="navigation__auth">
                         <div className="navigation__container-auth">
                             <div className="navigation__films">
-                                <Link to="/movies" className="navigation__all-films">Фильмы</Link>
-                                <Link to="/saved-movies" className="navigation__my-films">Сохранённые фильмы</Link>
+                                <NavLink to="/movies" className={({ isActive }) => isActive ? "navigation__all-films navigation__allfilms-active" : "navigation__all-films"}>Фильмы</NavLink>
+                                <NavLink to="/saved-movies" className={({ isActive }) => isActive ? "navigation__my-films navigation__myfilms-active" : "navigation__my-films"}>Сохранённые фильмы</NavLink>
                             </div>
 
                             <Link to="/profile" className="navigation__account-button">

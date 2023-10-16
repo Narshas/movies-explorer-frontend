@@ -1,6 +1,6 @@
 import React from "react";
 import "./Burger.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import burger from "../../images/burger-icon.svg";
 import burgerClose from "../../images/burger-close.svg";
 import { useState } from "react";
@@ -28,9 +28,9 @@ export function Burger() {
                         </button>
 
                         <nav className="burger__links">
-                            <Link to="/" className="burger__link">Главная</Link>
-                            <Link to="/movies" className="burger__link">Фильмы</Link>
-                            <Link to="/saved-movies" className="burger__link">Сохранённые фильмы</Link>
+                            <NavLink to="/" className={({ isActive }) => isActive ? "burger__link burger__active-link" : "burger__link"}>Главная</NavLink>
+                            <NavLink to="/movies" className={({ isActive }) => isActive ? "burger__link burger__active-link" : "burger__link"}>Фильмы</NavLink>
+                            <NavLink to="/saved-movies" className={({ isActive }) => isActive ? "burger__link burger__active-link" : "burger__link"}>Сохранённые фильмы</NavLink>
                         </nav>
 
                         <Link to="/profile" className="burger__account-button">

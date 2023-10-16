@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../App/App";
 
-export function Register({handleRegister}) {
+export function Register({handleRegister, isSubmitting}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -17,6 +18,15 @@ export function Register({handleRegister}) {
     const [isEmailTouched, setIsEmailTouched] = useState(false);
     const [isPasswordTouched, setIsPasswordTouched] = useState(false);
     const [isNameTouched, setIsNameTouched] = useState(false);
+
+    const { loggedIn } = useContext(CurrentUserContext);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (loggedIn) {
+            navigate('/movies');
+        }
+    }, [loggedIn, navigate]);
+
 
     useEffect(() => {
         if ( errorEmail || errorPassword || errorName || !email || !password || !name) {
@@ -148,7 +158,7 @@ export function Register({handleRegister}) {
                             </div>
                         </fieldset>
                         <div className="register__submit-container">
-                            <button type="submit" className="register__submit" onClick={() => handleRegister(name, email, password)} disabled={!dataValid}>Зарегистрироваться</button>
+                            <button type="submit" className="register__submit" onClick={() => handleRegister(name, email, password)} disabled={!dataValid || isSubmitting}>Зарегистрироваться</button>
                             <div className="register__link">
                                 Уже зарегистрированы?
                                 <Link to="/signin" className="register__to-login">Войти</Link>

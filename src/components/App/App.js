@@ -23,25 +23,15 @@ export function App() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupText, setPopupText] = useState('');
   const [savedMovies, setSavedMovies] = useState([]);
-  
+
+  const [appInitialized, setAppInitialized] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);  
 
   // ======== UserData =========
 
   useEffect(() => {
     checkToken()
   }, [])  
-
-  // const loadUserData = () => {
-  //   Promise.all([getUserInfo(), getSavedMovies()])
-  //     .then(([userInfo, savedMoviesList]) => {
-  //         setUser(userInfo);
-  //         setSavedMovies(savedMoviesList);
-  //     })
-  //     .catch(err => {
-  //         console.log(err);
-  //         logOut();
-  //     });
-  // }
 
   useEffect(() => {
     if (loggedIn) {
@@ -72,19 +62,18 @@ export function App() {
         .catch((err) => {
           console.log('tokenCheker bad result', err);
           return logOut();
-        });
+        })
+        .finally(() => {
+          setAppInitialized(true);
+        })
     } else {
-      return logOut();
+      logOut();
+      setAppInitialized(true);
     }
-  }  
-
-  const logOut = () => {
-    setLoggedIn(false);
-    localStorage.removeItem('token');
-    navigate('/signin'); 
-  }
+  } 
 
   function handleLogin(email, password) {
+    setIsSubmitting(true);
         authoraizer({ email, password })
           .then(res => {
               if (res && res.message) {
@@ -93,9 +82,15 @@ export function App() {
                   return Promise.reject(res.message);
               } else {
                   localStorage.setItem('token', res.token);
-                  checkToken();
-                  navigate("/movies");
+                  // navigate("/movies");
+                  console.log('started checkToken()');
+                  return checkToken();
               }
+          })
+          .then(() => {
+            console.log('ready to navigate');
+            navigate("/movies");
+            console.log('navigated');
           })
           .catch(error => {
               console.log(error)
@@ -105,10 +100,14 @@ export function App() {
               if (error === 'Ошибка: 401') {
                 popupOpen('Wrong password or email')
               }
-          });
+          })
+          .finally(() => {
+            setIsSubmitting(false);
+          })
   }
 
   function handleRegister(name, email, password) {
+    setIsSubmitting(true);
     register({ name, email, password })
         .then(res => {
             if (res & res.message) {
@@ -128,9 +127,18 @@ export function App() {
               popupOpen('We already have a user with this email');
           }
         })
+        .finally(() => {
+          setIsSubmitting(false);
+        })
   }
 
   // ======== Support =========
+  const logOut = () => {
+    setLoggedIn(false);
+    localStorage.removeItem('token');
+    navigate('/signin'); 
+  }
+
   const popupOpen = (text) => {
     setIsPopupOpen(true);
     setPopupText(text);
@@ -207,8 +215,9 @@ export function App() {
   }
 
   return (
-      <CurrentUserContext.Provider value={{ loggedIn, setLoggedIn, popupOpen, user, setUser }}> 
-        <div className="app">
+    <CurrentUserContext.Provider value={{ loggedIn, setLoggedIn, popupOpen, user, setUser }}> 
+      <div className="app">
+        {appInitialized ? (
           <Routes>
             <Route path="/" element={<Main/>} />
 
@@ -220,8 +229,9 @@ export function App() {
                     handleLike={handleLike}              
                   />
                 </ProtectedRoute>
-              } 
+              }
             />
+            
             <Route path="/saved-movies" element={
                 <ProtectedRoute loggedIn={loggedIn}>
                   <SavedMovies
@@ -234,33 +244,38 @@ export function App() {
               }
             />
             <Route path="/signup" element={
-              <Register
-                handleRegister={handleRegister}
-              />
+              <>
+                <Register
+                  handleRegister={handleRegister}
+                  isSubmitting={isSubmitting}
+                />
+              </>
             }
             />
 
             <Route path="/signin" element={
-              <Login
-                handleLogin={handleLogin}
-              />
+              <>
+                <Login
+                  handleLogin={handleLogin}
+                  isSubmitting={isSubmitting}
+                />
+              </>
             }
             />
 
             <Route path="/profile" element={
                 <ProtectedRoute loggedIn={loggedIn}>
                   <Profile
-                    // user={user}
-                    // setUser={setUser}
                   />
                 </ProtectedRoute>
               }
             />
             <Route path="*" element={<PageNotFound/>}/>
           </Routes>
-          <Popup isOpen={isPopupOpen} popupText={popupText} onClose={popupClose}/>
-        </div>
-      </CurrentUserContext.Provider>   
+        ) : null}
+        <Popup isOpen={isPopupOpen} popupText={popupText} onClose={popupClose}/>
+      </div>
+    </CurrentUserContext.Provider>   
   );
 }
   

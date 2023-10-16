@@ -1,6 +1,6 @@
 const settings = {
-    // baseUrl: "https://api.narshas.diploma.nomoreparties.co",
-    baseUrl: "http://localhost:3001",
+    baseUrl: "https://api.narshas.diploma.nomoreparties.co",
+    // baseUrl: "http://localhost:3001",
 }
 
 function testRes(res) {

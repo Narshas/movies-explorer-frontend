@@ -18,6 +18,7 @@ export function SavedMovies({savedMovies, handleLike, handleDeleteMovie}) {
     useEffect(() => {
         setFiltredSavedMovies(savedMovies);
         // setFiltredSavedMovies(searchSavedMovies(localQuery, isToggleActive));
+        searchSavedMovies(localQuery, isToggleActive);
     }, [savedMovies]);
 
     const searchSavedMovies = (localQuery, isToggleActive) => {
@@ -34,14 +35,19 @@ export function SavedMovies({savedMovies, handleLike, handleDeleteMovie}) {
     }
 
     const handleToggle = () => {
-        if (isToggleActive) {
-            setFiltredSavedMovies(savedMovies);
-        } else {
-            setFiltredSavedMovies(filterShortMovies(savedMovies));
-        }
-        setIsToggleActive(!isToggleActive);
-
+        setIsToggleActive(prev => !prev);
+        searchSavedMovies(localQuery, !isToggleActive);
     }
+
+    // const handleToggle = () => {
+    //     if (isToggleActive) {
+    //         setFiltredSavedMovies(savedMovies);
+    //     } else {
+    //         setFiltredSavedMovies(filterShortMovies(savedMovies));
+    //     }
+    //     setIsToggleActive(!isToggleActive);
+
+    // }
 
     const filterShortMovies = (arrayMovies) => {
         let results = arrayMovies.filter(movie => movie.duration <= 40);

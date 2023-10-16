@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./Login.css";
 import logo from "../../images/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../App/App";
 
-export function Login({handleLogin}) {
+export function Login({handleLogin, isSubmitting}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorEmail, setErrorEmail] = useState('');
@@ -12,6 +13,16 @@ export function Login({handleLogin}) {
 
     const [isEmailTouched, setIsEmailTouched] = useState(false);
     const [isPasswordTouched, setIsPasswordTouched] = useState(false);
+
+    
+
+    const { loggedIn } = useContext(CurrentUserContext);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (loggedIn) {
+            navigate('/movies');
+        }
+    }, [loggedIn, navigate]);
 
     useEffect(() => {
         if ( errorEmail || errorPassword || !email || !password) {
@@ -114,7 +125,7 @@ export function Login({handleLogin}) {
 
                         </fieldset>
                         <div className="login__submit-container">
-                            <button type="submit" className="login__submit" onClick={() => handleLogin(email, password)} disabled={!dataValid}>Войти</button>
+                            <button type="submit" className="login__submit" onClick={() => handleLogin(email, password)} disabled={!dataValid || isSubmitting}>Войти</button>
                             <div className="login__link">
                                 Ещё не зарегистрированы?
                                 <Link to="/signup" className="login__to-register">Регистрация</Link>

@@ -6,7 +6,7 @@ export function PageNotFound() {
     const navigate = useNavigate();
 
     const turnBack = () => {
-        navigate(-1);
+        navigate(-2);
     }
 
     return (
