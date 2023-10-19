@@ -14,7 +14,7 @@ export function AboutMe() {
                     <p className="about-me__subtitle">Фронтенд-разработчик, 32 года</p>
                     <p className="about-me__about">Абзац про меня. Абзац про меня. Абзац про меня. Абзац про меня. Абзац про меня. 
                     Абзац про меня. Абзац про меня. Абзац про меня. Абзац про меня. Абзац про меня. Абзац про меня. Абзац про меня. Абзац про меня</p>
-                    <a href="https://github.com/Narshas" className="about-me__link" target="_blank">GitHub</a>
+                    <a href="https://github.com/Narshas" className="about-me__link" target="_blank" rel="noreferrer">GitHub</a>
                 </div>
                 <img className="about-me__photo" src={profilePhoto} alt="фото автора"></img>
             </div>

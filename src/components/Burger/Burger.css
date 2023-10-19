@@ -66,6 +66,10 @@
         
     }
 
+    .burger__active-link {
+        text-decoration: underline;
+    }
+
     .burger__link:hover {
         border-bottom: 2px solid #000000;
         opacity: 0.7;

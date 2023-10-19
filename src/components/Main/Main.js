@@ -12,7 +12,7 @@ export function Main() {
         <>
             <Header/>
             <main className="main">
-                <Promo/>
+                <Promo />
                 <AboutProject/>
                 <Techs/>
                 <AboutMe/>

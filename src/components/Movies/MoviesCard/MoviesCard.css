@@ -11,10 +11,12 @@
     padding: 0;
     height: 151px;
     width: 100%;
+    overflow: hidden;
 }
 
 .movies-card__cover {
     width: 100%;
+    height: 100%;
 }
 
 .movies-card__about {
@@ -51,6 +53,18 @@
 .movies-card__button_active:hover {
     background-image: url(../../../images/unsave-icon.svg);
 }
+
+.movies-card__button_unsave {
+    background-image: url(../../../images/unsave-icon.svg);
+}
+
+/* .movies-card__button_active {
+    background-image: url(../../../images/saved-icon.svg);
+}
+
+.movies-card__button_active:hover {
+    background-image: url(../../../images/unsave-icon.svg);
+} */
 
 .movies-card__duration {
     color: #A0A0A0;
